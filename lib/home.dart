@@ -194,7 +194,7 @@ class _WikiHomeState extends State<WikiHome> {
                               child: ListTile(
                                 leading: const Icon(Icons.language_outlined,
                                     color: Colors.indigo),
-                                title: const Text('Li Niha'),
+                                title: const Text('Ba Li Niha'),
                                 onTap: () {
                                   setState(() {
                                     context.setLocale(const Locale('id'));
