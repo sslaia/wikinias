@@ -8,14 +8,17 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await EasyLocalization.ensureInitialized();
 
-  runApp(EasyLocalization(
+  runApp(
+    EasyLocalization(
       supportedLocales: const [
         Locale('en'),
         Locale('id'),
       ],
       fallbackLocale: const Locale('en'),
       path: 'assets/translations',
-      child: const WikiNias()));
+      child: const WikiNias(),
+    ),
+  );
 }
 
 class WikiNias extends StatelessWidget {

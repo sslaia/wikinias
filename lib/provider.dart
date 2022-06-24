@@ -2,29 +2,29 @@ import 'package:flutter/foundation.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class WikiProvider extends ChangeNotifier {
-  SharedPreferences? _prefs;
-  String wiki = 'Wiktionary';
-  static const String _key = 'wiki';
+  String? _project;
+  String? _url;
 
-  // String get wiki => _prefs?.getString(_key) ?? 'Wiktionary';
-
-  WikiProvider() {
-    getWiki();
+  String get project {
+    return _project ?? 'Wikipedia';
   }
 
-  _initPrefs() async {
-    _prefs ??= await SharedPreferences.getInstance();
+  String get url {
+    return _url ?? 'https://nia.m.wikipedia.org/wiki/';
   }
 
-  getWiki() async {
-    await _initPrefs();
-    wiki = _prefs?.getString(_key) ?? 'Wiktionary';
+  setWiki(String value) {
+    if (value == 'Wikibooks') {
+      _project = 'Wikibooks';
+      _url = 'https://incubator.m.wikimedia.org/wiki/Wb/nia/';
+    } else if (value == 'Wiktionary') {
+      _project = 'Wiktionary';
+      _url = 'https://nia.m.wiktionary.org/wiki/';
+    } else {
+      _project = 'Wikipedia';
+      _url = 'https://nia.m.wikipedia.org/wiki/';
+    }
     notifyListeners();
   }
 
-  setWiki(String value) async {
-    await _initPrefs();
-    _prefs!.setString(_key, value);
-    notifyListeners();
-  }
 }

@@ -15,140 +15,95 @@ class WikiHome extends StatefulWidget {
   const WikiHome({Key? key}) : super(key: key);
 
   @override
-  _WikiHomeState createState() => _WikiHomeState();
+  WikiHomeState createState() => WikiHomeState();
 }
 
-class _WikiHomeState extends State<WikiHome> {
-  WebViewController? controller;
-  final Completer<WebViewController> _controller =
-  Completer<WebViewController>();
-  // String? booksUrl;
-  final _webviewKey = GlobalKey();
-  final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
-  final String wbUrl = 'https://incubator.m.wikimedia.org/wiki/Wb/nia/';
-  final String wpUrl = 'https://nia.m.wikipedia.org/wiki/';
-  final String wtUrl = 'https://nia.m.wiktionary.org/wiki/';
-  final wbcolor = Colors.purple[50];
-  final wpcolor = Colors.indigo[50];
-  final wtcolor = Colors.orange[50];
-
-  String project = 'Wikipedia';
-  String baseUrl = 'https://nia.m.wikipedia.org/wiki/';
-  Color? bColor = const Color(0xff121298);
-  Color? iColor = Colors.white;
+class WikiHomeState extends State<WikiHome> {
+  // Controllers
+  WebViewController? webviewController;
+  final Completer<WebViewController> completerController =
+      Completer<WebViewController>();
+  // Keys
+  final webviewKey = GlobalKey();
+  final GlobalKey<ScaffoldState> scaffoldKey = GlobalKey<ScaffoldState>();
+  // BottomAppBar icon color
+  Color iconColor = Colors.white; // bottomappbar icon color
+  Color bgColor = const Color(0xff121298);
+  // Progress bar
   double progress = 0; // for showing the progress bar
-
-  bool hasInternet = false;
-  final SnackBar _noInternet = SnackBar(
-    content: const Text('no_internet').tr(),
-    duration: const Duration(seconds: 3),
-    backgroundColor: Colors.red,
-  );
 
   @override
   void initState() {
     if (IO.Platform.isAndroid) WebView.platform = SurfaceAndroidWebView();
-    _checkInternet();
     super.initState();
-  }
-
-  void _checkInternet() async {
-    // check internet connection first
-    hasInternet = await InternetConnectionChecker().hasConnection;
   }
 
   @override
   Widget build(BuildContext context) {
-    return Consumer<WikiProvider>(
-      builder: (context, wikiNotifier, child) => WillPopScope(
-        onWillPop: () => _onWillPop(context),
-        child: SafeArea(
-          child: Scaffold(
-            key: _scaffoldKey,
+    return WillPopScope(
+      onWillPop: () => onWillPop(context),
+      child: SafeArea(
+        child: Consumer<WikiProvider>(
+          builder: (context, wiki, child) => Scaffold(
+            key: scaffoldKey,
             drawer: WikiDrawer(
-              controller: _controller,
-              // color: bColor,
-              url: baseUrl,
-              project: project,
-              // title: widget.title
+              controller: completerController,
+              url: wiki.url,
+              project: wiki.project,
             ),
             bottomNavigationBar: BottomAppBar(
-              // key: _scaffoldKey,
-              color: bColor,
+              color: bgColor,
               child: Row(
                 children: [
                   IconButton(
                     onPressed: () {
                       setState(() {
                         // open the menu drawer
-                        _scaffoldKey.currentState?.openDrawer();
+                        scaffoldKey.currentState?.openDrawer();
                       });
                     },
-                    icon: Icon(Icons.menu, color: iColor),
+                    icon: Icon(Icons.menu, color: iconColor),
                   ),
                   const SizedBox(width: 12.0),
-                  Text(
-                    'Wiki Nias',
-                    style: GoogleFonts.cinzelDecorative(
-                      textStyle: const TextStyle(
-                        fontSize: 24.0,
-                        fontWeight: FontWeight.w700,
-                        color: Colors.white,
+                  TextButton(
+                    onPressed: () {
+                      webviewController?.loadUrl('${wiki.url}Olayama');
+                    },
+                    child: Text(
+                      'wikiNias',
+                      style: GoogleFonts.cinzelDecorative(
+                        textStyle: const TextStyle(
+                          fontSize: 24.0,
+                          fontWeight: FontWeight.w700,
+                          color: Colors.white,
+                        ),
                       ),
                     ),
                   ),
                   const Spacer(),
                   IconButton(
-                    onPressed: () async {
-                      hasInternet =
-                      await InternetConnectionChecker().hasConnection;
-                      // reload the initial page
-                      hasInternet
-                          ? controller?.loadUrl('${wpUrl}Olayama')
-                          : ScaffoldMessenger.of(context)
-                          .showSnackBar(_noInternet);
-                      setState(() {
-                        baseUrl = 'https://nia.m.wikipedia.org/wiki/';
-                        project = 'Wikipedia';
-                        bColor = const Color(0xff121298);
-                      });
+                    onPressed: () {
+                      bgColor = const Color(0xff121298);
+                      webviewController?.loadUrl('https://nia.m.wikipedia.org/wiki/Olayama');
+                      wiki.setWiki('Wikipedia');
                     },
                     icon: Image.asset('assets/icons/action_wp.png'),
                     tooltip: 'Wikipedia',
                   ),
                   IconButton(
-                    onPressed: () async {
-                      // reload the initial page
-                      hasInternet =
-                      await InternetConnectionChecker().hasConnection;
-                      hasInternet
-                          ? controller?.loadUrl('${wtUrl}Olayama')
-                          : ScaffoldMessenger.of(context)
-                          .showSnackBar(_noInternet);
-                      setState(() {
-                        baseUrl = 'https://nia.m.wiktionary.org/wiki/';
-                        project = 'Wiktionary';
-                        bColor = const Color(0xffe9d6ae);
-                      });
+                    onPressed: () {
+                      bgColor = const Color(0xffe9d6ae);
+                      webviewController?.loadUrl('https://nia.m.wiktionary.org/wiki/Olayama');
+                      wiki.setWiki('Wiktionary');
                     },
                     icon: Image.asset('assets/icons/action_wt.png'),
                     tooltip: 'Wiktionary',
                   ),
                   IconButton(
-                    onPressed: () async {
-                      // reload the initial page
-                      hasInternet =
-                      await InternetConnectionChecker().hasConnection;
-                      hasInternet
-                          ? controller?.loadUrl('${wbUrl}Olayama')
-                          : ScaffoldMessenger.of(context)
-                          .showSnackBar(_noInternet);
-                      setState(() {
-                        baseUrl =
-                        'https://incubator.m.wikimedia.org/wiki/Wb/nia/';
-                        project = 'Wikibooks';
-                        bColor = const Color(0xff9b00a1);
-                      });
+                    onPressed: () {
+                      bgColor = const Color(0xff9b00a1);
+                      webviewController?.loadUrl('https://incubator.m.wikimedia.org/wiki/Wb/nia/Olayama');
+                      wiki.setWiki('Wikibooks');
                     },
                     icon: Image.asset('assets/icons/action_wb.png'),
                     tooltip: 'Wikibuku',
@@ -171,7 +126,8 @@ class _WikiHomeState extends State<WikiHome> {
                                   Navigator.push(
                                     context,
                                     MaterialPageRoute(
-                                      builder: (context) => const AboutWikiNias(),
+                                      builder: (context) =>
+                                          const AboutWikiNias(),
                                     ),
                                   );
                                 },
@@ -181,12 +137,12 @@ class _WikiHomeState extends State<WikiHome> {
                               child: ListTile(
                                 leading: const Icon(Icons.language_outlined,
                                     color: Colors.purple),
-                                title: const Text('In English'),
+                                title: const Text('English'),
                                 onTap: () {
                                   setState(() {
                                     context.setLocale(const Locale('en'));
-                                    Navigator.pop(context);
                                   });
+                                  Navigator.pop(context);
                                 },
                               ),
                             ),
@@ -194,91 +150,85 @@ class _WikiHomeState extends State<WikiHome> {
                               child: ListTile(
                                 leading: const Icon(Icons.language_outlined,
                                     color: Colors.indigo),
-                                title: const Text('Ba Li Niha'),
+                                title: const Text('Li Niha'),
                                 onTap: () {
                                   setState(() {
                                     context.setLocale(const Locale('id'));
-                                    Navigator.pop(context);
                                   });
+                                  Navigator.pop(context);
                                 },
                               ),
                             ),
                             PopupMenuItem<String>(
-                              // value: 'english',
                               child: ListTile(
                                 leading: const Icon(Icons.shuffle,
                                     color: Colors.black54),
                                 title: const Text('random').tr(),
                                 onTap: () {
-                                  controller
-                                      ?.loadUrl('${baseUrl}Special:Random');
-                                  setState(() {
-                                    Navigator.pop(context);
-                                  });
+                                  webviewController
+                                      ?.loadUrl('${wiki.url}Special:Random');
+                                  Navigator.pop(context);
                                 },
                               ),
                             ),
                             PopupMenuItem<String>(
-                              // value: 'english',
                               child: ListTile(
                                 leading: const Icon(Icons.refresh,
                                     color: Colors.black54),
                                 title: const Text('refresh').tr(),
                                 onTap: () {
-                                  controller?.reload();
-                                  setState(() {
-                                    Navigator.pop(context);
-                                  });
+                                  webviewController?.reload();
+                                  Navigator.pop(context);
                                 },
                               ),
                             ),
                           ]);
                     },
-                    icon: Icon(Icons.more_vert, color: iColor),
+                    icon: Icon(Icons.more_vert, color: iconColor),
                   ),
                 ],
               ),
             ),
             body: Column(
-              children: [
-                LinearProgressIndicator(
-                  value: progress,
-                  color: bColor,
-                  backgroundColor: Colors.white54,
-                ),
-                Expanded(
-                  child: WebView(
-                      key: _webviewKey,
-                      initialUrl: '${baseUrl}Olayama',
-                      javascriptMode: JavascriptMode.unrestricted,
-                      onWebViewCreated: (WebViewController webViewController) {
-                        _controller.future.then((value) => controller = value);
-                        _controller.complete(webViewController);
-                      },
-                      onProgress: (progress) => this.progress = progress / 100),
-                ),
-              ],
-            ),
+                    children: [
+                      LinearProgressIndicator(
+                        value: progress,
+                        color: bgColor,
+                        backgroundColor: Colors.white54,
+                      ),
+                      Expanded(
+                        child: WebView(
+                            key: webviewKey,
+                            initialUrl: '${wiki.url}Olayama',
+                            javascriptMode: JavascriptMode.unrestricted,
+                            onWebViewCreated: (WebViewController controller) {
+                              completerController.future
+                                  .then((value) => webviewController = value);
+                              completerController.complete(controller);
+                            },
+                            onProgress: (progress) =>
+                                this.progress = progress / 100),
+                      ),
+                    ],
+                  ),
           ),
         ),
       ),
     );
-    // );
   }
 
-  Future<bool> _onWillPop(BuildContext context) async {
-    var status = await controller!.canGoBack();
-    if (status) {
-      controller!.goBack();
-      return false;
-    } else {
+  Future<bool> onWillPop(BuildContext context) async {
+    var status = await webviewController!.canGoBack();
+    if (!status) {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
-          content: const Text(
-              "no_back").tr(),
+          content: Text("no_back").tr(),
           duration: const Duration(seconds: 3),
         ),
       );
+      return false;
+    } else {
+      webviewController!.goBack();
       return false;
     }
   }

@@ -6,22 +6,17 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 
 class WikiDrawer extends StatelessWidget {
+  final Completer<WebViewController> _controller;
+  final String url;
+  final String project;
+
   const WikiDrawer({
     Key? key,
     required Completer<WebViewController> controller,
-    // required this.color,
     required this.url,
     required this.project,
-    // required this.title,
   })   : _controller = controller,
         super(key: key);
-
-  final Completer<WebViewController> _controller;
-  // final Color? color;
-  final String url;
-  final String project;
-  // final String title;
-  // String? booksUrl;
 
   @override
   Widget build(BuildContext context) {
@@ -47,7 +42,7 @@ class WikiDrawer extends StatelessWidget {
                         bottom: 12.0,
                         left: 12.0,
                         child: Text(
-                          'Wiki Nias',
+                          project,
                           style: GoogleFonts.cinzelDecorative(
                               textStyle: const TextStyle(
                                   fontSize: 24.0,
@@ -57,14 +52,6 @@ class WikiDrawer extends StatelessWidget {
                       ),
                     ]),
                   ),
-                  // ListTile(
-                  //   leading: Icon(Icons.home_outlined),
-                  //   title: Text('home').tr(),
-                  //   onTap: () {
-                  //     Navigator.pop(context);
-                  //     controller.data!.loadUrl(url + 'Olayama');
-                  //   },
-                  // ),
                   ListTile(
                       leading: const Icon(Icons.local_fire_department_outlined),
                       title: Text("recent_changes").tr(),
@@ -140,7 +127,7 @@ class WikiDrawer extends StatelessWidget {
             );
           }
           return Container(
-            child: const Text('Empty'),
+            child: const Text('Can\'t get the data'),
           );
         },
       ),
