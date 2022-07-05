@@ -8,7 +8,8 @@
   "sandbox": "Nahia wamakori",
   "help": "Ngawalö wanolo",
   "helpers": "Sangai halöŵö",
-  "about": "Sanandrösa",
+  "about_wiki": "Sanandrösa wiki",
+  "about_wikinias_app": "Sanandrösa aplikasi",
   "start_screen": "Ae baulu",
   "english": "Inggris",
   "indonesia": "Nias",
@@ -31,5 +32,12 @@
   "random": "Gofu nga'örö",
   "refresh": "Fuli halö",
   "no_internet": "Lö u'ila uhalö nga'örö andrö. \nLö nasa tokhai ndra'o ba Internet.",
-  "no_back": "Lö sa'ae nga'örö aefa da'a. \nNo örugi nga'örö si föföna sibai."
+  "no_back": "Lö sa'ae nga'örö aefa da'a. \nNo örugi nga'örö si föföna sibai.",
+  "settings": "Setelan",
+  "shortcuts": "Lala sadogo lumalö ba wakake",
+  "wiki_projects": "Ngawalö wiki",
+  "choose_wiki_project": "Fili wiki somasi'ö ö'ohalöŵögöi:",
+  "language": "Menu ba li bö'ö",
+  "choose_language": "Fili li, ba li da'ö dania te'oroma'ö ngawalö menu:",
+  "nias_keyboard": "Fafa wanura Nias"
 }
