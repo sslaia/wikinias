@@ -8,7 +8,8 @@
   "sandbox": "Sandbox",
   "help": "Help",
   "helpers": "Helpers",
-  "about": "About",
+  "about_wiki": "About wiki",
+  "about_wikinias_app": "About the app",
   "start_screen": "Start page",
   "english": "English",
   "indonesia": "Nias",
@@ -31,5 +32,12 @@
   "random": "Random page",
   "refresh": "Refresh",
   "no_internet": "Sorry, I can't get the page you wanted. \nThere's no internet connection.",
-  "no_back": "No more pages. \nYou've reached the very first visited page"
+  "no_back": "No more pages. \nYou've reached the very first visited page",
+  "settings": "Settings",
+  "shortcuts": "Community shortcuts",
+  "wiki_projects": "Wiki projects",
+  "choose_wiki_project": "Please choose the project you want to work on:",
+  "language": "Menu language",
+  "choose_language": "Please select the language for the menu:",
+  "nias_keyboard": "Nias keyboard"
 }

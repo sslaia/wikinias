@@ -7,14 +7,29 @@ An app for Nias Wikipedia, Wiktionary and Wikibooks. Get it from Play Store:
 
 ## Version's history
 
+Planned for future version:
+- Access using MediaWiki API
+- Replace webview with contents from the API
+- Creating new wiki page using a form
+
+Version 1.3:
+- Fixed: menu issue with Android 5 and below
+- Reorganised the menu: all items are divided in Shortcuts and Settings
+- Changing wiki project is now under Settings
+- Changing the language for the menu is also under Settings
+- All shortcuts to community tools are under Shortcuts
+- Added a shortcut to Nias keyboard installation/setup
+- Added shortcuts to about wiki and about the app
+
+Version 1.2:
+- New icons 
+- Minor fixes
+
 Version 1.0:
 - Access Wiktionary, Wikipedia, Wikibooks using WebView
 - Internationalization/localization (en, id/nia), easily change the language
 - All important shortcuts
 
-Planned for future version:
-- Access using MediaWiki API
-- Creating new wiki page using a form
 
 
 ## Getting the app
