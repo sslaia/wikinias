@@ -12,6 +12,12 @@ Planned for future version:
 - Replace webview with contents from the API
 - Creating new wiki page using a form
 
+Version 1.4:
+- Uses Dart 3 compatible sdk 
+- Updated webview and other packages to the latest version
+- Preferences are now saved.
+- Improved code for better maintenance
+
 Version 1.3:
 - Fixed: menu issue with Android 5 and below
 - Reorganised the menu: all items are divided in Shortcuts and Settings

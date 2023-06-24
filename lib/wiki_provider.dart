@@ -1,36 +1,30 @@
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:flutter/foundation.dart';
 
 class WikiProvider extends ChangeNotifier {
-  String? _projectValue;
-  String? _urlValue;
-  String? _colorValue;
+  static const String _projectKey = 'project';
 
-  String get project {
-    return _projectValue ?? 'Wikipedia';
+  late SharedPreferences _preferences;
+
+  String project = '';
+
+  WikiProvider() {
+    _init();
   }
 
-  String get url {
-    return _urlValue ?? 'https://nia.m.wikipedia.org/wiki/';
-  }
+  Future<void> _init() async {
+    _preferences = await SharedPreferences.getInstance();
+    project = _preferences.getString(_projectKey) ?? 'Wikipedia';
 
-  String get color {
-    return _colorValue ?? 'Color(0xff121298)';
-  }
-
-  setWiki(String value) {
-    if (value == 'Wikibooks') {
-      _projectValue = 'Wikibooks';
-      _urlValue = 'https://incubator.m.wikimedia.org/wiki/Wb/nia/';
-      _colorValue = 'Color(0xff9b00a1)';
-    } else if (value == 'Wiktionary') {
-      _projectValue = 'Wiktionary';
-      _urlValue = 'https://nia.m.wiktionary.org/wiki/';
-      _colorValue = 'Color(0xffe9d6ae)';
-    } else {
-      _projectValue = 'Wikipedia';
-      _urlValue = 'https://nia.m.wikipedia.org/wiki/';
-      _colorValue = 'Color(0xff121298)';
+    if (project.isEmpty) {
+      await setProject('Wikipedia');
     }
+  }
+
+  Future<void> setProject(String name) async {
+    project = name;
+    _preferences = await SharedPreferences.getInstance();
+    await _preferences.setString(_projectKey, name);
     notifyListeners();
   }
 }

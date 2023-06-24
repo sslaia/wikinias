@@ -1,8 +1,8 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
-import 'package:wikinias/mobile_screen.dart';
-import 'package:wikinias/wiki_provider.dart';
 import 'package:provider/provider.dart';
+import 'package:wikinias/home_screen.dart';
+import 'package:wikinias/wiki_provider.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -31,12 +31,13 @@ class WikiNias extends StatelessWidget {
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
         theme: ThemeData(
+          useMaterial3: true,
           primarySwatch: Colors.indigo,
         ),
         localizationsDelegates: context.localizationDelegates,
         supportedLocales: context.supportedLocales,
         locale: context.locale,
-        home: const MobileScreen(),
+        home: const HomeScreen(),
       ),
     );
   }
