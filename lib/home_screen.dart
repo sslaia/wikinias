@@ -1,5 +1,6 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 import 'package:wikinias/app_navigation_controls.dart';
@@ -104,7 +105,17 @@ class _HomeScreenState extends State<HomeScreen> {
           appBar: media.height > 768
               ? AppBar(
                   backgroundColor: Color(int.parse(wikiColor)),
-                  title: const Text('Halöŵö nifalului zato'))
+                  title: Text(
+                    'wikinias_slogan2',
+                    style: GoogleFonts.grandstander(
+                      textStyle: TextStyle(
+                          fontSize: 18.0,
+                          fontWeight: FontWeight.w400,
+                          // fontStyle: FontStyle.italic,
+                          color: Colors.white),
+                    ),
+                  ).tr(),
+                )
               : null,
           bottomNavigationBar:
               AppNavigationControls(webViewController: webViewController),
