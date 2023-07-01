@@ -225,12 +225,12 @@ class AppShortcuts extends StatelessWidget {
                 style: ButtonStyle(
                   shape: MaterialStateProperty.all(RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(15.0),
-                      side: const BorderSide(color: Color(0xff9b00a1)))),
+                      side: const BorderSide(color: Color(0xff121298)))),
                 ),
                 child: const Text(
                   'nias_keyboard',
                   style: TextStyle(
-                    color: Color(0xff9b00a1),
+                    color: Color(0xff121298),
                   ),
                 ).tr(),
               ),
@@ -242,12 +242,12 @@ class AppShortcuts extends StatelessWidget {
                 style: ButtonStyle(
                   shape: MaterialStateProperty.all(RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(15.0),
-                      side: const BorderSide(color: Color(0xff121298)))),
+                      side: const BorderSide(color: Color(0xff9b00a1)))),
                 ),
                 child: const Text(
                   'about_wiki',
                   style: TextStyle(
-                    color: Color(0xff121298),
+                    color: Color(0xff9b00a1),
                   ),
                 ).tr(),
               ),
@@ -259,12 +259,12 @@ class AppShortcuts extends StatelessWidget {
                 style: ButtonStyle(
                   shape: MaterialStateProperty.all(RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(15.0),
-                      side: const BorderSide(color: Color(0xff9b00a1)))),
+                      side: const BorderSide(color: Color(0xff121298)))),
                 ),
                 child: const Text(
                   'about_app',
                   style: TextStyle(
-                    color: Color(0xff9b00a1),
+                    color: Color(0xff121298),
                   ),
                 ).tr(),
               ),

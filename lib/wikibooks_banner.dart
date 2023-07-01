@@ -25,6 +25,7 @@ class WikibooksBanner extends StatelessWidget {
         children: [
           Text(
             'wiki_banner_wb',
+            textAlign: TextAlign.center,
             style: TextStyle(
                 fontSize: 16.0,
                 fontWeight: FontWeight.w700,
@@ -32,6 +33,7 @@ class WikibooksBanner extends StatelessWidget {
           ).tr(),
           Text(
             'wikinias_slogan',
+            textAlign: TextAlign.center,
             style: TextStyle(
                 fontSize: 16.0,
                 fontWeight: FontWeight.w700,

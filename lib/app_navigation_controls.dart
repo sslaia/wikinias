@@ -53,7 +53,10 @@ class AppNavigationControls extends StatelessWidget {
                   style: TextButton.styleFrom(
                     textStyle: const TextStyle(fontSize: 20),
                   ),
-                  onPressed: () => showWikiDialog(context),
+                  onPressed: () {
+                    showWikiDialog(context);
+                    webViewController.loadRequest(Uri.parse(wikiHome));
+                    },
                   child: Text(wikiName,
                     style: GoogleFonts.cinzelDecorative(
                       textStyle: TextStyle(
@@ -68,7 +71,10 @@ class AppNavigationControls extends StatelessWidget {
                   style: TextButton.styleFrom(
                     textStyle: const TextStyle(fontSize: 20),
                   ),
-                  onPressed: () => showWikiDialog(context),
+                  onPressed: () {
+                    showWikiDialog(context);
+                    webViewController.loadRequest(Uri.parse(wikiHome));
+                    },
                   child: Text(
                     'W',
                     style: GoogleFonts.cinzelDecorative(

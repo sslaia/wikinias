@@ -22,7 +22,7 @@ class _HomeScreenState extends State<HomeScreen> {
   final GlobalKey<ScaffoldState> scaffoldKey = GlobalKey<ScaffoldState>();
 
   // Wiki variables
-  String wikiProject = '';
+  // String wikiProject = '';
   String wikiHome = '';
   String wikiColor = '';
 
@@ -30,7 +30,7 @@ class _HomeScreenState extends State<HomeScreen> {
   void initState() {
     super.initState();
 
-    wikiProject = Provider.of<WikiProvider>(context, listen: false).project;
+    var wikiProject = Provider.of<WikiProvider>(context, listen: false).project;
     if (wikiProject == 'Wikibooks') {
       setState(() {
         wikiHome = 'https://incubator.wikimedia.org/wiki/Wb/nia/Olayama';

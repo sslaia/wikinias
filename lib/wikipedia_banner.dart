@@ -25,12 +25,14 @@ class WikipediaBanner extends StatelessWidget {
         children: [
           Text(
             'wiki_banner_wp',
+            textAlign: TextAlign.center,
             style: TextStyle(
                 fontSize: 16.0,
                 fontWeight: FontWeight.w700,
                 color: Colors.black),
           ).tr(),
           Text('wikinias_slogan',
+            textAlign: TextAlign.center,
             style: TextStyle(
                 fontSize: 16.0,
                 fontWeight: FontWeight.w700,
