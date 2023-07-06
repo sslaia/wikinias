@@ -13,7 +13,7 @@ import 'package:wikinias/main.dart';
 void main() {
   testWidgets('Counter increments smoke test', (WidgetTester tester) async {
     // Build our app and trigger a frame.
-    await tester.pumpWidget(WikiNias());
+    await tester.pumpWidget(const WikiNias());
 
     // Verify that our counter starts at 0.
     expect(find.text('0'), findsOneWidget);

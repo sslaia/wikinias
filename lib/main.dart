@@ -1,7 +1,7 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:wikinias/home_screen.dart';
+import 'package:wikinias/welcome_screen.dart';
 import 'package:wikinias/wiki_provider.dart';
 
 void main() async {
@@ -37,7 +37,7 @@ class WikiNias extends StatelessWidget {
         localizationsDelegates: context.localizationDelegates,
         supportedLocales: context.supportedLocales,
         locale: context.locale,
-        home: const HomeScreen(),
+        home: const WelcomeScreen(),
       ),
     );
   }

@@ -1,54 +1,35 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
-import 'package:provider/provider.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 import 'package:wikinias/app_navigation_controls.dart';
-import 'package:wikinias/wiki_provider.dart';
 
 class HomeScreen extends StatefulWidget {
-  const HomeScreen({super.key});
+  final String url;
+
+  const HomeScreen({
+    super.key,
+    required this.url,
+  });
 
   @override
   State<HomeScreen> createState() => _HomeScreenState();
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-  late final WebViewController webViewController;
+  late final WebViewController controller;
   var loadingProgress = 0;
 
   // Keys
   final GlobalKey webviewKey = GlobalKey();
   final GlobalKey<ScaffoldState> scaffoldKey = GlobalKey<ScaffoldState>();
 
-  // Wiki variables
-  // String wikiProject = '';
-  String wikiHome = '';
-  String wikiColor = '';
-
   @override
   void initState() {
     super.initState();
 
-    var wikiProject = Provider.of<WikiProvider>(context, listen: false).project;
-    if (wikiProject == 'Wikibooks') {
-      setState(() {
-        wikiHome = 'https://incubator.wikimedia.org/wiki/Wb/nia/Olayama';
-        wikiColor = '0xff9b00a1';
-      });
-    } else if (wikiProject == 'Wiktionary') {
-      setState(() {
-        wikiHome = 'https://nia.wiktionary.org';
-        wikiColor = '0xfffaf6ed';
-      });
-    } else {
-      setState(() {
-        wikiHome = 'https://nia.wikipedia.org';
-        wikiColor = '0xff121298';
-      });
-    }
+    var initialUrl = widget.url;
 
-    webViewController = WebViewController()
+    controller = WebViewController()
       ..setNavigationDelegate(NavigationDelegate(
         onPageStarted: (url) {
           setState(() {
@@ -67,7 +48,7 @@ class _HomeScreenState extends State<HomeScreen> {
         },
       ))
       ..loadRequest(
-        Uri.parse(wikiHome),
+        Uri.parse(initialUrl),
       );
   }
 
@@ -78,13 +59,11 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   Widget build(BuildContext context) {
-    var media = MediaQuery.sizeOf(context);
-
     return WillPopScope(
       onWillPop: () async {
-        var isLastPage = await webViewController.canGoBack();
+        var isLastPage = await controller.canGoBack();
         if (isLastPage) {
-          webViewController.goBack();
+          controller.goBack();
           return false;
         } else {
           if (!mounted) return true;
@@ -92,8 +71,7 @@ class _HomeScreenState extends State<HomeScreen> {
             SnackBar(
                 backgroundColor: Colors.amber,
                 content:
-                    const Text("no_back", style: TextStyle(color: Colors.black))
-                        .tr(),
+                    const Text("no_back", style: TextStyle(color: Colors.black)).tr(),
                 duration: const Duration(seconds: 3)),
           );
         }
@@ -102,26 +80,11 @@ class _HomeScreenState extends State<HomeScreen> {
       child: SafeArea(
         child: Scaffold(
           key: scaffoldKey,
-          appBar: media.height > 768
-              ? AppBar(
-                  backgroundColor: Color(int.parse(wikiColor)),
-                  title: Text(
-                    'wikinias_slogan2',
-                    style: GoogleFonts.grandstander(
-                      textStyle: TextStyle(
-                          fontSize: 18.0,
-                          fontWeight: FontWeight.w400,
-                          // fontStyle: FontStyle.italic,
-                          color: Colors.white),
-                    ),
-                  ).tr(),
-                )
-              : null,
           bottomNavigationBar:
-              AppNavigationControls(webViewController: webViewController),
+              AppNavigationControls(controller: controller),
           body: Stack(
             children: [
-              WebViewWidget(key: webviewKey, controller: webViewController),
+              WebViewWidget(key: webviewKey, controller: controller),
               if (loadingProgress < 100)
                 LinearProgressIndicator(
                   backgroundColor: Colors.amber,

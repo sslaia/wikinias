@@ -3,7 +3,7 @@ description: An app for Nias Wikipedia, Wiktionary and Wikibooks
 
 publish_to: 'none'
 
-version: 1.4.1+7
+version: 1.4.2+8
 
 environment:
   sdk: '>=3.0.3 <4.0.0'
@@ -27,6 +27,6 @@ dev_dependencies:
 flutter:
   uses-material-design: true
   assets:
-    - assets/
+    - assets/images/color_bar_nias.png
     - assets/translations/en.json
     - assets/translations/id.json
