@@ -2,6 +2,7 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 import 'package:wikinias/app_navigation_controls.dart';
+import 'package:webview_flutter_android/webview_flutter_android.dart';
 
 class HomeScreen extends StatefulWidget {
   final String url;
@@ -16,7 +17,7 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-  late final WebViewController controller;
+  late final WebViewController _controller;
   var loadingProgress = 0;
 
   // Keys
@@ -29,7 +30,14 @@ class _HomeScreenState extends State<HomeScreen> {
 
     var initialUrl = widget.url;
 
-    controller = WebViewController()
+    const PlatformWebViewControllerCreationParams params =
+    PlatformWebViewControllerCreationParams();
+
+    final WebViewController controller =
+    WebViewController.fromPlatformCreationParams(params);
+
+    controller
+      ..setJavaScriptMode(JavaScriptMode.unrestricted)
       ..setNavigationDelegate(NavigationDelegate(
         onPageStarted: (url) {
           setState(() {
@@ -50,6 +58,14 @@ class _HomeScreenState extends State<HomeScreen> {
       ..loadRequest(
         Uri.parse(initialUrl),
       );
+
+    if (controller.platform is AndroidWebViewController) {
+      AndroidWebViewController.enableDebugging(true);
+      (controller.platform as AndroidWebViewController)
+          .setMediaPlaybackRequiresUserGesture(false);
+    }
+
+    _controller = controller;
   }
 
   @override
@@ -61,9 +77,9 @@ class _HomeScreenState extends State<HomeScreen> {
   Widget build(BuildContext context) {
     return WillPopScope(
       onWillPop: () async {
-        var isLastPage = await controller.canGoBack();
+        var isLastPage = await _controller.canGoBack();
         if (isLastPage) {
-          controller.goBack();
+          _controller.goBack();
           return false;
         } else {
           if (!mounted) return true;
@@ -81,10 +97,10 @@ class _HomeScreenState extends State<HomeScreen> {
         child: Scaffold(
           key: scaffoldKey,
           bottomNavigationBar:
-              AppNavigationControls(controller: controller),
+              AppNavigationControls(controller: _controller),
           body: Stack(
             children: [
-              WebViewWidget(key: webviewKey, controller: controller),
+              WebViewWidget(key: webviewKey, controller: _controller),
               if (loadingProgress < 100)
                 LinearProgressIndicator(
                   backgroundColor: Colors.amber,

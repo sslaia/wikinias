@@ -78,8 +78,7 @@ class WelcomeScreen extends StatelessWidget {
                   ElevatedButton(
                     onPressed: () {
                       wiki.setProject('Wikibooks');
-                      wiki.setUrl(
-                          'https://incubator.wikimedia.org/wiki/Wb/nia/Olayama');
+                      wiki.setUrl('https://incubator.wikimedia.org');
                       wiki.setColor('0xff9b00a1');
                       Navigator.push(
                         context,

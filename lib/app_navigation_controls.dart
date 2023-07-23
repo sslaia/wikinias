@@ -32,7 +32,7 @@ class AppNavigationControls extends StatelessWidget {
                     onPressed: () {
                       if (wiki.project == 'Wikibooks') {
                         controller.loadRequest(
-                            Uri.parse(wiki.url));
+                            Uri.parse('${wiki.url}/wiki/Wb/nia/Olayama'));
                       } else {
                         controller.loadRequest(Uri.parse(wiki.url));
                       }
