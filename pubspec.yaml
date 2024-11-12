@@ -3,7 +3,7 @@ description: An app for Nias Wikipedia, Wiktionary and Wikibooks
 
 publish_to: 'none'
 
-version: 1.5.0
+version: 1.5.0+10
 
 environment:
   sdk: '>=3.0.3 <4.0.0'
