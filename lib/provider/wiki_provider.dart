@@ -15,4 +15,5 @@ class WikiProvider extends ChangeNotifier {
     _color = color;
     notifyListeners();
   }
+
 }
