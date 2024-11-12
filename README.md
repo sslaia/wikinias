@@ -12,7 +12,8 @@ Planned for future version:
 - Replace webview with contents from the API
 - Creating new wiki page using a form
 
-Version 1.4.3:
+Version 1.5.0:
+- Increased overall speed
 - Increased the min SDK to 21
 - Used API level 35
 - Updated sdk to the latest
@@ -21,7 +22,7 @@ Version 1.4.3:
 - Added share to social media button
 - Added edit button for wiki editing in an external browser
 - Improved back button handling (making PopScope works together with WebView)
-- Code spring cleaning
+- Restructured the code
 
 - Version 1.4:
 - Uses Dart 3 compatible sdk 

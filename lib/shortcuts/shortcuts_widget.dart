@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 import 'package:wikinias/provider/wiki_provider.dart';
-import 'package:wikinias/shortcuts/about_app.dart';
 import 'package:wikinias/shortcuts/help_button.dart';
 import 'package:wikinias/shortcuts/nias_keyboard.dart';
 import 'package:wikinias/shortcuts/recent_changes.dart';
@@ -39,7 +38,6 @@ class ShortcutsWidget extends StatelessWidget {
               'shortcuts',
               style: const TextStyle(
                   fontSize: 14.0,
-                  fontWeight: FontWeight.w700,
                   color: Colors.black54),
             ).tr(),
             const SizedBox(height: 20.0),
@@ -56,8 +54,6 @@ class ShortcutsWidget extends StatelessWidget {
                 HelpButton(label: 'help', color: Color(0xff121298), controller: _controller),
                 WikiTools(tool: 'Sangai_halöŵö', label: 'helpers', color: Color(0xff9b00a1), controller: _controller),
                 NiasKeyboard(label: 'nias_keyboard', color: Color(0xff121298), controller: _controller),
-                WikiTools(tool: 'Sanandrösa', label: 'about_wiki', color: Color(0xff9b00a1), controller: _controller),
-                AboutApp(label: 'about_app', color: Color(0xff121298), controller: _controller),
               ],
             ),
           ],

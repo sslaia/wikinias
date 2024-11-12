@@ -1,7 +1,7 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:wikinias/screens/welcome_screen.dart';
+import 'package:wikinias/screens/home_screen.dart';
 import 'package:wikinias/provider/wiki_provider.dart';
 import 'package:wikinias/screens/wikibooks_screen.dart';
 import 'package:wikinias/screens/wikipedia_screen.dart';
@@ -19,7 +19,6 @@ void main() async {
       ],
       fallbackLocale: const Locale('en'),
       path: 'assets/translations',
-      // startLocale: Locale.fromSubtags(languageCode: 'en'),
       child: ChangeNotifierProvider(
         create: (context) => WikiProvider(),
         child: WikiNias(),
@@ -44,7 +43,7 @@ class WikiNias extends StatelessWidget {
       locale: context.locale,
       initialRoute: '/',
       routes: {
-        '/': (context) => WelcomeScreen(),
+        '/': (context) => HomeScreen(),
         '/wikipedia': (context) => WikipediaScreen(),
         '/wiktionary': (context) => WiktionaryScreen(),
         '/wikibooks': (context) => WikibooksScreen(),

@@ -18,7 +18,6 @@ class TitleButton extends StatelessWidget {
       builder: (context, wiki, child) => TextButton(
         onPressed: () {
           if (wiki.name == 'Wb/nia/Wikibooks') {
-            // Load Olayama Wikibooks
             _controller.loadRequest(
                 Uri.parse('${wiki.url}/wiki/Wb/nia/Olayama'));
           } else {
