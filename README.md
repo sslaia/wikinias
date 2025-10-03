@@ -7,10 +7,14 @@ An app for Nias Wikipedia, Wiktionary and Wikibooks. Get it from Play Store:
 
 ## Version's history
 
-Planned for future version:
-- Access using MediaWiki API
-- Replace webview with contents from the API
-- Creating new wiki page using a form
+Version 2.0.0:
+- Almost complete rewriten. The first wiki is now called Niaspedia, the second Wikikamus and the third one Wikibuku
+- Two new modules added: Courses and Gallery
+- There is a new form for creating a new page
+- Portals are added to Niaspedia and Wikibuku
+- Most contents are now fetched through Mediawiki API request
+- Compliance with new Play requirements and policies
+- The community shortscuts have been trimmed down to necessary ones
 
 Version 1.5.0:
 - Increased overall speed

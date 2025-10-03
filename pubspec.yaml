@@ -1,32 +1,93 @@
 name: wikinias
-description: An app for Nias Wikipedia, Wiktionary and Wikibooks
-
+description: "An app for Niaspedia, Wikikamus and Wikibuku"
 publish_to: 'none'
-
-version: 1.5.0+10
+version: 2.0.0+11
 
 environment:
-  sdk: '>=3.0.3 <4.0.0'
+  sdk: '>=3.9.2 <4.0.0'
 
 dependencies:
   flutter:
     sdk: flutter
-  easy_localization: ^3.0.7
-  google_fonts: ^6.2.1
-  provider: ^6.1.2
-  share_plus: ^10.1.1
-  webview_flutter: ^4.10.0
-  webview_flutter_android: ^4.0.0
-  url_launcher: ^6.3.1
+
+#  provider: ^6.1.5+1
+  shared_preferences: ^2.5.3
+  easy_localization: ^3.0.8
+  google_fonts: ^6.3.1
+  share_plus: ^12.0.0
+  webview_flutter: ^4.13.0
+  webview_flutter_android: ^4.10.2
+  url_launcher: ^6.3.2
+  flutter_widget_from_html: ^0.17.1
+  http: ^1.5.0
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
-  flutter_lints: ^5.0.0
+
+  flutter_lints: ^6.0.0
 
 flutter:
   uses-material-design: true
   assets:
-    - assets/images/color_bar_nias.png
+    - assets/data/
+    - assets/fonts/
+    - assets/images/
+    - assets/translations/
+    - assets/data/articles_data.json
+    - assets/data/stories_data.json
+    - assets/data/words_data.json
+    - assets/data/dyks_data.json
+    - assets/data/gallery_dances.json
+    - assets/data/gallery_buildings.json
+    - assets/data/gallery_arts.json
+    - assets/data/gallery_others.json
     - assets/translations/en.json
     - assets/translations/id.json
+    - assets/images/amaedola.webp
+    - assets/images/baluse.webp
+    - assets/images/bible2.webp
+    - assets/images/bible.webp
+    - assets/images/bowogafasi.webp
+    - assets/images/color_bar.webp
+    - assets/images/figa.webp
+    - assets/images/hoho.webp
+    - assets/images/nias-keyboard.webp
+    - assets/images/ni'obutelai.webp
+    - assets/images/ni'ogazi.webp
+    - assets/images/ni'otalingawöliwöli.webp
+    - assets/images/ni'owewemagai.webp
+    - assets/images/ni'owulurai.webp
+    - assets/images/ornament1.webp
+    - assets/images/ornament2.webp
+    - assets/images/ornament3.webp
+    - assets/images/songs.webp
+    - assets/images/sundermann.webp
+    - assets/images/tolögu.webp
+    - assets/images/stories.webp
+  fonts:
+    - family: CinzelDecorative
+      fonts:
+        - asset: assets/fonts/CinzelDecorative-Regular.ttf
+        - asset: assets/fonts/CinzelDecorative-Bold.ttf
+          weight: 700
+    - family: Gelasio
+      fonts:
+        - asset: assets/fonts/Gelasio-Regular.ttf
+        - asset: assets/fonts/Gelasio-Italic.ttf
+          style: italic
+        - asset: assets/fonts/Gelasio-Bold.ttf
+          weight: 700
+        - asset: assets/fonts/Gelasio-BoldItalic.ttf
+          weight: 700
+          style: italic
+    - family: Ubuntu
+      fonts:
+        - asset: assets/fonts/Ubuntu-Regular.ttf
+        - asset: assets/fonts/Ubuntu-Italic.ttf
+          style: italic
+        - asset: assets/fonts/Ubuntu-Bold.ttf
+          weight: 700
+        - asset: assets/fonts/Ubuntu-BoldItalic.ttf
+          weight: 700
+          style: italic
