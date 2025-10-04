@@ -41,6 +41,7 @@ class _BibleChapterScreenState extends State<AmaedolaPageScreen> {
           SliverAppBar(
             iconTheme: IconThemeData(color: amaedolaColor),
             title: Text('Amaedola: ${title.substring(9)}', style: TextStyle(color: amaedolaColor)),
+            floating: true,
             expandedHeight: 200,
             flexibleSpace: Stack(
               children: [

@@ -43,6 +43,7 @@ class _BibleChapterScreenState extends State<HohoPageScreen> {
           SliverAppBar(
             iconTheme: IconThemeData(color: hohoColor),
             title: Text(title, style: TextStyle(color: hohoColor)),
+            floating: true,
             expandedHeight: 200,
             flexibleSpace: Stack(
               children: [

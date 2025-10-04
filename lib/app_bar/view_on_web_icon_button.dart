@@ -18,7 +18,9 @@ class ViewOnWebIconButton extends StatelessWidget {
       tooltip: 'view_on_the_web'.tr(),
       icon: Icon(Icons.visibility_outlined),
       color: color,
-      onPressed: () => launchUrl(Uri.parse(url)),
+      onPressed: () {
+        launchUrl(Uri.parse(url));
+        },
     );
   }
 }

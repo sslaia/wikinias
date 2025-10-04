@@ -44,6 +44,7 @@ class _SundermannPageScreenState extends State<SundermannPageScreen> {
           SliverAppBar(
             iconTheme: IconThemeData(color: sundermannColor),
             title: Text(title.substring(18), style: TextStyle(color: sundermannColor)),
+            floating: true,
             expandedHeight: 230,
             flexibleSpace: FlexiblePageHeader(image: sundermannImage),
             actions: [

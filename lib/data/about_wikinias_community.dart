@@ -66,15 +66,19 @@ Omuso dödöma na fao ndra'ugö ba wanohugö wama'anö li Niha andre yaŵa ba gu
 
 <h3>Ngawalö zinura sanandrösa ba program</h3>
 <ol>
-<li>Program Pengembangan Bahasa Nias 2020-2025 (So yaŵa ba nga'örö zangoguna Slaia ba Wikikamus)</li>
-<li>Tantangan mengembangkan bahasa Nias di Wikimedia (So yaŵa ba nga'örö zangoguna Slaia ba Wikikamus)</li>
-<li>New Wikimedia projects main challenge and the possible solution (So yaŵa ba nga'örö zangoguna Slaia ba Wikikamus)</li>
-<li>Proposal untuk rapat perdana Wikipedia Nias (So yaŵa ba nga'örö zangoguna Slaia ba Wikikamus)</li>
-<li>Melestarikan bahasa Nias untuk siapa dan bagaimana (So yaŵa ba nga'örö zangoguna Slaia ba Wikikamus)</li>
-<li>Strategi mengembangkan bahasa Nias di era digital (So yaŵa ba nga'örö zangoguna Slaia ba Wikikamus)
-<li>Program Pengembangan Bahasa Nias dalam Tiga Diagram (So yaŵa ba nga'örö zangoguna Slaia ba Wikikamus)</li>
-<li>Strategi mengembangkan bahasa Nias melalui konten bermutu (So yaŵa ba nga'örö zangoguna Slaia ba Wikikamus)</li>
+<li><a href="https://nia.wikipedia.org/wiki/Sangoguna:Slaia/Introduksi_ke_program_bahasa_Nias_dalam_tiga_diagram">Program Pengembangan Bahasa Nias 2020-2025</a> (So yaŵa ba nga'örö zangoguna Slaia ba Wikikamus)</li>
+<li><a href="https://nia.wiktionary.org/wiki/Sangoguna:Slaia/Tantangan_mengembangkan_bahasa_Nias_di_Wikimedia">Tantangan mengembangkan bahasa Nias di Wikimedia</a> (So yaŵa ba nga'örö zangoguna Slaia ba Wikikamus)</li>
+<li><a href="https://nia.wiktionary.org/wiki/Sangoguna:Slaia/New_Wikimedia_projects_main_challenge_and_the_possible_solution">New Wikimedia projects main challenge and the possible solution</a> (So yaŵa ba nga'örö zangoguna Slaia ba Wikikamus)</li>
+<li><a href="https://nia.wikipedia.org/wiki/Sangoguna:Slaia/Proposal_Untuk_Rapat_Perdana_Wikipedia_Nias">Proposal untuk rapat perdana Wikipedia Nias</a> (So yaŵa ba nga'örö zangoguna Slaia ba Wikikamus)</li>
+<li><a href="https://nia.wikipedia.org/wiki/Sangoguna:Slaia/Melestarikan_bahasa_Nias_Untuk_Siapa_dan_Bagaimana">Melestarikan bahasa Nias untuk siapa dan bagaimana</a> (So yaŵa ba nga'örö zangoguna Slaia ba Wikikamus)</li>
+<li><a href="https://nia.wikipedia.org/wiki/Sangoguna:Slaia/Strategi_Mengembangkan_Bahasa_Nias_di_Era_Digital">Strategi mengembangkan bahasa Nias di era digital</a> (So yaŵa ba nga'örö zangoguna Slaia ba Wikikamus)
+<li><a href="https://nia.wikipedia.org/wiki/Sangoguna:Slaia/Introduksi_ke_program_bahasa_Nias_dalam_tiga_diagram">Program Pengembangan Bahasa Nias dalam Tiga Diagram</a> (So yaŵa ba nga'örö zangoguna Slaia ba Wikikamus)</li>
+<li><a href="https://nia.wikipedia.org/wiki/Sangoguna:Slaia/Strategi_Mengembangkan_Bahasa_Nias_Melalui_Konten_Bermutu">Strategi mengembangkan bahasa Nias melalui konten bermutu</a> (So yaŵa ba nga'örö zangoguna Slaia ba Wikikamus)</li>
 </ol>
 
+<h3>Khai-khai baero</h3>
+<ol>
+<li><a href="https://nia.wikipedia.org/wiki/Wikipedia:Sanandrösa">Bolokha gu'ö Komunitas Wikinias</a></li>
+</ol>
 <p>Ya abölö mowua halöŵöda andre. Ya'ahowu!</p>
 ''';

@@ -57,3 +57,8 @@ Version 1.0:
 ## Getting the app
 
 Wiki Nias app is live on [Google Play Store](https://play.google.com/store/apps/details?id=com.blogspot.wikinias).
+
+## Other relevant apps
+
+WikiNias app is only one of some utility apps for supporting the Nias language. Other apps are available on [Nias Apps](https://sslaia.github.io)
+
