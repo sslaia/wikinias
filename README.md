@@ -1,6 +1,6 @@
 # wikinias
 
-An app for Nias Wikipedia, Wiktionary and Wikibooks. Get it from Play Store:
+An app for Niaspedia, Wikikamus and Wikibuku. Get it from Play Store:
 
 <a href="https://play.google.com/store/apps/details?id=com.blogspot.wikinias"><img alt="Get it on Google Play" src="https://play.google.com/intl/en_us/badges/images/apps/en-play-badge.png" height="80pt"/></a>
 
