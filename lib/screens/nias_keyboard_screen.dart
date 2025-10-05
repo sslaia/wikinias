@@ -59,64 +59,6 @@ class NiasKeyboardScreen extends StatelessWidget {
             ),
           ],
         ),
-        // bottomNavigationBar: bottomappbar,
-        // bottomNavigationBar: BottomAppBar(
-        //   child: Row(
-        //     children: [
-        //       // Project name
-        //       Text(
-        //         'special_pages',
-        //         style: TextStyle(
-        //           fontFamily: 'CinzelDecorative',
-        //           fontSize: 16.0,
-        //           fontWeight: FontWeight.w700,
-        //           color: color,
-        //         ),
-        //       ).tr(),
-        //       const Spacer(),
-        //       // Home button
-        //       IconButton(
-        //         tooltip: 'home'.tr(),
-        //         icon: Icon(Icons.home_outlined),
-        //         color: color,
-        //         onPressed: () {
-        //           Navigator.pop(context);
-        //           Navigator.pushNamed(context, homeDestination);
-        //         },
-        //       ),
-        //       // Refresh button
-        //       IconButton(
-        //         tooltip: 'refresh'.tr(),
-        //         icon: Icon(Icons.refresh_outlined),
-        //         color: color,
-        //         onPressed: () {
-        //           Navigator.pop(context);
-        //           Navigator.push(
-        //             context,
-        //             MaterialPageRoute<void>(
-        //               builder: (context) => NiasKeyboardScreen(project: project, color: color),
-        //             ),
-        //           );
-        //         },
-        //       ),
-        //       // Shortcuts button
-        //       IconButton(
-        //         tooltip: 'shortcuts'.tr(),
-        //         icon: Icon(Icons.switch_access_shortcut_outlined),
-        //           color: color,
-        //         onPressed: () {
-        //           showModalBottomSheet<void>(
-        //             context: context,
-        //             builder: (BuildContext context) {
-        //               return projectShortcuts;
-        //             },
-        //           );
-        //         },
-        //       ),
-        //       const SizedBox(width: 16.0),
-        //     ],
-        //   ),
-        // ),
       ),
     );
   }

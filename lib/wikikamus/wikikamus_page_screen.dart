@@ -6,11 +6,13 @@ import 'package:wikinias/utils/sanitised_title.dart';
 import 'package:wikinias/widgets/flexible_page_header.dart';
 
 import '../app_bar/view_on_web_icon_button.dart';
+import '../utils/get_lowercase_title_from_url.dart';
 import '../utils/processed_title.dart';
 import '../widgets/footer_section.dart';
 import '../app_bar/share_icon_button.dart';
 import '../services/wikinias_api_service.dart';
 import '../app_bar/edit_icon_button.dart';
+import 'guides/create_new_entry_from_word.dart';
 import 'widgets/wikikamus_page_bottom_app_bar.dart';
 import 'widgets/wikikamus_footer.dart';
 
@@ -37,41 +39,43 @@ class _WikikamusPageScreenState extends State<WikikamusPageScreen> {
   Widget build(BuildContext context) {
     final String url = '$wkUrl${widget.title}';
 
-    return Scaffold(
-      bottomNavigationBar: WikikamusPageBottomAppBar(title: widget.title),
-      body: CustomScrollView(
-        slivers: [
-          SliverAppBar(
-            iconTheme: IconThemeData(color: wkColor),
-            title: Text(processedTitle(widget.title), style: TextStyle(color: wkColor)),
-            floating: true,
-            expandedHeight: 250,
-            flexibleSpace: FlexiblePageHeader(image: wkPageImage),
-            actions: [
-              ShareIconButton(color: wkColor, url: url),
-              EditIconButton(color: wkColor, url: '$url?action=edit&section=all'),
-              ViewOnWebIconButton(url: url, color: wkColor),
-            ],
-          ),
-          SliverToBoxAdapter(
-            child: Column(
-              children: [
-                FutureBuilder(
-                  future: _futurePageContent,
-                  builder: (context, snapshot) {
-                    if (snapshot.hasError) {
-                      return Text('Error: ${snapshot.error}');
-                    }
-                    return snapshot.hasData
-                        ? PageBody(html: snapshot.data!)
-                        : const Center(child: CircularProgressIndicator());
-                  },
-                ),
-                FooterSection(attribution: wikikamusFooter),
+    return SafeArea(
+      child: Scaffold(
+        bottomNavigationBar: WikikamusPageBottomAppBar(title: widget.title),
+        body: CustomScrollView(
+          slivers: [
+            SliverAppBar(
+              iconTheme: IconThemeData(color: wkColor),
+              title: Text(processedTitle(widget.title), style: TextStyle(color: wkColor)),
+              floating: true,
+              expandedHeight: 250,
+              flexibleSpace: FlexiblePageHeader(image: wkPageImage),
+              actions: [
+                ShareIconButton(color: wkColor, url: url),
+                EditIconButton(color: wkColor, url: '$url?action=edit&section=all'),
+                ViewOnWebIconButton(url: url, color: wkColor),
               ],
             ),
-          ),
-        ],
+            SliverToBoxAdapter(
+              child: Column(
+                children: [
+                  FutureBuilder(
+                    future: _futurePageContent,
+                    builder: (context, snapshot) {
+                      if (snapshot.hasError) {
+                        return Text('Error: ${snapshot.error}');
+                      }
+                      return snapshot.hasData
+                          ? PageBody(html: snapshot.data!)
+                          : const Center(child: CircularProgressIndicator());
+                    },
+                  ),
+                  FooterSection(attribution: wikikamusFooter),
+                ],
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }
@@ -103,6 +107,23 @@ class PageBody extends StatelessWidget {
                           WikikamusPageScreen(title: sanitisedTitle(newPageTitle)),
                     ),
                   );
+                  return true;
+                }
+                // Handle the red link
+                if (url.startsWith('/w/')) {
+                  final String newTitle = getLowercaseTitleFromUrl(url);
+                  final newUrl = '$wkUrl$newTitle';
+
+                  // send it directly to a browser for editing
+                  // launchUrl(Uri.parse('$newUrl?action=edit&section=all'));
+
+                  // or open it in a new entry form
+                  Navigator.of(context).push(
+                                      MaterialPageRoute<void>(
+                                        builder: (context) =>
+                                            CreateNewEntryFromWordScreen(title: newTitle),
+                                      ),
+                                    );
                   return true;
                 }
                 // For external links, launch them in a browser

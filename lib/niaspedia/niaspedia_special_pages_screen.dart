@@ -5,6 +5,7 @@ import 'package:wikinias/utils/sanitised_title.dart';
 import 'package:wikinias/widgets/flexible_page_header.dart';
 
 import '../app_bar/view_on_web_icon_button.dart';
+import '../utils/get_capitalised_title_from_url.dart';
 import '../utils/processed_title.dart';
 import '../widgets/footer_section.dart';
 import '../app_bar/share_icon_button.dart';
@@ -107,6 +108,14 @@ class PageBody extends StatelessWidget {
                           NiaspediaSpecialPagesScreen(title: sanitisedTitle(newPageTitle)),
                     ),
                   );
+                  return true;
+                }
+                // Handle the red link
+                if (url.startsWith('/w/')) {
+                  final String newTitle = getCapitalisedTitleFromUrl(url);
+                  final newUrl = '$npUrl$newTitle';
+
+                  launchUrl(Uri.parse('$newUrl?action=edit&section=all'));
                   return true;
                 }
                 // For external links, launch them in a browser

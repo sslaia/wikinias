@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_widget_from_html/flutter_widget_from_html.dart';
 
-import '../../widgets/page_screen_body.dart';
+import '../../widgets/flexible_page_header.dart';
 import '../../app_bar/edit_icon_button.dart';
 import '../../app_bar/label_bottom_app_bar.dart';
 import '../../app_bar/share_icon_button.dart';
@@ -9,6 +9,7 @@ import '../../services/wikinias_api_service.dart';
 import '../../widgets/spacer_image.dart';
 import '../widgets/wikibuku_footer.dart';
 import '../../constants.dart';
+import '../widgets/wikibuku_page_screen_body.dart';
 import 'hoho_screen.dart';
 
 class HohoPageScreen extends StatefulWidget {
@@ -44,17 +45,8 @@ class _BibleChapterScreenState extends State<HohoPageScreen> {
             iconTheme: IconThemeData(color: hohoColor),
             title: Text(title, style: TextStyle(color: hohoColor)),
             floating: true,
-            expandedHeight: 200,
-            flexibleSpace: Stack(
-              children: [
-                Positioned.fill(
-                  child: Align(
-                    alignment: Alignment.bottomCenter,
-                    child: Image.asset(hohoImage, height: 150, fit: BoxFit.fitHeight),
-                  ),
-                ),
-              ],
-            ),
+            expandedHeight: 250,
+            flexibleSpace: FlexiblePageHeader(image: hohoImage),
             actions: [
               ShareIconButton(color: hohoColor, url: '$wbUrl$title'),
               EditIconButton(color: hohoColor, url: '$wbUrl$title?action=edit&section=all'),
@@ -70,7 +62,7 @@ class _BibleChapterScreenState extends State<HohoPageScreen> {
                       return Text('Error: ${snapshot.error}');
                     }
                     return snapshot.hasData
-                        ? PageScreenBody(html: snapshot.data!)
+                        ? WikibukuPageScreenBody(html: snapshot.data!)
                         : const Center(child: CircularProgressIndicator());
                   },
                 ),

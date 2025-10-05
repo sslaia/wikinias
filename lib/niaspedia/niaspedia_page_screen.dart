@@ -4,6 +4,7 @@ import 'package:url_launcher/url_launcher.dart';
 import 'package:wikinias/utils/sanitised_title.dart';
 
 import '../app_bar/view_on_web_icon_button.dart';
+import '../utils/get_capitalised_title_from_url.dart';
 import '../utils/processed_title.dart';
 import '../widgets/flexible_page_header.dart';
 import '../widgets/footer_section.dart';
@@ -37,41 +38,43 @@ class _NiaspediaPageScreenState extends State<NiaspediaPageScreen> {
   Widget build(BuildContext context) {
     final String url = '$npUrl${widget.title}';
 
-    return Scaffold(
-      bottomNavigationBar: NiaspediaPageBottomAppBar(title: widget.title),
-      body: CustomScrollView(
-        slivers: [
-          SliverAppBar(
-            iconTheme: IconThemeData(color: npColor),
-            title: Text(processedTitle(widget.title), style: TextStyle(color: npColor)),
-            floating: true,
-            expandedHeight: 250,
-            flexibleSpace: FlexiblePageHeader(image: npPageImage),
-            actions: [
-              ShareIconButton(color: npColor, url: url),
-              EditIconButton(color: npColor, url: '$url?action=edit&section=all'),
-              ViewOnWebIconButton(url: url, color: npColor),
-            ],
-          ),
-          SliverToBoxAdapter(
-            child: Column(
-              children: [
-                FutureBuilder(
-                  future: _futurePageContent,
-                  builder: (context, snapshot) {
-                    if (snapshot.hasError) {
-                      return Text('Error: ${snapshot.error}');
-                    }
-                    return snapshot.hasData
-                        ? PageBody(html: snapshot.data!)
-                        : const Center(child: CircularProgressIndicator());
-                  },
-                ),
-                FooterSection(attribution: niaspediaFooter)
+    return SafeArea(
+      child: Scaffold(
+        bottomNavigationBar: NiaspediaPageBottomAppBar(title: widget.title),
+        body: CustomScrollView(
+          slivers: [
+            SliverAppBar(
+              iconTheme: IconThemeData(color: npColor),
+              title: Text(processedTitle(widget.title), style: TextStyle(color: npColor)),
+              floating: true,
+              expandedHeight: 250,
+              flexibleSpace: FlexiblePageHeader(image: npPageImage),
+              actions: [
+                ShareIconButton(color: npColor, url: url),
+                EditIconButton(color: npColor, url: '$url?action=edit&section=all'),
+                ViewOnWebIconButton(url: url, color: npColor),
               ],
             ),
-          ),
-        ],
+            SliverToBoxAdapter(
+              child: Column(
+                children: [
+                  FutureBuilder(
+                    future: _futurePageContent,
+                    builder: (context, snapshot) {
+                      if (snapshot.hasError) {
+                        return Text('Error: ${snapshot.error}');
+                      }
+                      return snapshot.hasData
+                          ? PageBody(html: snapshot.data!)
+                          : const Center(child: CircularProgressIndicator());
+                    },
+                  ),
+                  FooterSection(attribution: niaspediaFooter)
+                ],
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }
@@ -93,6 +96,7 @@ class PageBody extends StatelessWidget {
               html,
               renderMode: RenderMode.column,
               textStyle: TextStyle(fontFamily: 'Gelasio', fontSize: 18.0),
+              // Handle the blue link
               onTapUrl: (url) {
                 if (url.startsWith('/wiki/')) {
                   final newPageTitle = url.substring(6);
@@ -103,6 +107,14 @@ class PageBody extends StatelessWidget {
                           NiaspediaPageScreen(title: sanitisedTitle(newPageTitle)),
                     ),
                   );
+                  return true;
+                }
+                // Handle the red link
+                if (url.startsWith('/w/')) {
+                  final String newTitle = getCapitalisedTitleFromUrl(url);
+                  final newUrl = '$npUrl$newTitle';
+
+                  launchUrl(Uri.parse('$newUrl?action=edit&section=all'));
                   return true;
                 }
                 // For external links, launch them in a browser

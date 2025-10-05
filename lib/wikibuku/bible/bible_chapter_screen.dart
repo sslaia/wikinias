@@ -3,14 +3,15 @@ import 'package:flutter/material.dart';
 import 'package:flutter_widget_from_html/flutter_widget_from_html.dart';
 import 'package:share_plus/share_plus.dart';
 import 'package:url_launcher/url_launcher.dart';
-import 'package:wikinias/wikibuku/bible/bible_screen.dart';
 
 import '../../app_bar/label_bottom_app_bar.dart';
 import '../../services/wikinias_api_service.dart';
-import '../../widgets/page_screen_body.dart';
+import '../../widgets/flexible_page_header.dart';
 import '../../widgets/spacer_image.dart';
 import '../widgets/wikibuku_footer.dart';
 import '../../constants.dart';
+import '../widgets/wikibuku_page_screen_body.dart';
+import 'bible_screen.dart';
 
 class BibleChapterScreen extends StatefulWidget {
   final String title;
@@ -45,17 +46,8 @@ class _BibleChapterScreenState extends State<BibleChapterScreen> {
             iconTheme: IconThemeData(color: bibleColor),
             title: Text(title, style: TextStyle(color: bibleColor)),
             floating: true,
-            expandedHeight: 200,
-            flexibleSpace: Stack(
-              children: [
-                Positioned.fill(
-                  child: Align(
-                    alignment: Alignment.bottomCenter,
-                    child: Image.asset(bibleImage, fit: BoxFit.fitHeight),
-                  ),
-                ),
-              ],
-            ),
+            expandedHeight: 250,
+            flexibleSpace: FlexiblePageHeader(image: bibleImage),
             actions: [
               // Share button
               IconButton(
@@ -80,16 +72,19 @@ class _BibleChapterScreenState extends State<BibleChapterScreen> {
           SliverToBoxAdapter(
             child: Column(
               children: [
-                FutureBuilder(
-                  future: _futurePageContent,
-                  builder: (context, snapshot) {
-                    if (snapshot.hasError) {
-                      return Text('Error: ${snapshot.error}');
-                    }
-                    return snapshot.hasData
-                        ? PageScreenBody(html: snapshot.data!)
-                        : const Center(child: CircularProgressIndicator());
-                  },
+                Padding(
+                  padding: const EdgeInsets.all(16.0),
+                  child: FutureBuilder(
+                    future: _futurePageContent,
+                    builder: (context, snapshot) {
+                      if (snapshot.hasError) {
+                        return Text('Error: ${snapshot.error}');
+                      }
+                      return snapshot.hasData
+                          ? WikibukuPageScreenBody(html: snapshot.data!)
+                          : const Center(child: CircularProgressIndicator());
+                    },
+                  ),
                 ),
                 SizedBox(height: 16),
                 const SpacerImage(),

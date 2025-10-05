@@ -7,10 +7,12 @@ import 'package:wikinias/widgets/flexible_page_header.dart';
 
 import '../app_bar/view_on_web_icon_button.dart';
 import '../services/wikinias_api_service.dart';
+import '../utils/get_lowercase_title_from_url.dart';
 import '../utils/processed_title.dart';
 import '../widgets/footer_section.dart';
 import '../app_bar/edit_icon_button.dart';
 import '../app_bar/share_icon_button.dart';
+import 'guides/create_new_entry_from_word.dart';
 import 'widgets/wikikamus_special_pages_bottom_app_bar.dart';
 import 'widgets/wikikamus_footer.dart';
 
@@ -105,6 +107,23 @@ class PageBody extends StatelessWidget {
                     MaterialPageRoute<void>(
                       builder: (context) =>
                           WikikamusSpecialPagesScreen(title: sanitisedTitle(newPageTitle)),
+                    ),
+                  );
+                  return true;
+                }
+                // Handle the red link
+                if (url.startsWith('/w/')) {
+                  final String newTitle = getLowercaseTitleFromUrl(url);
+                  final newUrl = '$wkUrl$newTitle';
+
+                  // send it directly to a browser for editing
+                  // launchUrl(Uri.parse('$newUrl?action=edit&section=all'));
+
+                  // or open it in a new entry form
+                  Navigator.of(context).push(
+                    MaterialPageRoute<void>(
+                      builder: (context) =>
+                          CreateNewEntryFromWordScreen(title: newTitle),
                     ),
                   );
                   return true;

@@ -1,16 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:wikinias/widgets/flexible_page_header.dart';
 import 'package:wikinias/widgets/footer_section.dart';
-import 'package:wikinias/wikibuku/sundermann/sundermann_screen.dart';
 
+import 'sundermann_screen.dart';
 import '../../app_bar/label_bottom_app_bar.dart';
 import '../../app_bar/view_on_web_icon_button.dart';
 import '../../services/wikinias_api_service.dart';
 import '../../app_bar/edit_icon_button.dart';
-import '../../widgets/page_screen_body.dart';
 import '../../app_bar/share_icon_button.dart';
 import '../widgets/wikibuku_footer.dart';
 import '../../constants.dart';
+import '../widgets/wikibuku_page_screen_body.dart';
 
 class SundermannPageScreen extends StatefulWidget {
   final String title;
@@ -38,7 +38,7 @@ class _SundermannPageScreenState extends State<SundermannPageScreen> {
     final String title = widget.title;
 
     return Scaffold(
-      bottomNavigationBar: LabelBottomAppBar(label: title, color: sundermannColor, destination: SundermannScreen(),),
+      bottomNavigationBar: LabelBottomAppBar(label: 'Kamus Nias-Jerman', color: sundermannColor, destination: SundermannScreen(),),
       body: CustomScrollView(
         slivers: [
           SliverAppBar(
@@ -63,7 +63,7 @@ class _SundermannPageScreenState extends State<SundermannPageScreen> {
                       return Text('Error: ${snapshot.error}');
                     }
                     return snapshot.hasData
-                        ? PageScreenBody(html: snapshot.data!)
+                        ? WikibukuPageScreenBody(html: snapshot.data!)
                         : const Center(child: CircularProgressIndicator());
                   },
                 ),
