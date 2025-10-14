@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../../widgets/featured_section_title.dart';
+import '../../widgets/section_title.dart';
 import '../../widgets/portal_text_button.dart';
 import '../bible/bible_screen.dart';
 import '../songs/songs_screen.dart';
@@ -10,16 +10,16 @@ import '../hoho/hoho_screen.dart';
 import '../sundermann/sundermann_screen.dart';
 
 class WikibukuPortal extends StatelessWidget {
-  const WikibukuPortal({super.key, required this.color});
-
-  final Color color;
+  const WikibukuPortal({super.key});
 
   @override
   Widget build(BuildContext context) {
+    final Color color = Theme.of(context).colorScheme.primary;
+
     return Column(
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
-        FeaturedSectionTitle(
+        SectionTitle(
           label: 'portals',
           color: color,
         ),

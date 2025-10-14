@@ -6,11 +6,10 @@ import '../../app_bar/edit_icon_button.dart';
 import '../../app_bar/label_bottom_app_bar.dart';
 import '../../app_bar/share_icon_button.dart';
 import '../../services/wikinias_api_service.dart';
+import '../../widgets/page_screen_body.dart';
 import '../../widgets/spacer_image.dart';
 import '../widgets/wikibuku_footer.dart';
-import '../../constants.dart';
-import '../widgets/wikibuku_page_screen_body.dart';
-import 'hoho_screen.dart';
+import '../wikibuku_page_screen.dart';
 
 class HohoPageScreen extends StatefulWidget {
   final String title;
@@ -33,23 +32,36 @@ class _BibleChapterScreenState extends State<HohoPageScreen> {
     );
   }
 
+  void _navigateToNewPage(String pageTitle) {
+    final String title = pageTitle.substring(7);
+    Navigator.of(context).push(
+      MaterialPageRoute<void>(
+        builder: (context) => WikibukuPageScreen(title: title),
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
-    final String title = widget.title;
+    final String baseUrl = 'https://incubator.m.wikimedia.org/wiki/Wb/nia/';
+    final String pageUrl = 'https://incubator.m.wikimedia.org/wiki/Wb/nia/${widget.title}';
+    final Color color = Theme.of(context).colorScheme.primary;
+    final String hohoImage = 'assets/images/hoho.webp';
+    final double bodyFontSize = Theme.of(context).textTheme.bodyMedium?.fontSize ?? 14.0;
 
     return Scaffold(
-      bottomNavigationBar: LabelBottomAppBar(label: 'Hoho', color: hohoColor, destination: HohoScreen(),),
+      bottomNavigationBar: LabelBottomAppBar(label: 'wikibuku_hoho'),
       body: CustomScrollView(
         slivers: [
           SliverAppBar(
-            iconTheme: IconThemeData(color: hohoColor),
-            title: Text(title, style: TextStyle(color: hohoColor)),
+            iconTheme: IconThemeData(color: color),
+            title: Text(widget.title, style: TextStyle(color: color, fontSize: bodyFontSize * 1.0)),
             floating: true,
             expandedHeight: 250,
             flexibleSpace: FlexiblePageHeader(image: hohoImage),
             actions: [
-              ShareIconButton(color: hohoColor, url: '$wbUrl$title'),
-              EditIconButton(color: hohoColor, url: '$wbUrl$title?action=edit&section=all'),
+              ShareIconButton(color: color, url: pageUrl),
+              EditIconButton(color: color, url: '$pageUrl?action=edit&section=all'),
             ],
           ),
           SliverToBoxAdapter(
@@ -62,7 +74,11 @@ class _BibleChapterScreenState extends State<HohoPageScreen> {
                       return Text('Error: ${snapshot.error}');
                     }
                     return snapshot.hasData
-                        ? WikibukuPageScreenBody(html: snapshot.data!)
+                        ? PageScreenBody(
+                      html: snapshot.data!,
+                      onInternalLinkTap: _navigateToNewPage,
+                      baseUrl: baseUrl,
+                    )
                         : const Center(child: CircularProgressIndicator());
                   },
                 ),

@@ -5,22 +5,51 @@ import '../../widgets/home_icon_button.dart';
 import '../../app_bar/random_icon_button.dart';
 import '../../app_bar/refresh_icon_button.dart';
 import '../niaspedia_page_screen.dart';
-import '../../constants.dart';
 
-class NiaspediaPageBottomAppBar extends StatelessWidget {
+class NiaspediaPageBottomAppBar extends StatefulWidget {
   final String title;
   const NiaspediaPageBottomAppBar({super.key, required this.title});
 
   @override
+  State<NiaspediaPageBottomAppBar> createState() =>
+      _NiaspediaPageBottomAppBarState();
+}
+
+class _NiaspediaPageBottomAppBarState extends State<NiaspediaPageBottomAppBar> {
+  @override
+  void initState() {
+    super.initState();
+  }
+
+  void _navigateToNewPage(String pageTitle) {
+    if (mounted) {
+      Navigator.of(context).push(
+        MaterialPageRoute<void>(
+          builder: (context) => NiaspediaPageScreen(title: pageTitle),
+        ),
+      );
+    }
+  }
+
+  @override
   Widget build(BuildContext context) {
+    final Color color = Theme.of(context).colorScheme.primary;
+
     return BottomAppBar(
       child: Row(
         children: [
-          BottomAppBarTextButton(label: npProject, color: npColor, destination: NiaspediaPageScreen(title: title),),
+          BottomAppBarTextButton(label: 'niaspedia'),
           const Spacer(),
-          HomeIconButton(color: npColor, route: npRoute),
-          RefreshIconButton(color: npColor, destination: NiaspediaPageScreen(title: title)),
-          RandomIconButton(project: npProject, color: npColor),
+          HomeIconButton(color: color, route: '/'),
+          RefreshIconButton(
+            color: color,
+            destination: NiaspediaPageScreen(title: widget.title),
+          ),
+          RandomIconButton(
+            project: 'niaspedia',
+            color: color,
+            onRandomTitleFound: _navigateToNewPage,
+          ),
         ],
       ),
     );

@@ -1,10 +1,10 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 
+import '../app_bar/view_on_web_icon_button.dart';
 import 'widgets/niaspedia_recent_changes_bottom_app_bar.dart';
 import '../models/recent_changes.dart';
 import '../services/wikinias_api_service.dart';
-import '../constants.dart';
 
 class NiaspediaRecentChangesScreen extends StatefulWidget {
   const NiaspediaRecentChangesScreen({super.key});
@@ -27,11 +27,18 @@ class _NiaspediaRecentChangesScreenState
 
   @override
   Widget build(BuildContext context) {
+    final Color color = Theme.of(context).colorScheme.primary;
+    final String url = 'https://nia.wikipedia.org/wiki/Spesial:Perubahan_terbaru?hidebots=1&hideWikibase=1&limit=100&days=30&urlversion=2';
+    final double bodyFontSize = Theme.of(context).textTheme.bodyMedium?.fontSize ?? 14.0;
+
     return SafeArea(
       child: Scaffold(
         appBar: AppBar(
-          iconTheme: IconThemeData(color: npColor),
-          title: Text('recent_changes', style: TextStyle(fontFamily: 'Gelasio', color: npColor)).tr(),
+          iconTheme: IconThemeData(color: color),
+          title: Text('recent_changes', style: TextStyle(fontFamily: 'Gelasio', fontSize: bodyFontSize * 1.0, color: color)).tr(),
+          actions: [
+            ViewOnWebIconButton(url: url, color: color),
+          ],
         ),
         bottomNavigationBar: NiaspediaRecentChangesBottomAppBar(),
         body: FutureBuilder(

@@ -2,7 +2,6 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_widget_from_html/flutter_widget_from_html.dart';
 import 'package:url_launcher/url_launcher.dart';
-import 'package:wikinias/constants.dart';
 
 import 'create_new_entry_introduction.dart';
 
@@ -27,18 +26,17 @@ class _CreateNewEntryState extends State<CreateNewEntry> {
 
   @override
   Widget build(BuildContext context) {
+    final Color color = Theme.of(context).colorScheme.primary;
+    final double bodyFontSize =
+        Theme.of(context).textTheme.bodyMedium?.fontSize ?? 14.0;
     return SafeArea(
       child: Scaffold(
         key: _scaffoldKey,
         appBar: AppBar(
-          iconTheme: IconThemeData(color: wkColor),
+          iconTheme: IconThemeData(color: color),
           title: Text(
             "create_new_entry".tr(),
-            style: TextStyle(
-              fontSize: 16,
-              fontWeight: FontWeight.bold,
-              color: wkColor,
-            ),
+            style: TextStyle(fontSize: bodyFontSize * 1.0, color: color),
           ),
         ),
         body: SingleChildScrollView(
@@ -65,6 +63,7 @@ class _CreateNewEntryState extends State<CreateNewEntry> {
                     },
                     decoration: InputDecoration(
                       labelText: "enter_word_here".tr(),
+                      labelStyle: TextStyle(fontSize: 10.0),
                       errorText: _titleController.text.isEmpty
                           ? null
                           : "enter_new_word_here".tr(),
@@ -162,14 +161,14 @@ class _CreateNewEntryState extends State<CreateNewEntry> {
                       //   context,
                       //   MaterialPageRoute(
                       //     builder: (context) =>
-                      //         PageWebviewScreen(title: title, url: url, color: wkColor),
+                      //         PageWebviewScreen(title: title, url: url, color: color),
                       //   ),
                       // );
                     }
                   },
                   style: ElevatedButton.styleFrom(
                     // backgroundColor: Color(0xffe9d6ae),
-                    foregroundColor: Colors.deepOrange,
+                    foregroundColor: color,
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(
                         0.0,
@@ -178,7 +177,7 @@ class _CreateNewEntryState extends State<CreateNewEntry> {
                   ),
                   child: Text(
                     'create_submit',
-                    style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                    style: TextStyle(fontSize: bodyFontSize * 1.0, fontWeight: FontWeight.bold),
                   ).tr(),
                 ),
               ],

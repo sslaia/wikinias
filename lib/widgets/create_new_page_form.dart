@@ -6,10 +6,9 @@ import 'package:url_launcher/url_launcher.dart';
 import 'create_new_page_introduction.dart';
 
 class CreateNewPageForm extends StatefulWidget {
-  const CreateNewPageForm({super.key, required this.url, required this.color});
+  const CreateNewPageForm({super.key, required this.url});
 
   final String url;
-  final Color color;
 
   @override
   State<CreateNewPageForm> createState() => _CreateNewPageFormState();
@@ -28,32 +27,25 @@ class _CreateNewPageFormState extends State<CreateNewPageForm> {
 
   @override
   Widget build(BuildContext context) {
+    final Color color = Theme.of(context).colorScheme.primary;
+    final double bodyFontSize =
+        Theme.of(context).textTheme.bodyMedium?.fontSize ?? 14.0;
+
     return SafeArea(
       child: Scaffold(
         key: _scaffoldKey,
         appBar: AppBar(
-          title: Text(
-            "create_new_page".tr(),
-            style: TextStyle(
-              fontSize: 16,
-              fontWeight: FontWeight.bold,
-              color: widget.color,
-            ),
-          ).tr(),
+          title: Text("create_new_page", style: TextStyle(color: color, fontSize: bodyFontSize * 1.0)).tr(),
         ),
-        body: SingleChildScrollView(
-          child: Form(
-            key: _formKey,
+        body: Form(
+          key: _formKey,
+          child: SingleChildScrollView(
             child: Column(
-              mainAxisAlignment: MainAxisAlignment.start,
+              mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                // Image.asset(image, height: 150, fit: BoxFit.fitHeight),
                 Padding(
                   padding: const EdgeInsets.all(16.0),
-                  child: HtmlWidget(
-                    createNewPageIntroduction,
-                    textStyle: TextStyle(fontSize: 18.0),
-                  ),
+                  child: HtmlWidget(createNewPageIntroduction),
                 ),
                 SizedBox(height: 16),
                 Padding(
@@ -65,6 +57,7 @@ class _CreateNewPageFormState extends State<CreateNewPageForm> {
                     },
                     decoration: InputDecoration(
                       labelText: "enter_title_here".tr(),
+                      labelStyle: TextStyle(fontSize: 10.0),
                       errorText: _titleController.text.isEmpty
                           ? null
                           : "enter_new_title_here".tr(),
@@ -91,22 +84,9 @@ class _CreateNewPageFormState extends State<CreateNewPageForm> {
                     if (_formKey.currentState?.validate() ?? false) {
                       // Open the link in an external browser
                       launchUrl(Uri.parse('${widget.url}$capitalizedTitle?action=edit&section=all'));
-
-                      // Open the link in webview
-                      // Navigator.push(
-                      //   context,
-                      //   MaterialPageRoute(
-                      //     builder: (context) => PageWebviewScreen(
-                      //       title: capitalizedTitle,
-                      //       url: newUrl,
-                      //       color: widget.color,
-                      //     ),
-                      //   ),
-                      // );
                     }
                   },
                   style: ElevatedButton.styleFrom(
-                    // backgroundColor: Color(0xffe9d6ae),
                     foregroundColor: Colors.deepOrange,
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(
@@ -116,7 +96,7 @@ class _CreateNewPageFormState extends State<CreateNewPageForm> {
                   ),
                   child: Text(
                     'create_submit',
-                    style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: widget.color),
+                    style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: color),
                   ).tr(),
                 ),
               ],

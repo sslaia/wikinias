@@ -12,13 +12,14 @@ class NiaspediaShortcuts extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final Color color = Color(0xff121298);
+    final Color color = Theme.of(context).colorScheme.primary;
+    final Color altColor = Theme.of(context).colorScheme.secondary;
 
     return Container(
       width: double.infinity,
       height: 300.0,
       decoration: const BoxDecoration(
-        color: Color(0xfffaf6ed),
+        // color: Color(0xfffaf6ed),
         borderRadius: BorderRadius.only(
           topLeft: Radius.circular(30.0),
           topRight: Radius.circular(30.0),
@@ -30,7 +31,7 @@ class NiaspediaShortcuts extends StatelessWidget {
         children: [
           Text(
             'shortcuts',
-            style: TextStyle(fontSize: 14.0, color: Colors.black54),
+            style: TextStyle(fontSize: 14.0, color: color),
           ).tr(),
           const SizedBox(height: 20.0),
           Wrap(
@@ -41,7 +42,7 @@ class NiaspediaShortcuts extends StatelessWidget {
               ShortcutsSpecialTextButton(
                 screen: NiaspediaSpecialPagesScreen(title: 'Wikipedia:Angombakhata'),
                 text: 'announcement',
-                color: Color(0xff9b00a1),
+                color: altColor,
               ),
               ShortcutsSpecialTextButton(
                 screen: NiaspediaSpecialPagesScreen(title: 'Wikipedia:Bawagöli zato'),
@@ -51,7 +52,7 @@ class NiaspediaShortcuts extends StatelessWidget {
               ShortcutsSpecialTextButton(
                 screen: NiaspediaSpecialPagesScreen(title: 'Wikipedia:Monganga afo'),
                 text: 'village_pump',
-                color: Color(0xff9b00a1),
+                color: altColor,
               ),
               ShortcutsSpecialTextButton(
                 screen: NiaspediaSpecialPagesScreen(title: 'Wikipedia:Nahia wamakori'),
@@ -61,14 +62,14 @@ class NiaspediaShortcuts extends StatelessWidget {
               ShortcutsSpecialTextButton(
                 screen: NiaspediaSpecialPagesScreen(title: 'Fanolo:Fanolo'),
                 text: 'help',
-                color: Color(0xff9b00a1),
+                color: altColor,
               ),
               ShortcutsSpecialTextButton(
                 screen: NiaspediaSpecialPagesScreen(title: 'Wikipedia:Sangai halöŵö'),
                 text: 'helpers',
                 color: color,
               ),
-              ShortcutsKbTextButton(color: Color(0xff9b00a1)),
+              ShortcutsKbTextButton(color: altColor),
             ],
           ),
         ],

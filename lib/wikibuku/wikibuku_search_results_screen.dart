@@ -1,19 +1,17 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 import 'package:webview_flutter_android/webview_flutter_android.dart';
-import 'package:wikinias/constants.dart';
 
+import '../providers/settings_provider.dart';
 import '../widgets/create_new_page_form.dart';
 import '../widgets/create_new_page_icon_button.dart';
 
 class WikibukuSearchResultsScreen extends StatefulWidget {
   final String query;
 
-  const WikibukuSearchResultsScreen({
-    super.key,
-    required this.query,
-  });
+  const WikibukuSearchResultsScreen({super.key, required this.query});
 
   @override
   State<WikibukuSearchResultsScreen> createState() =>
@@ -33,13 +31,14 @@ class _WikibukuSearchResultsScreenState
   void initState() {
     super.initState();
 
-    var initialUrl = 'https://incubator.m.wikimedia.org/w/index.php?search=${widget.query}&title=Special%3ASearch&ns0=1&prefix=Wb/nia';
+    var initialUrl =
+        'https://incubator.m.wikimedia.org/w/index.php?search=${widget.query}&title=Special%3ASearch&ns0=1&prefix=Wb/nia';
 
     const PlatformWebViewControllerCreationParams params =
-    PlatformWebViewControllerCreationParams();
+        PlatformWebViewControllerCreationParams();
 
     final WebViewController controller =
-    WebViewController.fromPlatformCreationParams(params);
+        WebViewController.fromPlatformCreationParams(params);
 
     controller
       ..setJavaScriptMode(JavaScriptMode.unrestricted)
@@ -80,14 +79,25 @@ class _WikibukuSearchResultsScreenState
 
   @override
   Widget build(BuildContext context) {
+    final Color color = Theme.of(context).colorScheme.primary;
+    final double bodyFontSize =
+        Theme.of(context).textTheme.bodyMedium?.fontSize ?? 14.0;
+
     return SafeArea(
       child: Scaffold(
         key: _scaffoldKey,
         appBar: AppBar(
-          iconTheme: IconThemeData(color: wbColor),
-          title: Text('search_results', style: TextStyle(color: wbColor)).tr(),
+          iconTheme: IconThemeData(color: color),
+          title: Text('search_results', style: TextStyle(color: color, fontSize: bodyFontSize * 1.0)).tr(),
           actions: [
-            CreateNewPageIconButton(label: 'create_new_page', destination: CreateNewPageForm(url: wbUrl, color: wbColor), color: wbColor),
+            Consumer<SettingsProvider>(
+              builder: (context, settingsProvider, child) =>
+                  CreateNewPageIconButton(
+                    label: 'create_new_page',
+                    destination: CreateNewPageForm(url: settingsProvider.getProjectUrl()),
+                    color: color,
+                  ),
+            ),
           ],
         ),
         body: Stack(

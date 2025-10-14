@@ -7,11 +7,10 @@ import 'package:url_launcher/url_launcher.dart';
 import '../../app_bar/label_bottom_app_bar.dart';
 import '../../services/wikinias_api_service.dart';
 import '../../widgets/flexible_page_header.dart';
+import '../../widgets/page_screen_body.dart';
 import '../../widgets/spacer_image.dart';
 import '../widgets/wikibuku_footer.dart';
-import '../../constants.dart';
-import '../widgets/wikibuku_page_screen_body.dart';
-import 'bible_screen.dart';
+import '../wikibuku_page_screen.dart';
 
 class BibleChapterScreen extends StatefulWidget {
   final String title;
@@ -34,17 +33,31 @@ class _BibleChapterScreenState extends State<BibleChapterScreen> {
     );
   }
 
+  void _navigateToNewPage(String pageTitle) {
+    final String title = pageTitle.substring(7);
+    Navigator.of(context).push(
+      MaterialPageRoute<void>(
+        builder: (context) => WikibukuPageScreen(title: title),
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     final String title = widget.title;
+    final Color color = Theme.of(context).colorScheme.primary;
+    final String bibleImage = 'assets/images/bible.webp';
+    final String baseUrl = 'https://incubator.m.wikimedia.org/wiki/Wb/nia/';
+    final String pageUrl = 'https://incubator.m.wikimedia.org/wiki/Wb/nia/${widget.title}';
+    final double bodyFontSize = Theme.of(context).textTheme.bodyMedium?.fontSize ?? 14.0;
 
     return Scaffold(
-      bottomNavigationBar: LabelBottomAppBar(label: "Sura Ni'amoni'ö", color: bibleColor, destination: BibleScreen(),),
+      bottomNavigationBar: LabelBottomAppBar(label: "wikibuku_bible"),
       body: CustomScrollView(
         slivers: [
           SliverAppBar(
-            iconTheme: IconThemeData(color: bibleColor),
-            title: Text(title, style: TextStyle(color: bibleColor)),
+            iconTheme: IconThemeData(color: color),
+            title: Text(title, style: TextStyle(color: color, fontSize: bodyFontSize * 1.0)),
             floating: true,
             expandedHeight: 250,
             flexibleSpace: FlexiblePageHeader(image: bibleImage),
@@ -52,10 +65,10 @@ class _BibleChapterScreenState extends State<BibleChapterScreen> {
               // Share button
               IconButton(
                 tooltip: 'share'.tr(),
-                icon: Icon(Icons.share_outlined, color: bibleColor),
+                icon: Icon(Icons.share_outlined, color: color),
                 onPressed: () {
                   SharePlus.instance.share(
-                    ShareParams(uri: Uri.parse('$wbUrl$title')),
+                    ShareParams(uri: Uri.parse(pageUrl)),
                   );
                 },
               ),
@@ -63,9 +76,9 @@ class _BibleChapterScreenState extends State<BibleChapterScreen> {
               IconButton(
                 tooltip: 'edit'.tr(),
                 onPressed: () {
-                  launchUrl(Uri.parse('$wbUrl$title?action=edit&section=all'));
+                  launchUrl(Uri.parse('$pageUrl?action=edit&section=all'));
                 },
-                icon: Icon(Icons.edit_outlined, color: bibleColor),
+                icon: Icon(Icons.edit_outlined, color: color),
               ),
             ],
           ),
@@ -81,7 +94,11 @@ class _BibleChapterScreenState extends State<BibleChapterScreen> {
                         return Text('Error: ${snapshot.error}');
                       }
                       return snapshot.hasData
-                          ? WikibukuPageScreenBody(html: snapshot.data!)
+                          ? PageScreenBody(
+                      html: snapshot.data!,
+                      onInternalLinkTap: _navigateToNewPage,
+                      baseUrl: baseUrl,
+                      )
                           : const Center(child: CircularProgressIndicator());
                     },
                   ),

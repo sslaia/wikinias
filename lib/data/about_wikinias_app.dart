@@ -13,9 +13,9 @@ yang mereka cari di Google )</p>
 <h3>Yang bisa dibuat</h3>
 
 <p>Aplikasi ini dibuat terutama untuk menulis entri baru 
-atau mengedit entri yang telah ada di Wikikamus, Wikipedia dan Wikibuku Nias.</p>
+atau mengedit entri yang telah ada di Wikikamus, Wikibuku dan Wikipedia Nias.</p>
 
-<p>Situs aplikasi ini ada di <a ref="https://wikinias.blogspot.com/">situs WikiNias</a>.</p>
+<p>Situs aplikasi ini ada di <a href="https://wikinias.blogspot.com/">situs WikiNias</a>.</p>
 
 <p>Kode aplikasi tersedia di <a href="https://github.com/sslaia/wikinias">https://github.com/sslaia/wikinias</a>. Silakan menyumbang kode bagi penyempurnaan aplikasi ini di sana.</p>
 

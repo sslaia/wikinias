@@ -1,3 +1,4 @@
+// this is use for making the title look nicer without the namespace names
 String processedTitle(String title) {
   const prefixes = {
     'Help:': 5,

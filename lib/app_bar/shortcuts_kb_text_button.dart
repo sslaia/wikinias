@@ -17,7 +17,7 @@ class ShortcutsKbTextButton extends StatelessWidget {
           context,
           MaterialPageRoute<void>(
             builder: (context) =>
-                NiasKeyboardScreen(color: Color(0xff121298)),
+                NiasKeyboardScreen(),
           ),
         );
       },

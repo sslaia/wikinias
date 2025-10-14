@@ -2,7 +2,6 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_widget_from_html/flutter_widget_from_html.dart';
 import 'package:url_launcher/url_launcher.dart';
-import 'package:wikinias/constants.dart';
 
 import 'create_new_entry_introduction.dart';
 
@@ -33,18 +32,18 @@ class _CreateNewEntryFromWordScreenState extends State<CreateNewEntryFromWordScr
 
   @override
   Widget build(BuildContext context) {
+    final Color color = Theme.of(context).colorScheme.primary;
+    final double bodyFontSize =
+        Theme.of(context).textTheme.bodyMedium?.fontSize ?? 14.0;
+
     return SafeArea(
       child: Scaffold(
         key: _scaffoldKey,
         appBar: AppBar(
-          iconTheme: IconThemeData(color: wkColor),
+          iconTheme: IconThemeData(color: color),
           title: Text(
             "create_new_entry".tr(),
-            style: TextStyle(
-              fontSize: 16,
-              fontWeight: FontWeight.bold,
-              color: wkColor,
-            ),
+            style: TextStyle(fontSize: bodyFontSize * 1.0, color: color),
           ),
         ),
         body: SingleChildScrollView(
@@ -53,7 +52,6 @@ class _CreateNewEntryFromWordScreenState extends State<CreateNewEntryFromWordScr
             child: Column(
               mainAxisAlignment: MainAxisAlignment.start,
               children: [
-                // Image.asset(image, height: 150, fit: BoxFit.fitHeight),
                 Padding(
                   padding: const EdgeInsets.all(16.0),
                   child: HtmlWidget(
@@ -71,6 +69,7 @@ class _CreateNewEntryFromWordScreenState extends State<CreateNewEntryFromWordScr
                     },
                     decoration: InputDecoration(
                       labelText: _titleController.text,
+                      labelStyle: TextStyle(fontSize: 10.0),
                       errorText: _titleController.text.isEmpty
                           ? null
                           : "Fo'ösi faoma ${_titleController.text}",
@@ -162,20 +161,10 @@ class _CreateNewEntryFromWordScreenState extends State<CreateNewEntryFromWordScr
                     if (_formKey.currentState?.validate() ?? false) {
                       // Open the link in an external browser
                       launchUrl(Uri.parse(url));
-
-                      // launch in WevView
-                      // Navigator.push(
-                      //   context,
-                      //   MaterialPageRoute(
-                      //     builder: (context) =>
-                      //         PageWebviewScreen(title: title, url: url, color: wkColor),
-                      //   ),
-                      // );
                     }
                   },
                   style: ElevatedButton.styleFrom(
-                    // backgroundColor: Color(0xffe9d6ae),
-                    foregroundColor: Colors.deepOrange,
+                    foregroundColor: color,
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(
                         0.0,
@@ -184,7 +173,7 @@ class _CreateNewEntryFromWordScreenState extends State<CreateNewEntryFromWordScr
                   ),
                   child: Text(
                     'create_submit',
-                    style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                    style: TextStyle(fontSize: bodyFontSize * 1.0, fontWeight: FontWeight.bold),
                   ).tr(),
                 ),
               ],

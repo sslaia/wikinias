@@ -42,5 +42,17 @@ List<SliderModel> getSlides() {
     description: "onboarding5_desc",
   ));
 
+  slides.add(SliderModel(
+    imageAssetPath: "assets/images/onboarding6.webp",
+    title: "onboarding6_title",
+    description: "onboarding6_desc",
+  ));
+
+  slides.add(SliderModel(
+    imageAssetPath: "assets/images/onboarding7.webp",
+    title: "onboarding7_title",
+    description: "onboarding7_desc",
+  ));
+
   return slides;
 }

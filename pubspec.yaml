@@ -1,7 +1,7 @@
 name: wikinias
 description: "An app for Niaspedia, Wikikamus and Wikibuku"
 publish_to: 'none'
-version: 2.0.0+11
+version: 2.1.0+12
 
 environment:
   sdk: '>=3.9.2 <4.0.0'
@@ -10,7 +10,7 @@ dependencies:
   flutter:
     sdk: flutter
 
-#  provider: ^6.1.5+1
+  provider: ^6.1.5+1
   shared_preferences: ^2.5.3
   easy_localization: ^3.0.8
   google_fonts: ^6.3.1
@@ -19,6 +19,7 @@ dependencies:
   webview_flutter_android: ^4.10.2
   url_launcher: ^6.3.2
   flutter_widget_from_html: ^0.17.1
+  html_character_entities: ^1.0.0+1
   http: ^1.5.0
 
 dev_dependencies:
@@ -34,36 +35,21 @@ flutter:
     - assets/fonts/
     - assets/images/
     - assets/translations/
-    - assets/data/articles_data.json
-    - assets/data/stories_data.json
-    - assets/data/words_data.json
-    - assets/data/dyks_data.json
+    - assets/data/courses_data.json
+    - assets/data/featured_content_data.json
+    - assets/data/gallery_data.json
+    - assets/data/portal_data.json
+    - assets/data/titles_data.json
+    - assets/data/featured_articles_data.json
+    - assets/data/featured_stories_data.json
+    - assets/data/featured_words_data.json
+    - assets/data/featured_dyks_data.json
     - assets/data/gallery_dances.json
     - assets/data/gallery_buildings.json
     - assets/data/gallery_arts.json
     - assets/data/gallery_others.json
     - assets/translations/en.json
     - assets/translations/id.json
-    - assets/images/amaedola.webp
-    - assets/images/baluse.webp
-    - assets/images/bible.webp
-    - assets/images/bowogafasi.webp
-    - assets/images/color_bar.webp
-    - assets/images/figa.webp
-    - assets/images/hoho.webp
-    - assets/images/nias-keyboard.webp
-    - assets/images/ni'obutelai.webp
-    - assets/images/ni'ogazi.webp
-    - assets/images/ni'otalingawöliwöli.webp
-    - assets/images/ni'owewemagai.webp
-    - assets/images/ni'owulurai.webp
-    - assets/images/ornament1.webp
-    - assets/images/ornament2.webp
-    - assets/images/ornament3.webp
-    - assets/images/songs.webp
-    - assets/images/sundermann.webp
-    - assets/images/tolögu.webp
-    - assets/images/stories.webp
   fonts:
     - family: CinzelDecorative
       fonts:

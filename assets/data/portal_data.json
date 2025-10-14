@@ -1,0 +1,82 @@
+{
+  "biology": [
+    {
+      "id": 1,
+      "title": "",
+      "text": "",
+      "image": ""
+    }
+  ],
+  "custom": [
+    {
+      "id": 1,
+      "title": "",
+      "text": "",
+      "image": ""
+    }
+  ],
+  "geography": [
+    {
+      "id": 1,
+      "title": "",
+      "text": "",
+      "image": ""
+    }
+  ],
+  "government": [
+    {
+      "id": 1,
+      "title": "",
+      "text": "",
+      "image": ""
+    }
+  ],
+  "history": [
+    {
+      "id": 1,
+      "title": "",
+      "text": "",
+      "image": ""
+    }
+  ],
+  "maths": [
+    {
+      "id": 1,
+      "title": "",
+      "text": "",
+      "image": ""
+    }
+  ],
+  "media": [
+    {
+      "id": 1,
+      "title": "",
+      "text": "",
+      "image": ""
+    }
+  ],
+  "religion": [
+    {
+      "id": 1,
+      "title": "",
+      "text": "",
+      "image": ""
+    }
+  ],
+  "science": [
+    {
+      "id": 1,
+      "title": "",
+      "text": "",
+      "image": ""
+    }
+  ],
+  "technology": [
+    {
+      "id": 1,
+      "title": "",
+      "text": "",
+      "image": ""
+    }
+  ]
+}

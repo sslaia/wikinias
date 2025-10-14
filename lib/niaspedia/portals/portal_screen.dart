@@ -1,6 +1,5 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
-import 'package:wikinias/constants.dart';
 
 class PortalScreen extends StatelessWidget {
   final String label;
@@ -11,11 +10,19 @@ class PortalScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final String newTitle = title.replaceAll('Portal:', '');
+    final Color color = Theme.of(context).colorScheme.primary;
+    final double bodyFontSize =
+        Theme.of(context).textTheme.bodyMedium?.fontSize ?? 14.0;
+
     return SafeArea(
       child: Scaffold(
         appBar: AppBar(
-            iconTheme: IconThemeData(color: npColor),
-            title: Text(label).tr()),
+          iconTheme: IconThemeData(color: color),
+          title: Text(
+            label,
+            style: TextStyle(fontSize: bodyFontSize * 1.0),
+          ).tr(),
+        ),
         body: Padding(
           padding: const EdgeInsets.all(32.0),
           child: Column(
@@ -27,7 +34,10 @@ class PortalScreen extends StatelessWidget {
                 textAlign: TextAlign.center,
               ),
               SizedBox(height: 50),
-              Text("Edöna mufa'anö", style: TextStyle(fontWeight: FontWeight.w700)),
+              Text(
+                "Edöna mufa'anö",
+                style: TextStyle(fontWeight: FontWeight.w700),
+              ),
               SizedBox(height: 100),
               Text(
                 "Oguna'ö manö ua nahia wangalui hadia ba golayama föna",

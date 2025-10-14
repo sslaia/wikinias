@@ -5,16 +5,17 @@ import 'package:url_launcher/url_launcher.dart';
 
 import '../data/nias_keyboard.dart';
 import '../app_bar/share_icon_button.dart';
+import '../widgets/flexible_page_header.dart';
 
 class NiasKeyboardScreen extends StatelessWidget {
-  const NiasKeyboardScreen({super.key, required this.color});
-
-  final Color color;
+  const NiasKeyboardScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
     const String url = 'https://niaskeyboard.blogspot.com/2021/04/anysoftkeyboard-memasang-huruf-o-dan-w.html';
     const String html = niasKeyboard;
+    final Color color = Theme.of(context).colorScheme.primary;
+    final double bodyFontSize = Theme.of(context).textTheme.bodyMedium?.fontSize ?? 14.0;
 
     return SafeArea(
       child: Scaffold(
@@ -22,24 +23,10 @@ class NiasKeyboardScreen extends StatelessWidget {
           slivers: [
             SliverAppBar(
               iconTheme: IconThemeData(color: color),
-              title: Text('nias_keyboard', style: TextStyle(color: color)).tr(),
+              title: Text('nias_keyboard', style: TextStyle(fontSize: bodyFontSize * 1.0, color: color)).tr(),
               floating: true,
-              expandedHeight: 250,
-              flexibleSpace: Stack(
-                children: [
-                  Positioned.fill(
-                    child: Align(
-                      alignment: Alignment.bottomCenter,
-                      child: Image.asset(
-                        "assets/images/nias-keyboard.webp",
-                        height: 200,
-                        width: double.infinity,
-                        fit: BoxFit.cover,
-                      ),
-                    ),
-                  ),
-                ],
-              ),
+              expandedHeight: 230,
+              flexibleSpace: FlexiblePageHeader(image: "assets/images/nias-keyboard.webp"),
               actions: [
                 ShareIconButton(color: color, url: url),
               ],
@@ -49,7 +36,7 @@ class NiasKeyboardScreen extends StatelessWidget {
                 padding: const EdgeInsets.all(16.0),
                 child: HtmlWidget(
                   html,
-                  textStyle: TextStyle(fontFamily: 'Gelasio', fontSize: 18.0),
+                  textStyle: TextStyle(fontFamily: 'Gelasio'),
                   onTapUrl: (url) {
                     launchUrl(Uri.parse(url));
                     return true;

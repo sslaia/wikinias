@@ -1,5 +1,6 @@
 import 'sanitised_title.dart';
 
+// this is used for formatting the title of the new page on Wikikamus
 String getLowercaseTitleFromUrl (String url) {
   const start = "title=";
   const end = "action";

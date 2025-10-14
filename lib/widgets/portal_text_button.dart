@@ -31,7 +31,7 @@ class PortalTextButton extends StatelessWidget {
       ),
       child: Text(
         label,
-        style: TextStyle(color: Color(0xff121298)),
+        style: TextStyle(color: color),
       ).tr(),
     );
   }

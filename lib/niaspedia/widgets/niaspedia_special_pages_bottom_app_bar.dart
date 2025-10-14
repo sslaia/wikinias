@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:wikinias/constants.dart';
-import 'package:wikinias/niaspedia/widgets/niaspedia_shortcuts.dart';
+import 'package:provider/provider.dart';
 
+import '../../providers/settings_provider.dart';
 import '../../widgets/home_icon_button.dart';
 import '../../app_bar/refresh_icon_button.dart';
 import '../../app_bar/shortcuts_icon_button.dart';
@@ -15,17 +15,26 @@ class NiaspediaSpecialPagesBottomAppBar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final Color color = Theme.of(context).colorScheme.primary;
 
-    return BottomAppBar(
+    return Consumer<SettingsProvider>(
+      builder: (context, settingsProvider, child) => BottomAppBar(
         child: Row(
           children: [
-            SpecialPagesText(color: npColor),
+            SpecialPagesText(color: color),
             const Spacer(),
-            HomeIconButton(color: npColor, route: npRoute),
-            RefreshIconButton(color: npColor, destination: NiaspediaSpecialPagesScreen(title: title)),
-            ShortcutsIconButton(shortcuts: NiaspediaShortcuts(), color: npColor),
+            HomeIconButton(
+              color: color,
+              route: settingsProvider.getProjectRoute(),
+            ),
+            RefreshIconButton(
+              color: color,
+              destination: NiaspediaSpecialPagesScreen(title: title),
+            ),
+            ShortcutsIconButton(),
           ],
         ),
+      ),
     );
   }
 }

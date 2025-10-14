@@ -6,21 +6,23 @@ import '../../widgets/flexible_page_header.dart';
 import '../../widgets/spacer_image.dart';
 import '../widgets/wikibuku_footer.dart';
 import 'bible_chapter_screen.dart';
-import '../../constants.dart';
 
 class BibleScreen extends StatelessWidget {
   const BibleScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
+    final Color color = Theme.of(context).colorScheme.primary;
+    final String bibleImage = "assets/images/bible.webp";
+    final double bodyFontSize = Theme.of(context).textTheme.bodyMedium?.fontSize ?? 14.0;
 
     return SafeArea(
       child: Scaffold(
         body: CustomScrollView(
           slivers: [
             SliverAppBar(
-              iconTheme: IconThemeData(color: bibleColor),
-              title: Text("Sura Ni'amoni'ö", style: TextStyle(color: bibleColor)),
+              iconTheme: IconThemeData(color: color),
+              title: Text("Sura Ni'amoni'ö", style: TextStyle(color: color, fontSize: bodyFontSize * 1.0)),
               floating: true,
               expandedHeight: 250,
               flexibleSpace: FlexiblePageHeader(image: bibleImage),
@@ -28,7 +30,6 @@ class BibleScreen extends StatelessWidget {
             SliverToBoxAdapter(
             child: Column(
               children: [
-                // Image.asset(bibleImage, fit: BoxFit.fitHeight),
                 Padding(
                   padding: const EdgeInsets.all(16.0),
                   child: HtmlWidget(bibleIntroduction),
@@ -39,7 +40,7 @@ class BibleScreen extends StatelessWidget {
                   fit: BoxFit.fitHeight,
                 ),
                 const SizedBox(height: 16),
-                Text("Amabu'ulali Sibohou", style: titleStyle),
+                Text("Amabu'ulali Sibohou", style: Theme.of(context).textTheme.titleSmall?.copyWith(fontWeight: FontWeight.w700)),
                 const SizedBox(height: 16),
                 BooksList(title: "Mataio", chapter: 28),
                 BooksList(title: "Mareko", chapter: 16),
@@ -69,7 +70,7 @@ class BibleScreen extends StatelessWidget {
                 BooksList(title: "Yuda", chapter: 1),
                 BooksList(title: "Fama'ele'ö", chapter: 22),
                 const SizedBox(height: 16),
-                Text("Amabu'ulali  Siföföna", style: titleStyle),
+                Text("Amabu'ulali  Siföföna", style: Theme.of(context).textTheme.titleSmall?.copyWith(fontWeight: FontWeight.w700)),
                 const SizedBox(height: 16),
                 BooksList(title: "Moze I", chapter: 50),
                 BooksList(title: "Moze II", chapter: 40),
@@ -136,23 +137,13 @@ class BooksList extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final TextStyle titleStyle = TextStyle(
-      fontFamily: 'Gelasio',
-      fontSize: 14,
-      fontWeight: FontWeight.w700,
-    );
-    final TextStyle itemStyle = TextStyle(
-      fontFamily: 'Gelasio',
-      fontSize: 12,
-      fontWeight: FontWeight.w700,
-    );
     return ExpansionTile(
       initiallyExpanded: false,
-      title: Text(title, style: titleStyle),
+      title: Text(title, style: Theme.of(context).textTheme.bodyMedium),
       children: List.generate(chapter, (index) {
         return ListTile(
           leading: Icon(Icons.auto_stories_outlined),
-          title: Text('Faza ${index + 1}', style: itemStyle),
+          title: Text('Faza ${index + 1}', style: Theme.of(context).textTheme.bodySmall),
           onTap: () {
             Navigator.push(
               context,

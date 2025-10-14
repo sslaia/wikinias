@@ -9,37 +9,48 @@ class SongsScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final TextStyle titleStyle = TextStyle(
-      fontFamily: 'Gelasio',
-      fontSize: 18,
-      fontWeight: FontWeight.w700,
-    );
-    final TextStyle itemStyle = TextStyle(
-      fontFamily: 'Gelasio',
-      fontSize: 12,
-      fontWeight: FontWeight.w700,
-    );
     final String image = 'assets/images/songs.webp';
+    final Color color = Theme.of(context).colorScheme.primary;
+    final double bodyFontSize =
+        Theme.of(context).textTheme.bodyMedium?.fontSize ?? 14.0;
 
     return SafeArea(
       child: Scaffold(
-        appBar: AppBar(title: Text('Sinunö')),
+        appBar: AppBar(
+          title: Text(
+            'Sinunö',
+            style: TextStyle(
+              fontFamily: 'Gelasio',
+              color: color,
+              fontSize: bodyFontSize * 1.0,
+            ),
+          ),
+        ),
         // bottomNavigationBar: BottomAppBar(),
         body: SingleChildScrollView(
           child: Column(
             children: [
               Image.asset(image, height: 200, fit: BoxFit.fitHeight),
               SizedBox(height: 16),
-              Text('Ngawalö zinunö ba li Niha', style: titleStyle),
+              Text(
+                'Ngawalö zinunö ba li Niha',
+                style: TextStyle(
+                  fontFamily: 'Gelasio',
+                  fontWeight: FontWeight.w700,
+                ),
+              ),
               SizedBox(height: 16),
-              Text("Edöna mufa'anö", style: itemStyle),
+              Text("Edöna mufa'anö", style: TextStyle(fontFamily: 'Gelasio')),
               SizedBox(height: 16),
               const SpacerImage(),
               SizedBox(height: 32),
               // Attribution
               Padding(
                 padding: const EdgeInsets.all(8.0),
-                child: HtmlWidget(wikibukuFooter, textStyle: TextStyle(fontSize: 9),),
+                child: HtmlWidget(
+                  wikibukuFooter,
+                  textStyle: TextStyle(fontSize: 9),
+                ),
               ),
               const SizedBox(height: 32.0),
             ],

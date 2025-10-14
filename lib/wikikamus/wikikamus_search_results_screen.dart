@@ -1,8 +1,10 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
-import 'package:wikinias/constants.dart';
+import 'package:html_character_entities/html_character_entities.dart';
+import 'package:provider/provider.dart';
 
 import '../models/search_result.dart';
+import '../providers/settings_provider.dart';
 import '../services/search_api_service.dart';
 import '../widgets/create_new_page_icon_button.dart';
 import 'guides/create_new_entry.dart';
@@ -54,52 +56,70 @@ class _WikikamusSearchResultsScreenState
 
   @override
   Widget build(BuildContext context) {
-    return SafeArea(
-      child: Scaffold(
-        appBar: AppBar(
-          iconTheme: IconThemeData(color: npColor),
-          title: Text('search_results', style: TextStyle(color: wkColor)).tr(),
-          actions: [
-            CreateNewPageIconButton(label: 'create_new_entry', destination: CreateNewEntry(), color: wkColor),
-          ],
-        ),
-        body: _isLoading
-            ? Center(child: CircularProgressIndicator())
-            : _error.isNotEmpty
-            ? Center(
-                child: Text(_error, style: TextStyle(color: Colors.red)),
-              )
-            : _searchResults.isEmpty
-            ? Center(child: Text('search_no_results').tr())
-            : ListView.builder(
-                itemCount: _searchResults.length,
-                itemBuilder: (context, index) {
-                  final result = _searchResults[index];
-                  final title = result.title;
-                  final snippet = result.snippet.replaceAll(
-                    RegExp(r'<[^>]*>'),
-                    '',
-                  ); // Basic HTML tag removal
+    final Color color = Theme.of(context).colorScheme.primary;
+    final Color errorColor = Theme.of(context).colorScheme.error;
+    final double bodyFontSize =
+        Theme.of(context).textTheme.bodyMedium?.fontSize ?? 14.0;
 
-                  return ListTile(
-                    title: Text(title),
-                    subtitle: Text(
-                      snippet,
-                      maxLines: 2,
-                      overflow: TextOverflow.ellipsis,
-                    ),
-                    onTap: () {
-                      // Navigate to PageScreen with the title
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => WikikamusPageScreen(title: title),
-                        ),
-                      );
-                    },
-                  );
-                },
+    return SafeArea(
+      child: Consumer<SettingsProvider>(
+        builder: (context, settingsProvider, child) => Scaffold(
+          appBar: AppBar(
+            iconTheme: IconThemeData(color: color),
+            title: Text(
+              'search_results',
+              style: TextStyle(color: color, fontSize: bodyFontSize * 1.0),
+            ).tr(),
+            actions: [
+              CreateNewPageIconButton(
+                label: 'create_new_entry',
+                destination: CreateNewEntry(),
+                color: color,
               ),
+            ],
+          ),
+          body: _isLoading
+              ? Center(child: CircularProgressIndicator())
+              : _error.isNotEmpty
+              ? Center(
+                  child: Text(_error, style: TextStyle(color: errorColor)),
+                )
+              : _searchResults.isEmpty
+              ? Center(child: Text('search_no_results').tr())
+              : ListView.builder(
+                  itemCount: _searchResults.length,
+                  itemBuilder: (context, index) {
+                    final result = _searchResults[index];
+                    final title = result.title;
+                    final decodeSnippet = HtmlCharacterEntities.decode(
+                      result.snippet,
+                    );
+                    final snippet = decodeSnippet.replaceAll(
+                      RegExp(r'<[^>]*>'),
+                      '',
+                    );
+
+                    return ListTile(
+                      title: Text(title),
+                      subtitle: Text(
+                        snippet,
+                        maxLines: 2,
+                        overflow: TextOverflow.ellipsis,
+                      ),
+                      onTap: () {
+                        // Navigate to PageScreen with the title
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) =>
+                                WikikamusPageScreen(title: title),
+                          ),
+                        );
+                      },
+                    );
+                  },
+                ),
+        ),
       ),
     );
   }

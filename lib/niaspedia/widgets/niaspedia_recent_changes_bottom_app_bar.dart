@@ -1,28 +1,31 @@
 import 'package:flutter/material.dart';
-import 'package:wikinias/constants.dart';
+import 'package:provider/provider.dart';
 
 import '../../app_bar/shortcuts_icon_button.dart';
+import '../../providers/settings_provider.dart';
 import '../../widgets/home_icon_button.dart';
 import '../../app_bar/refresh_icon_button.dart';
 import '../../app_bar/special_pages_text.dart';
 import '../niaspedia_recent_changes_screen.dart';
-import 'niaspedia_shortcuts.dart';
 
 class NiaspediaRecentChangesBottomAppBar extends StatelessWidget {
   const NiaspediaRecentChangesBottomAppBar({super.key});
 
   @override
   Widget build(BuildContext context) {
+    final Color color = Theme.of(context).colorScheme.primary;
+
     return BottomAppBar(
-      child: Row(
+      child: Consumer<SettingsProvider>(
+        builder: (context, settingsProvider, child) => Row(
         children: [
-          SpecialPagesText(color: npColor),
+          SpecialPagesText(color: color),
           const Spacer(),
-          HomeIconButton(color: npColor, route: npRoute),
-          RefreshIconButton(color: npColor, destination: NiaspediaRecentChangesScreen()),
-          ShortcutsIconButton(color: npColor, shortcuts: NiaspediaShortcuts()),
+          HomeIconButton(color: color, route: settingsProvider.getProjectRoute()),
+          RefreshIconButton(color: color, destination: NiaspediaRecentChangesScreen()),
+          ShortcutsIconButton(),
         ],
       ),
-    );
+    ),);
   }
 }

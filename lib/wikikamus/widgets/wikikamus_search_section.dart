@@ -12,66 +12,34 @@ class WikikamusSearchSection extends StatefulWidget {
 }
 
 class _WikikamusSearchSectionState extends State<WikikamusSearchSection> {
-    final TextEditingController _searchController = TextEditingController();
-
-  @override
-  void dispose() {
-    _searchController.dispose();
-    super.dispose();
-  }
 
   @override
   Widget build(BuildContext context) {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: [
-        SizedBox(
-          width: 200,
-          child: TextField(
-            onTapOutside: (event) {
-              FocusManager.instance.primaryFocus?.unfocus();
-            },
-            controller: _searchController,
-            decoration: InputDecoration(
-              // hintText: 'search_wiki'.tr(),
-              prefixIcon: Icon(Icons.search),
-              border: OutlineInputBorder(
-                // Optional: adds a border
-                borderRadius: BorderRadius.circular(8.0),
+    return SizedBox(
+      width: double.infinity,
+      child: TextField(
+        onSubmitted: (String str) {
+          if (str.isNotEmpty) {
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => WikikamusSearchResultsScreen(query: str),
               ),
-            ),
+            );
+          }
+        },
+        onTapOutside: (event) {
+          FocusManager.instance.primaryFocus?.unfocus();
+        },
+        decoration: InputDecoration(
+          labelText: "search_what".tr(),
+          labelStyle: TextStyle(fontSize: 10.0, color: Theme.of(context).colorScheme.tertiary),
+          prefixIcon: Icon(Icons.search),
+          border: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(8.0),
           ),
         ),
-        const SizedBox(width: 8.0),
-        ElevatedButton(
-          onPressed: () {
-            final query = _searchController.text;
-            if (query.isNotEmpty) {
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => WikikamusSearchResultsScreen(
-                    query: query,
-                  ),
-                ),
-              );
-            }
-          },
-          style: ElevatedButton.styleFrom(
-            // backgroundColor: Color(0xffe9d6ae),
-            foregroundColor: Colors.deepOrange,
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(
-                0.0,
-              ), // Set border radius to 0 for a square
-            ),
-          ),
-          child: Text(
-            'search_submit',
-            style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
-          ).tr(),
-        ),
-      ],
+      ),
     );
   }
 }

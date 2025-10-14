@@ -1,7 +1,7 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
-import 'package:wikinias/constants.dart';
 
+import '../app_bar/view_on_web_icon_button.dart';
 import '../models/recent_changes.dart';
 import '../services/wikinias_api_service.dart';
 import 'widgets/wikibuku_recent_changes_bottom_app_bar.dart';
@@ -25,12 +25,18 @@ class _WikibukuRecentChangesScreenState extends State<WikibukuRecentChangesScree
 
   @override
   Widget build(BuildContext context) {
+    final Color color = Theme.of(context).colorScheme.primary;
+    final String url = 'https://incubator.wikimedia.org/wiki/Special:RecentChanges?hidebots=1&translations=filter&hidecategorization=1&hideWikibase=1&hideWikifunctions=1&limit=250&days=30&urlversion=2';
+    final double bodyFontSize = Theme.of(context).textTheme.bodyMedium?.fontSize ?? 14.0;
 
     return SafeArea(
       child: Scaffold(
         appBar: AppBar(
-          iconTheme: IconThemeData(color: wbColor),
-          title: Text('recent_changes', style: TextStyle(color: wbColor)).tr(),
+          iconTheme: IconThemeData(color: color),
+          title: Text('recent_changes', style: TextStyle(color: color, fontSize: bodyFontSize * 1.0)).tr(),
+            actions: [
+              ViewOnWebIconButton(url: url, color: color),
+            ]
         ),
         bottomNavigationBar: WikibukuRecentChangesBottomAppBar(),
         body: FutureBuilder(

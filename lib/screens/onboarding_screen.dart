@@ -1,7 +1,6 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:wikinias/constants.dart';
 import '../models/slider_model.dart';
 
 class OnboardingScreen extends StatefulWidget {
@@ -62,6 +61,16 @@ class OnboardingScreenState extends State<OnboardingScreen> {
 
   @override
   Widget build(BuildContext context) {
+    const englishSelected = SnackBar(
+      content: Text('English is selected for the interface language!'),
+    );
+    const niasSelected = SnackBar(
+      content: Text("Te'oroma'ö ngawalö duria ba li Niha!"),
+    );
+    final Color color = Theme.of(context).colorScheme.primary;
+    var brightness = View.of(context).platformDispatcher.platformBrightness;
+    bool isDarkMode = brightness == Brightness.dark;
+
     return SafeArea(
       child: Scaffold(
         body: Column(
@@ -97,7 +106,7 @@ class OnboardingScreenState extends State<OnboardingScreen> {
                   },
                   child: Text(
                     'english',
-                    style: TextStyle(color: Color(0xff9b00a1)),
+                    style: TextStyle(color: isDarkMode ? color : Color(0xff9b00a1)),
                   ).tr(),
                 ),
                 const SizedBox(width: 8.0),
@@ -113,7 +122,7 @@ class OnboardingScreenState extends State<OnboardingScreen> {
                   },
                   child: Text(
                     'nias',
-                    style: TextStyle(color: Color(0xff121298)),
+                    style: TextStyle(color: isDarkMode ? color : Color(0xff121298)),
                   ).tr(),
                 ),
               ],

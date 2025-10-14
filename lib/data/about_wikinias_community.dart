@@ -1,6 +1,6 @@
 const aboutWikiniasCommunity = '''
 <p>Komunitas WikiNias no sambua angowuloa Nono Niha sangodödögö wama'anö li Niha yaŵa ba gu'ö.
-Iada'a so tölu ngawua halöŵö ni'otahögöda, ya'ia da'ö <strong>Wikipedia, Wikikamus ba Wikibuku Nias</strong>.</p>
+Iada'a so tölu ngawua halöŵö ni'otahögöda, ya'ia da'ö <strong>Wikikamus, Wikibuku ba Wikipedia Nias</strong>.</p>
 
 <p>Halöŵö ba Wiki no fabö'ö sibai moroi ba halöŵö bö'ö
 börö me tenga halöŵö zi hadauga niha ia, bahiza no <strong>halöŵö nifalului zato</strong>.
@@ -15,7 +15,7 @@ Töra moroi ba da'ö ato zi lö mangila sa'ae hewisa wama'anö sambua ndroto weh
 ma zui hewisa wanura ya'ia, simane asese ta'ila ba ngawalö nisurara ba <em>media sosial</em>.</p>
 
 <p>Baero da'ö no mo'ambö-amböta li Niha. Asese lö fangali ba li Niha wehede ni'oguna'öda ba li Indonesia.
-Börö da'ö ato zanörö lala saoha ba alio, ya'ia da'ö wangoguna'ö namö li Indonesia.</p>
+Börö da'ö ato zanörö lala saoha ba alio, ya'ia da'ö wangoguna'ö manö li Indonesia.</p>
 
 <h3>Halöŵö lima fakhe</h3>
 

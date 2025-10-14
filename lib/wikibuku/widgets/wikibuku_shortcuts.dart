@@ -12,13 +12,13 @@ class WikibukuShortcuts extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final Color color = Color(0xff121298);
+    final Color color = Theme.of(context).colorScheme.primary;
+    final Color altColor = Theme.of(context).colorScheme.secondary;
 
     return Container(
       width: double.infinity,
       height: 350.0,
       decoration: const BoxDecoration(
-        color: Color(0xfffaf6ed),
         borderRadius: BorderRadius.only(
           topLeft: Radius.circular(30.0),
           topRight: Radius.circular(30.0),
@@ -30,7 +30,7 @@ class WikibukuShortcuts extends StatelessWidget {
         children: [
           Text(
             'shortcuts',
-            style: TextStyle(fontSize: 14.0, color: Colors.black54),
+            style: TextStyle(fontSize: 14.0, color: color),
           ).tr(),
           const SizedBox(height: 20.0),
           Wrap(
@@ -41,7 +41,7 @@ class WikibukuShortcuts extends StatelessWidget {
               ShortcutsSpecialTextButton(
                 screen: WikibukuSpecialPagesScreen(title: 'Wikibooks:Angombakhata'),
                 text: 'announcement',
-                color: Color(0xff9b00a1),
+                color: altColor,
               ),
               ShortcutsSpecialTextButton(
                 screen: WikibukuSpecialPagesScreen(title: 'Wikibooks:Bawagöli zato'),
@@ -51,7 +51,7 @@ class WikibukuShortcuts extends StatelessWidget {
               ShortcutsSpecialTextButton(
                 screen: WikibukuSpecialPagesScreen(title: 'Wikibooks:Monganga afo'),
                 text: 'village_pump',
-                color: Color(0xff9b00a1),
+                color: altColor,
               ),
               ShortcutsSpecialTextButton(
                 screen: WikibukuSpecialPagesScreen(title: 'Wikibooks:Nahia wamakori'),
@@ -61,14 +61,14 @@ class WikibukuShortcuts extends StatelessWidget {
               ShortcutsSpecialTextButton(
                 screen: WikibukuSpecialPagesScreen(title: 'Help:Fanolo'),
                 text: 'help',
-                color: Color(0xff9b00a1),
+                color: altColor,
               ),
               ShortcutsSpecialTextButton(
                 screen: WikibukuSpecialPagesScreen(title: 'Wikibooks:Sangai halöŵö'),
                 text: 'helpers',
                 color: color,
               ),
-              ShortcutsKbTextButton(color: Color(0xff9b00a1)),
+              ShortcutsKbTextButton(color: altColor),
             ],
           ),
         ],

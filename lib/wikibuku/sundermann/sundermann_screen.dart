@@ -6,21 +6,24 @@ import '../widgets/wikibuku_footer.dart';
 import 'sundermann_introduction.dart';
 import '../../widgets/spacer_image.dart';
 import 'sundermann_page_screen.dart';
-import '../../constants.dart';
 
 class SundermannScreen extends StatelessWidget {
   const SundermannScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
+    final Color color = Theme.of(context).colorScheme.primary;
+    final String sundermannImage = "assets/images/sundermann.webp";
+    final double bodyFontSize = Theme.of(context).textTheme.bodyMedium?.fontSize ?? 14.0;
+
     return SafeArea(
       child: Scaffold(
         // bottomNavigationBar: BottomAppBar(),
         body: CustomScrollView(
           slivers: [
             SliverAppBar(
-              iconTheme: IconThemeData(color: sundermannColor),
-              title: Text('Kamus Sundermann', style: TextStyle(color: sundermannColor)),
+              iconTheme: IconThemeData(color: color),
+              title: Text('Kamus Sundermann', style: TextStyle(color: color, fontSize: bodyFontSize * 1.0)),
               floating: true,
               expandedHeight: 250,
               flexibleSpace: FlexiblePageHeader(image: sundermannImage),
@@ -28,14 +31,13 @@ class SundermannScreen extends StatelessWidget {
             SliverToBoxAdapter(
             child: Column(
               children: [
-                // Image.asset(sundermannImage, height: 200, fit: BoxFit.fitHeight),
                 SizedBox(height: 16),
                 Padding(
                   padding: const EdgeInsets.all(16.0),
-                  child: HtmlWidget(sundermannIntroduction, textStyle: TextStyle()),
+                  child: HtmlWidget(sundermannIntroduction),
                 ),
                 SizedBox(height: 30),
-                Text("Molo'ö börö hurufo", style: titleStyle),
+                Text("Molo'ö börö hurufo", style: TextStyle(fontSize: bodyFontSize * 1.2)),
                 Wrap(
                   children: [
                     SundermannDictionaryPage(title: 'A'),

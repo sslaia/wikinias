@@ -14,16 +14,14 @@ class CreateNewPageTextButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return TextButton(
       onPressed: () {
-        Navigator.push(
-          context,
-          MaterialPageRoute<void>(
+        Navigator.push(context, MaterialPageRoute<void>(
             builder: (context) => destination,
           ),
         );
       },
       child: Text(
         label,
-        style: TextStyle(color: Color(0xff121298)),
+        style: TextStyle(color: Theme.of(context).colorScheme.primary),
       ).tr(),
     );
   }

@@ -2,15 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:wikinias/widgets/flexible_page_header.dart';
 import 'package:wikinias/widgets/footer_section.dart';
 
-import 'sundermann_screen.dart';
+import '../../widgets/page_screen_body.dart';
+import '../wikibuku_page_screen.dart';
 import '../../app_bar/label_bottom_app_bar.dart';
 import '../../app_bar/view_on_web_icon_button.dart';
 import '../../services/wikinias_api_service.dart';
 import '../../app_bar/edit_icon_button.dart';
 import '../../app_bar/share_icon_button.dart';
 import '../widgets/wikibuku_footer.dart';
-import '../../constants.dart';
-import '../widgets/wikibuku_page_screen_body.dart';
 
 class SundermannPageScreen extends StatefulWidget {
   final String title;
@@ -33,24 +32,37 @@ class _SundermannPageScreenState extends State<SundermannPageScreen> {
     );
   }
 
+  void _navigateToNewPage(String pageTitle) {
+    final String title = pageTitle.substring(7);
+    Navigator.of(context).push(
+      MaterialPageRoute<void>(
+        builder: (context) => WikibukuPageScreen(title: title),
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
-    final String title = widget.title;
+    final String baseUrl = 'https://incubator.m.wikimedia.org/wiki/Wb/nia/';
+    final String pageUrl = 'https://incubator.m.wikimedia.org/wiki/Wb/nia/${widget.title}';
+    final Color color = Theme.of(context).colorScheme.primary;
+    final String sundermannImage = "assets/images/bowogafasi.webp";
+    final double bodyFontSize = Theme.of(context).textTheme.bodyMedium?.fontSize ?? 14.0;
 
     return Scaffold(
-      bottomNavigationBar: LabelBottomAppBar(label: 'Kamus Nias-Jerman', color: sundermannColor, destination: SundermannScreen(),),
+      bottomNavigationBar: LabelBottomAppBar(label: 'wikibuku_sundermann'),
       body: CustomScrollView(
         slivers: [
           SliverAppBar(
-            iconTheme: IconThemeData(color: sundermannColor),
-            title: Text(title.substring(18), style: TextStyle(color: sundermannColor)),
+            iconTheme: IconThemeData(color: color),
+            title: Text(widget.title.substring(18), style: TextStyle(color: color, fontSize: bodyFontSize * 1.0)),
             floating: true,
             expandedHeight: 230,
             flexibleSpace: FlexiblePageHeader(image: sundermannImage),
             actions: [
-              ShareIconButton(color: sundermannColor, url: '$wbUrl$title'),
-              EditIconButton(color: sundermannColor, url: '$wbUrl$title?action=edit&section=all'),
-              ViewOnWebIconButton(color: sundermannColor, url: '$wbUrl$title'),
+              ShareIconButton(color: color, url: pageUrl),
+              EditIconButton(color: color, url: '$pageUrl?action=edit&section=all'),
+              ViewOnWebIconButton(color: color, url: pageUrl),
             ],
           ),
           SliverToBoxAdapter(
@@ -63,11 +75,15 @@ class _SundermannPageScreenState extends State<SundermannPageScreen> {
                       return Text('Error: ${snapshot.error}');
                     }
                     return snapshot.hasData
-                        ? WikibukuPageScreenBody(html: snapshot.data!)
+                        ? PageScreenBody(
+                      html: snapshot.data!,
+                      onInternalLinkTap: _navigateToNewPage,
+                      baseUrl: baseUrl,
+                    )
                         : const Center(child: CircularProgressIndicator());
                   },
                 ),
-                FooterSection(attribution: wikibukuFooter),
+                FooterSection(footer: wikibukuFooter),
               ],
             ),
           ),

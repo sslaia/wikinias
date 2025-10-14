@@ -1,9 +1,12 @@
 import 'dart:convert';
+
 import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
+
 import '../models/photo.dart';
 
 class PhotoApiService {
+  // existing methods...
   Future<List<Photo>> fetchArtPhotos() async {
     try {
       final String jsonString = await rootBundle.loadString(

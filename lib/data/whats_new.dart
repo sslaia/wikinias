@@ -1,5 +1,19 @@
 const whatsNew = '''
-<h3>New in the 2.0.0+11 version</h3>
+
+<h3>New in the 2.1.0 version</h3>
+<ul>
+<li>New: dark theme. The app now adapts to the system dark theme.</li>
+<li>New: users can now change the app font size.</li>
+<li>New: links are now being handled properly</li>
+<li>Improved app theme.</li>
+<li>Reduced API request by caching the featured article and DIY item for one day.</li>
+<li>Implementing some suggestions from user's feedback.</li>
+<li>Overall refactoring the whole app code, therefore again a big version number jump.</li>
+<li>Delayed to next updates: audio handling, mobile screen friendly image width, 
+manually update the data from remote, manually getting the courses contents, therapeutic galleries, etc.</li>
+</ul>
+
+<h3>New in the 2.0.0 version</h3>
 <ul>
 <li>Almost complete rewriten. The first wiki is now called Niaspedia, the second Wikikamus and the third one Wikibuku.</li>
 <li>Two new modules are added: Courses and Gallery.</li>

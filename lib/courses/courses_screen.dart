@@ -1,13 +1,13 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 import '../app_bar/wikinias_drawer_menu.dart';
-import 'courses_drawer_section.dart';
+import '../providers/settings_provider.dart';
 import 'proverbs_screen.dart';
 import 'songs_screen.dart';
 import 'stories_screen.dart';
 import 'youtube_screen.dart';
-import '../constants.dart';
 
 class CoursesScreen extends StatefulWidget {
   const CoursesScreen({super.key});
@@ -42,29 +42,32 @@ class _CoursesScreenState extends State<CoursesScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final Color color = Theme.of(context).colorScheme.primary;
+
     return SafeArea(
-      child: Scaffold(
+      child: Consumer<SettingsProvider>(
+        builder: (context, settingsProvider, child) => Scaffold(
         key: _scaffoldKey,
         appBar: AppBar(
           title: Text(
             'courses',
             style: TextStyle(
-              color: coursesColor,
+              color: color,
               fontFamily: 'CinzelDecorative',
               fontWeight: FontWeight.w700,
             ),
           ).tr(),
           // backgroundColor: color,
-          iconTheme: IconThemeData(color: coursesColor),
+          iconTheme: IconThemeData(color: Theme.of(context).colorScheme.onSurface),
         ),
-        drawer: WikiniasDrawerMenu(project: project, image: npMainImage,  color: coursesColor, projectDrawerSection: CoursesDrawerSection()),
+        drawer: WikiniasDrawerMenu(),
         bottomNavigationBar: BottomNavigationBar(
           // backgroundColor: color,
           type: BottomNavigationBarType.fixed,
           iconSize: 40,
           selectedFontSize: 20,
-          selectedIconTheme: IconThemeData(color: coursesColor, size: 40),
-          selectedItemColor: coursesColor,
+          selectedIconTheme: IconThemeData(color: Theme.of(context).colorScheme.primary, size: 40),
+          selectedItemColor: Theme.of(context).colorScheme.primary,
           selectedLabelStyle: TextStyle(fontWeight: FontWeight.bold),
           unselectedIconTheme: IconThemeData(color: Colors.grey),
           unselectedItemColor: Colors.grey,
@@ -92,6 +95,6 @@ class _CoursesScreenState extends State<CoursesScreen> {
         ),
         body: _pages.elementAt(_selectedIndex),
       ),
-    );
+    ),);
   }
 }

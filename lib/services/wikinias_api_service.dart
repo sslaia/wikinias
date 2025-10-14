@@ -1,72 +1,10 @@
 import 'dart:convert';
-import 'dart:math';
 import 'package:flutter/foundation.dart';
-import 'package:flutter/services.dart';
 import 'package:http/http.dart' as http;
 
-import '../models/article.dart';
-import '../models/dyk.dart';
 import '../models/recent_changes.dart';
-import '../models/story.dart';
-import '../models/word.dart';
 
 class WikiniasApiService {
-  // fetch the list of local dyk
-  Future<List<Dyk>> fetchDyks() async {
-    try {
-      final String jsonString = await rootBundle.loadString(
-        'assets/data/dyks_data.json',
-      );
-      return compute(parseDyks, jsonString);
-    } catch (e) {
-      return [];
-    }
-  }
-
-  // fetch the random local dyk
-  Future<Dyk?> fetchRandomDyk() async {
-    try {
-      final List<Dyk> dyks = await fetchDyks();
-      if (dyks.isNotEmpty) {
-        final random = Random();
-        final randomIndex = random.nextInt(dyks.length);
-        return dyks[randomIndex];
-      } else {
-        return null;
-      }
-    } catch (e) {
-      return null;
-    }
-  }
-
-  // fetch the list of local articles
-  Future<List<Article>> fetchArticles() async {
-    try {
-      final String jsonString = await rootBundle.loadString(
-        'assets/data/articles_data.json',
-      );
-      return compute(parseArticles, jsonString);
-    } catch (e) {
-      return [];
-    }
-  }
-
-  // fetch a random local article
-  Future<Article?> fetchRandomArticle() async {
-    try {
-      final List<Article> articles = await fetchArticles();
-      if (articles.isNotEmpty) {
-        final random = Random();
-        final randomIndex = random.nextInt(articles.length);
-        return articles[randomIndex];
-      } else {
-        return null;
-      }
-    } catch (e) {
-      return null;
-    }
-  }
-
   // fetch the content of the online Niaspedia page
   Future<String> fetchNiaspediaPage(String title) async {
     final uri = Uri.https('nia.m.wikipedia.org', '/w/api.php', {
@@ -95,34 +33,6 @@ class WikiniasApiService {
     }
   }
 
-  // fetch the list of local words
-  Future<List<Word>> fetchWords() async {
-    try {
-      final String jsonString = await rootBundle.loadString(
-        'assets/data/words_data.json',
-      );
-      return compute(parseWords, jsonString);
-    } catch (e) {
-      return [];
-    }
-  }
-
-  // fetch a random local word
-  Future<Word?> fetchRandomWord() async {
-    try {
-      final List<Word> words = await fetchWords();
-      if (words.isNotEmpty) {
-        final random = Random();
-        final randomIndex = random.nextInt(words.length);
-        return words[randomIndex];
-      } else {
-        return null;
-      }
-    } catch (e) {
-      return null;
-    }
-  }
-
   // fetch the content of online Wikikamus page
   Future<String> fetchWikikamusPage(String title) async {
     final uri = Uri.https('nia.m.wiktionary.org', '/w/api.php', {
@@ -148,34 +58,6 @@ class WikiniasApiService {
       }
     } catch (e) {
       return 'Error: $e';
-    }
-  }
-
-  // fetch the list of local stories
-  Future<List<Story>> fetchStories() async {
-    try {
-      final String jsonString = await rootBundle.loadString(
-        'assets/data/stories_data.json',
-      );
-      return compute(parseStories, jsonString);
-    } catch (e) {
-      return [];
-    }
-  }
-
-  // fetch the random local story
-  Future<Story?> fetchRandomStory() async {
-    try {
-      final List<Story> stories = await fetchStories();
-      if (stories.isNotEmpty) {
-        final random = Random();
-        final randomIndex = random.nextInt(stories.length);
-        return stories[randomIndex];
-      } else {
-        return null;
-      }
-    } catch (e) {
-      return null;
     }
   }
 
@@ -294,24 +176,4 @@ Future<List<RecentChanges>> _parseRecentChanges(String responseBody) async {
   } else {
     throw Exception('Unexpected JSON structure from Wikipedia API');
   }
-}
-
-Future<List<Dyk>> parseDyks(String jsonString) async {
-  final List<dynamic> jsonList = jsonDecode(jsonString);
-  return jsonList.map((json) => Dyk.fromJson(json)).toList();
-}
-
-Future<List<Article>> parseArticles(String jsonString) async {
-  final List<dynamic> jsonList = jsonDecode(jsonString);
-  return jsonList.map((json) => Article.fromJson(json)).toList();
-}
-
-Future<List<Story>> parseStories(String jsonString) async {
-  final List<dynamic> jsonList = jsonDecode(jsonString);
-  return jsonList.map((json) => Story.fromJson(json)).toList();
-}
-
-Future<List<Word>> parseWords(String jsonString) async {
-  final List<dynamic> jsonList = jsonDecode(jsonString);
-  return jsonList.map((json) => Word.fromJson(json)).toList();
 }

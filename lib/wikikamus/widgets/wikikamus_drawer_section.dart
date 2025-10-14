@@ -1,8 +1,9 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
-import 'package:wikinias/constants.dart';
+import 'package:provider/provider.dart';
 
 import '../../app_bar/drawer_list_item.dart';
+import '../../providers/font_size_provider.dart';
 import '../guides/create_new_entry.dart';
 
 class WikikamusDrawerSection extends StatelessWidget {
@@ -10,16 +11,31 @@ class WikikamusDrawerSection extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ExpansionTile(
-      initiallyExpanded: true,
-      title: Text('wikikamus', style: titleStyle).tr(),
-      children: [
-        DrawerListItem(
-          text: 'create_new_entry',
-          icon: Icon(Icons.auto_stories_outlined),
-          destination: CreateNewEntry(),
-        ),
-      ],
+    final Color color = Theme.of(context).colorScheme.primary;
+
+    return Consumer<FontSizeProvider>(
+      builder: (context, fontSizeProvider, child) {
+        final double baseFontSize = fontSizeProvider.scaledFontSize;
+        return ExpansionTile(
+          initiallyExpanded: true,
+          title: Text(
+            'wikikamus',
+            style: TextStyle(
+              fontFamily: 'Gelasio',
+              color: color,
+              fontSize: baseFontSize,
+              fontWeight: FontWeight.bold,
+            ),
+          ).tr(),
+          children: [
+            DrawerListItem(
+              text: 'create_new_entry',
+              icon: Icon(Icons.create_outlined),
+              destination: CreateNewEntry(),
+            ),
+          ],
+        );
+      },
     );
   }
 }

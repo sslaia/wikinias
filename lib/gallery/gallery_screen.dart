@@ -5,7 +5,6 @@ import '../app_bar/wikinias_drawer_menu.dart';
 import 'gallery_arts_screen.dart';
 import 'gallery_buildings_screen.dart';
 import 'gallery_dances_screen.dart';
-import 'gallery_drawer_section.dart';
 import 'gallery_others_screen.dart';
 
 class GalleryScreen extends StatefulWidget {
@@ -35,7 +34,7 @@ class _GalleryScreenState extends State<GalleryScreen> {
           actions: [
             TextButton(
               style: ButtonStyle(
-                backgroundColor: WidgetStateProperty.all(Color(0xffe9d6ae)),
+                backgroundColor: WidgetStateProperty.all(Colors.black12),
               ),
               onPressed: () {
                 Navigator.of(context).pop();
@@ -70,22 +69,22 @@ class _GalleryScreenState extends State<GalleryScreen> {
           title: Text(
             'gallery',
             style: TextStyle(
-              color: color,
+              color: Theme.of(context).colorScheme.primary,
               fontFamily: 'CinzelDecorative',
               fontWeight: FontWeight.w700,
             ),
           ).tr(),
           // backgroundColor: color,
-          iconTheme: IconThemeData(color: color),
+          iconTheme: IconThemeData(color: Theme.of(context).colorScheme.onSurface),
         ),
-        drawer: WikiniasDrawerMenu(project: project, image: image,  color: color, projectDrawerSection: GalleryDrawerSection()),
+        drawer: WikiniasDrawerMenu(),
         bottomNavigationBar: BottomNavigationBar(
           // backgroundColor: color,
           type: BottomNavigationBarType.fixed,
           iconSize: 40,
           selectedFontSize: 20,
-          selectedIconTheme: IconThemeData(color: color, size: 40),
-          selectedItemColor: color,
+          selectedIconTheme: IconThemeData(color: Theme.of(context).colorScheme.primary, size: 40),
+          selectedItemColor: Theme.of(context).colorScheme.primary,
           selectedLabelStyle: TextStyle(fontWeight: FontWeight.bold),
           unselectedIconTheme: IconThemeData(color: Colors.grey),
           unselectedItemColor: Colors.grey,

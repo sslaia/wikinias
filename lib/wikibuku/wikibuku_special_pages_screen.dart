@@ -1,17 +1,13 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_widget_from_html/flutter_widget_from_html.dart';
-import 'package:url_launcher/url_launcher.dart';
-import 'package:wikinias/constants.dart';
-import 'package:wikinias/utils/sanitised_title.dart';
-import 'package:wikinias/widgets/flexible_page_header.dart';
 
+import '../widgets/flexible_page_header.dart';
 import '../app_bar/view_on_web_icon_button.dart';
-import '../utils/get_capitalised_title_from_url.dart';
 import '../utils/processed_title.dart';
 import '../widgets/footer_section.dart';
 import '../services/wikinias_api_service.dart';
 import '../app_bar/edit_icon_button.dart';
 import '../app_bar/share_icon_button.dart';
+import '../widgets/page_screen_body.dart';
 import 'widgets/wikibuku_special_pages_bottom_app_bar.dart';
 import 'widgets/wikibuku_footer.dart';
 
@@ -38,25 +34,48 @@ class _WikibukuSpecialPagesScreenState
     );
   }
 
+  void _navigateToNewPage(String pageTitle) {
+    final String title = pageTitle.substring(7);
+    Navigator.of(context).push(
+      MaterialPageRoute<void>(
+        builder: (context) => WikibukuSpecialPagesScreen(title: title),
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
-    final String url = '$wbUrl${widget.title}';
+    final String url = 'https://incubator.m.wikimedia.org/wiki/';
+    final String pageUrl =
+        'https://incubator.m.wikimedia.org/wiki/Wb/nia/${widget.title}';
+    final Color color = Theme.of(context).colorScheme.primary;
+    final String pageImagePath = "assets/images/ornament2.webp";
+    final double bodyFontSize =
+        Theme.of(context).textTheme.bodyMedium?.fontSize ?? 14.0;
 
     return SafeArea(
       child: Scaffold(
-        bottomNavigationBar: WikibukuSpecialPagesBottomAppBar(title: widget.title),
+        bottomNavigationBar: WikibukuSpecialPagesBottomAppBar(
+          title: widget.title,
+        ),
         body: CustomScrollView(
           slivers: [
             SliverAppBar(
-              iconTheme: IconThemeData(color: wbColor),
-              title: Text(processedTitle(widget.title), style: TextStyle(color: wbColor)),
+              iconTheme: IconThemeData(color: color),
+              title: Text(
+                processedTitle(widget.title),
+                style: TextStyle(color: color, fontSize: bodyFontSize * 1.0),
+              ),
               floating: true,
-              expandedHeight: 250,
-              flexibleSpace: FlexiblePageHeader(image: wbSpecialPagesImage),
+              expandedHeight: 230,
+              flexibleSpace: FlexiblePageHeader(image: pageImagePath),
               actions: [
-                ShareIconButton(color: wbColor, url: url),
-                EditIconButton(color: wbColor, url: '$url?action=edit&section=all'),
-                ViewOnWebIconButton(url: url, color: wbColor)
+                ShareIconButton(color: color, url: pageUrl),
+                EditIconButton(
+                  color: color,
+                  url: '$pageUrl?action=edit&section=all',
+                ),
+                ViewOnWebIconButton(url: pageUrl, color: color),
               ],
             ),
             SliverToBoxAdapter(
@@ -69,75 +88,17 @@ class _WikibukuSpecialPagesScreenState
                         return Text('Error: ${snapshot.error}');
                       }
                       return snapshot.hasData
-                          ? PageBody(html: snapshot.data!)
+                          ? PageScreenBody(
+                              html: snapshot.data!,
+                              onInternalLinkTap: _navigateToNewPage,
+                              baseUrl: url,
+                            )
                           : const Center(child: CircularProgressIndicator());
                     },
                   ),
-                  FooterSection(attribution: wikibukuFooter)
+                  FooterSection(footer: wikibukuFooter),
                 ],
               ),
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-}
-
-class PageBody extends StatelessWidget {
-  const PageBody({super.key, required this.html});
-
-  final String html;
-
-  @override
-  Widget build(BuildContext context) {
-    return SingleChildScrollView(
-      child: Padding(
-        padding: EdgeInsets.all(16.0),
-        child: Column(
-          children: [
-            HtmlWidget(
-              html,
-              renderMode: RenderMode.column,
-              textStyle: TextStyle(fontFamily: 'Gelasio', fontSize: 18.0),
-              onTapUrl: (url) {
-                if (url.startsWith('/wiki/Wb/nia/')) {
-                  final newPageTitle = url.substring(13);
-
-                  Navigator.of(context).push(
-                    MaterialPageRoute<void>(
-                      builder: (context) =>
-                          WikibukuSpecialPagesScreen(title: sanitisedTitle(newPageTitle)),
-                    ),
-                  );
-                  return true;
-                }
-                // Handle the red link
-                if (url.startsWith('/w/')) {
-                  final String newTitle = getCapitalisedTitleFromUrl(url);
-                  // removed additional incubator prefix from the wikibooks links
-                  final String checkedTitle = newTitle.replaceAll('Wb/nia/', '');
-                  final newUrl = '$wbUrl$checkedTitle';
-
-                  launchUrl(Uri.parse('$newUrl?action=edit&section=all'));
-                  return true;
-                }
-                // For external links, launch them in a browser
-                launchUrl(Uri.parse(url));
-                return true;
-              },
-              customStylesBuilder: (element) {
-                if (element.classes.contains("mw-heading")) {
-                  return {'font-size': '12px', 'font-family': 'Ubuntu'};
-                }
-                if (element.classes.contains("mw-body-header")) {
-                  return {'font-size': '12px', 'font-family': 'Ubuntu'};
-                }
-                if (element.classes.contains("vector-pinnable-header-label")) {
-                  return {'font-size': '12px', 'font-family': 'Ubuntu'};
-                }
-                return null;
-              },
             ),
           ],
         ),

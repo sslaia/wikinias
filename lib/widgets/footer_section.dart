@@ -4,9 +4,9 @@ import 'package:flutter_widget_from_html/flutter_widget_from_html.dart';
 import 'spacer_image.dart';
 
 class FooterSection extends StatelessWidget {
-  const FooterSection({super.key, required this.attribution});
+  const FooterSection({super.key, required this.footer});
 
-  final String attribution;
+  final String footer;
 
   @override
   Widget build(BuildContext context) {
@@ -19,8 +19,8 @@ class FooterSection extends StatelessWidget {
         Padding(
           padding: const EdgeInsets.all(8.0),
           child: HtmlWidget(
-            attribution,
-            textStyle: TextStyle(fontSize: 9),
+            footer,
+            textStyle: TextStyle(fontSize: 10),
           ),
         ),
         const SizedBox(height: 32.0),

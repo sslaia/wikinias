@@ -6,7 +6,6 @@ import '../../widgets/home_icon_button.dart';
 import '../../app_bar/shortcuts_icon_button.dart';
 import '../../app_bar/special_pages_text.dart';
 import '../wikibuku_special_pages_screen.dart';
-import 'wikibuku_shortcuts.dart';
 
 class WikibukuSpecialPagesBottomAppBar extends StatelessWidget {
   const WikibukuSpecialPagesBottomAppBar({super.key, required this.title});
@@ -15,7 +14,7 @@ class WikibukuSpecialPagesBottomAppBar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final Color color = Color(0xff9b00a1);
+    final Color color = Theme.of(context).colorScheme.primary;
 
     return BottomAppBar(
       child: Row(
@@ -24,7 +23,7 @@ class WikibukuSpecialPagesBottomAppBar extends StatelessWidget {
           const Spacer(),
           HomeIconButton(color: color, route: '/wikibuku'),
           RefreshIconButton(color: color, title: title),
-          ShortcutsIconButton(shortcuts: WikibukuShortcuts(), color: color),
+          ShortcutsIconButton(),
         ],
       ),
     );
@@ -53,7 +52,7 @@ class RefreshIconButton extends StatelessWidget {
           Navigator.push(
             context,
             MaterialPageRoute<void>(
-              builder: (context) => NiasKeyboardScreen(color: color),
+              builder: (context) => NiasKeyboardScreen(),
             ),
           );
         } else {
