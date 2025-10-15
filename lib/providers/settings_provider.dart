@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:wikinias/courses/courses_screen.dart';
 import 'package:wikinias/data/wikibuku_titles.dart';
 import 'package:wikinias/gallery/gallery_screen.dart';
@@ -29,22 +30,48 @@ enum Language { English, Nias }
 enum FontSize { Small, Normal, Large, ExtraLarge }
 
 class SettingsProvider with ChangeNotifier {
+  final SharedPreferences _prefs;
+  static const String _projectKey = 'selectedProject';
+
   Project _selectedProject = Project.Niaspedia;
   Language _selectedLanguage = Language.Nias;
   FontSize _selectedFontSize = FontSize.Normal;
+
+  SettingsProvider(this._prefs) {
+    _loadSelectedProject();
+  }
 
   Project get selectedProject => _selectedProject;
   Language get selectedLanguage => _selectedLanguage;
   FontSize get selectedFontSize => _selectedFontSize;
 
+  void _loadSelectedProject() {
+    final savedProjectName = _prefs.getString(_projectKey);
+    if (savedProjectName != null) {
+      try {
+        _selectedProject = Project.values.firstWhere(
+            (project) => project.name == savedProjectName
+        );
+      } catch (e) {
+        _selectedProject = Project.Niaspedia;
+      }
+    }
+  }
+
+  Future<void> _saveSelectedProject() async {
+    await _prefs.setString(_projectKey, _selectedProject.name);
+  }
+
   set selectedProject(Project project) {
-    _selectedProject = project;
-    notifyListeners();
+    if (_selectedProject != project) {
+      _selectedProject = project;
+      notifyListeners();
+      _saveSelectedProject();
+    }
   }
 
   set selectedLanguage(Language language) {
     _selectedLanguage = language;
-
     notifyListeners();
   }
 

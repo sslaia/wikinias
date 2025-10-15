@@ -38,13 +38,14 @@ void main() async {
       startLocale: Locale('id'),
       fallbackLocale: const Locale('en'),
       path: 'assets/translations',
-      child: WikiNias(),
+      child: WikiNias(prefs: prefs),
     ),
   );
 }
 
 class WikiNias extends StatelessWidget {
-  const WikiNias({super.key});
+  final SharedPreferences prefs;
+  const WikiNias({super.key, required this.prefs});
 
   @override
   Widget build(BuildContext context) {
@@ -53,7 +54,7 @@ class WikiNias extends StatelessWidget {
         // Provider<GalleryApiService>.value(value: galleryApiService),
         Provider<TitleApiService>.value(value: titleApiService),
         Provider<ContentService>.value(value: contentService),
-        ChangeNotifierProvider(create: (_) => SettingsProvider()),
+        ChangeNotifierProvider(create: (_) => SettingsProvider(prefs)),
         ChangeNotifierProvider(create: (_) => FontSizeProvider()),
         ChangeNotifierProxyProvider<SettingsProvider, ThemeProvider>(
           create: (context) => ThemeProvider(context.read<SettingsProvider>()),

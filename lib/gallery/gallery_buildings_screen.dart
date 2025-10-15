@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 
 import '../models/photo.dart';
-import '../screens/image_screen.dart';
 import '../services/photo_api_service.dart';
 import '../widgets/gallery_carousel.dart';
 
