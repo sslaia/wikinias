@@ -16,7 +16,7 @@ import 'package:wikinias/wikibuku/wikibuku_home_screen.dart';
 import 'package:wikinias/wikikamus/wikikamus_home_screen.dart';
 
 late bool onboardingComplete;
-late String selectedRoute;
+// late String selectedRoute;
 late ContentService contentService;
 late TitleApiService titleApiService;
 // late GalleryApiService galleryApiService;
@@ -25,7 +25,7 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   final prefs = await SharedPreferences.getInstance();
   onboardingComplete = prefs.getBool('onboarding_complete') ?? false;
-  selectedRoute = prefs.getString('selected_route') ?? '/';
+  // selectedRoute = prefs.getString('selected_route') ?? '/';
   await EasyLocalization.ensureInitialized();
 
   contentService = ContentService(prefs);
@@ -108,9 +108,10 @@ class WikiNias extends StatelessWidget {
             localizationsDelegates: context.localizationDelegates,
             supportedLocales: context.supportedLocales,
             locale: context.locale,
-            initialRoute: onboardingComplete ? selectedRoute : '/onboarding',
+            initialRoute: onboardingComplete ? '/' : '/onboarding',
             routes: {
-              '/': (context) => NiaspediaHomeScreen(),
+              '/': (context) => const HomeWrapper(),
+              '/niaspedia': (context) => NiaspediaHomeScreen(),
               '/wikikamus': (context) => WikikamusHomeScreen(),
               '/wikibuku': (context) => WikibukuHomeScreen(),
               '/onboarding': (context) => const OnboardingScreen(),
@@ -122,5 +123,28 @@ class WikiNias extends StatelessWidget {
         },
       ),
     );
+  }
+}
+
+class HomeWrapper extends StatelessWidget {
+  const HomeWrapper({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    final Project selectedProject =
+        context.watch<SettingsProvider>().selectedProject;
+
+    switch (selectedProject) {
+      case Project.Wikikamus:
+        return WikikamusHomeScreen();
+      case Project.Wikibuku:
+        return WikibukuHomeScreen();
+      case Project.Courses:
+        return const CoursesScreen();
+      case Project.Gallery:
+        return const GalleryScreen();
+      case Project.Niaspedia:
+      return NiaspediaHomeScreen();
+    }
   }
 }
