@@ -1,35 +1,34 @@
-{
-  "proverbs": [
-    {
-      "id": 1,
-      "title": "Judul pelajaran",
-      "text": "Isi pelajaran",
-      "image": ""
-    }
-  ],
-  "songs": [
-    {
-      "id": 1,
-      "title": "Amaedola nina ndra'ugö",
-      "text": "Bakha ba zinunö Tanö Niha Mbanua Somasido tesöndra \"amaedola nina\" Hadia geluahania? Ba hadia göi geluahania na tafalali amaedola nina faoma \"amaedola ina\"?",
-      "url": "https://nia.wiktionary.org/wiki/Wiktionary:Sulu/1",
-      "image": ""
-    }
-  ],
-  "stories": [
-    {
-      "id": 1,
-      "title": "Judul pelajaran",
-      "text": "Isi pelajaran",
-      "image": ""
-    }
-  ],
-  "youtube": [
-    {
-      "id": 1,
-      "title": "Judul pelajaran",
-      "text": "Isi pelajaran",
-     "image": ""
-    }
-  ]
-}
+[
+  {
+    "id": 1,
+    "title": "Judul pelajaran",
+    "text": "Isi pelajaran",
+    "url": "https://nia.wiktionary.org/wiki/Wiktionary:Sulu/",
+    "source": "",
+    "category": "proverbs"
+  },
+  {
+    "id": 2,
+    "title": "Amaedola nina ndra'ugö",
+    "text": "Bakha ba zinunö Tanö Niha Mbanua Somasido tesöndra \"amaedola nina\" Hadia geluahania? Ba hadia göi geluahania na tafalali amaedola nina faoma \"amaedola ina\"?",
+    "url": "https://nia.wiktionary.org/wiki/Wiktionary:Sulu/1",
+    "source": "",
+    "category": "songs"
+  },
+  {
+    "id": 3,
+    "title": "Judul pelajaran",
+    "text": "Isi pelajaran",
+    "url": "https://nia.wiktionary.org/wiki/Wiktionary:Sulu/",
+    "source": "",
+    "category": "stories"
+  },
+  {
+    "id": 4,
+    "title": "Judul pelajaran",
+    "text": "Isi pelajaran",
+    "url": "https://nia.wiktionary.org/wiki/Wiktionary:Sulu/",
+    "source": "",
+    "category": "youtube"
+  }
+]
