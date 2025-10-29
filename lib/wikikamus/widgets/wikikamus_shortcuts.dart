@@ -1,11 +1,11 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 
-import '../../app_bar/shortcuts_kb_text_button.dart';
-import '../../app_bar/shortcuts_rc_text_button.dart';
-import '../../app_bar/shortcuts_special_text_button.dart';
-import '../wikikamus_special_pages_screen.dart';
-import '../wikikamus_recent_changes_screen.dart';
+import 'package:wikinias/wikikamus/wikikamus_page_screen.dart';
+import 'package:wikinias/wikikamus/wikikamus_recent_changes_screen.dart';
+import 'package:wikinias/app_bar/shortcuts_kb_text_button.dart';
+import 'package:wikinias/app_bar/shortcuts_rc_text_button.dart';
+import 'package:wikinias/app_bar/shortcuts_special_text_button.dart';
 
 class WikikamusShortcuts extends StatelessWidget {
   const WikikamusShortcuts({super.key});
@@ -40,32 +40,32 @@ class WikikamusShortcuts extends StatelessWidget {
             children: [
               ShortcutsRcTextButton(color: color, rcScreen: WikikamusRecentChangesScreen()),
               ShortcutsSpecialTextButton(
-                screen: WikikamusSpecialPagesScreen(title: 'Wiktionary:Angombakhata'),
+                screen: WikikamusPageScreen(title: 'Wiktionary:Angombakhata'),
                 text: 'announcement',
                 color: altColor
               ),
               ShortcutsSpecialTextButton(
-                screen: WikikamusSpecialPagesScreen(title: 'Wiktionary:Bawagöli zato'),
+                screen: WikikamusPageScreen(title: 'Wiktionary:Bawagöli zato'),
                 text: 'community_portal',
                 color: color,
               ),
               ShortcutsSpecialTextButton(
-                screen: WikikamusSpecialPagesScreen(title: 'Wiktionary:Monganga afo'),
+                screen: WikikamusPageScreen(title: 'Wiktionary:Monganga afo'),
                 text: 'village_pump',
                 color: altColor,
               ),
               ShortcutsSpecialTextButton(
-                screen: WikikamusSpecialPagesScreen(title: 'Wiktionary:Nahia wamakori'),
+                screen: WikikamusPageScreen(title: 'Wiktionary:Nahia wamakori'),
                 text: 'sandbox',
                 color: color,
               ),
               ShortcutsSpecialTextButton(
-                screen: WikikamusSpecialPagesScreen(title: 'Fanolo:Fanolo'),
+                screen: WikikamusPageScreen(title: 'Fanolo:Fanolo'),
                 text: 'help',
                 color: altColor,
               ),
               ShortcutsSpecialTextButton(
-                screen: WikikamusSpecialPagesScreen(title: 'Wiktionary:Sangai halöŵö'),
+                screen: WikikamusPageScreen(title: 'Wiktionary:Sangai halöŵö'),
                 text: 'helpers',
                 color: color,
               ),

@@ -6,18 +6,25 @@ import 'package:url_launcher/url_launcher.dart';
 import 'create_new_entry_introduction.dart';
 
 class CreateNewEntry extends StatefulWidget {
-  const CreateNewEntry({super.key});
+  const CreateNewEntry({super.key, this.title});
+
+  final String? title;
 
   @override
   State<CreateNewEntry> createState() => _CreateNewEntryState();
 }
 
 class _CreateNewEntryState extends State<CreateNewEntry> {
-  final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
+  final GlobalKey<ScaffoldState> _scaffoldFormKey = GlobalKey<ScaffoldState>();
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   final TextEditingController _titleController = TextEditingController();
   var _selectedValue = 'Verba';
 
+  @override
+  void initState() {
+    _titleController.text = widget.title ?? '';
+    super.initState();
+  }
   @override
   void dispose() {
     _titleController.dispose();
@@ -26,17 +33,19 @@ class _CreateNewEntryState extends State<CreateNewEntry> {
 
   @override
   Widget build(BuildContext context) {
-    final Color color = Theme.of(context).colorScheme.primary;
-    final double bodyFontSize =
-        Theme.of(context).textTheme.bodyMedium?.fontSize ?? 14.0;
     return SafeArea(
       child: Scaffold(
-        key: _scaffoldKey,
+        key: _scaffoldFormKey,
         appBar: AppBar(
-          iconTheme: IconThemeData(color: color),
+          iconTheme: IconThemeData(
+            color: Theme.of(context).colorScheme.primary,
+          ),
           title: Text(
             "create_new_entry".tr(),
-            style: TextStyle(fontSize: bodyFontSize * 1.0, color: color),
+            style: Theme.of(context).textTheme.titleMedium?.copyWith(
+              color: Theme.of(context).colorScheme.primary,
+              fontWeight: FontWeight.w700,
+            ),
           ),
         ),
         body: SingleChildScrollView(
@@ -50,7 +59,7 @@ class _CreateNewEntryState extends State<CreateNewEntry> {
                   padding: const EdgeInsets.all(16.0),
                   child: HtmlWidget(
                     createNewEntryIntroduction,
-                    textStyle: TextStyle(fontSize: 18.0),
+                    textStyle: TextStyle(fontSize: 14.0),
                   ),
                 ),
                 SizedBox(height: 16),
@@ -67,7 +76,6 @@ class _CreateNewEntryState extends State<CreateNewEntry> {
                       errorText: _titleController.text.isEmpty
                           ? null
                           : "enter_new_word_here".tr(),
-                      // hintText: 'search_wiki'.tr(),
                       prefixIcon: Icon(Icons.create),
                       border: OutlineInputBorder(
                         // Optional: adds a border
@@ -161,23 +169,26 @@ class _CreateNewEntryState extends State<CreateNewEntry> {
                       //   context,
                       //   MaterialPageRoute(
                       //     builder: (context) =>
-                      //         PageWebviewScreen(title: title, url: url, color: color),
+                      //         PageWebviewScreen(title: title, url: url, color: Theme.of(context).colorScheme.primary),
                       //   ),
                       // );
                     }
                   },
                   style: ElevatedButton.styleFrom(
                     // backgroundColor: Color(0xffe9d6ae),
-                    foregroundColor: color,
+                    foregroundColor: Theme.of(context).colorScheme.primary,
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(
-                        0.0,
+                        5.0,
                       ), // Set border radius to 0 for a square
                     ),
                   ),
                   child: Text(
                     'create_submit',
-                    style: TextStyle(fontSize: bodyFontSize * 1.0, fontWeight: FontWeight.bold),
+                    style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                      color: Theme.of(context).colorScheme.primary,
+                      fontWeight: FontWeight.w700,
+                    ),
                   ).tr(),
                 ),
               ],

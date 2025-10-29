@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 
-import '../models/photo.dart';
+import '../models/gallery_content_item.dart';
 import '../screens/image_screen.dart';
 
 class GalleryCarousel extends StatelessWidget {
-  final List<Photo?>? snapshot;
+  final List<GalleryContentItem>? snapshot;
   const GalleryCarousel({
     super.key, required this.snapshot,
   });
@@ -34,7 +34,7 @@ class GalleryCarousel extends StatelessWidget {
           },
           children: List.generate(snapshot!.length, (index) {
             final photo = snapshot![index];
-            if (photo == null) {
+            if (photo.url.isEmpty) {
               return const SizedBox.shrink();
             }
             return Stack(

@@ -12,24 +12,27 @@ class NiasKeyboardScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    const String url = 'https://niaskeyboard.blogspot.com/2021/04/anysoftkeyboard-memasang-huruf-o-dan-w.html';
+    const String url =
+        'https://niaskeyboard.blogspot.com/2021/04/anysoftkeyboard-memasang-huruf-o-dan-w.html';
     const String html = niasKeyboard;
-    final Color color = Theme.of(context).colorScheme.primary;
-    final double bodyFontSize = Theme.of(context).textTheme.bodyMedium?.fontSize ?? 14.0;
+    final TextStyle? titleStyle = Theme.of(context).textTheme.titleSmall
+        ?.copyWith(color: Theme.of(context).colorScheme.primary);
 
     return SafeArea(
       child: Scaffold(
         body: CustomScrollView(
           slivers: [
             SliverAppBar(
-              iconTheme: IconThemeData(color: color),
-              title: Text('nias_keyboard', style: TextStyle(fontSize: bodyFontSize * 1.0, color: color)).tr(),
+              iconTheme: IconThemeData(
+                color: Theme.of(context).colorScheme.primary,
+              ),
+              title: Text('nias_keyboard'.tr(), style: titleStyle),
               floating: true,
               expandedHeight: 230,
-              flexibleSpace: FlexiblePageHeader(image: "assets/images/nias-keyboard.webp"),
-              actions: [
-                ShareIconButton(color: color, url: url),
-              ],
+              flexibleSpace: FlexiblePageHeader(
+                image: "assets/images/nias-keyboard.webp",
+              ),
+              actions: [ShareIconButton(url: url)],
             ),
             SliverToBoxAdapter(
               child: Padding(

@@ -1,12 +1,12 @@
 const galleryFooter = '''
-<p style="text-align:center">All images on this app are sourced from
-Wikimedia Commons under Creative Commons license.</p>
+<p style="text-align:center">All images in this app are sourced from Wikimedia Commons and 
+are used under the Creative Commons license.</p>
 
-<p style="text-align:center">The contents of this page are sourced from
-the Nias wiki on the Wikimedia.
-The app creator cannot therefore guarantee 
-the validity of the information. 
-The app is provided for free
-for the WikiNias community members 
+<p style="text-align:center">The app creator does not guarantee the accuracy, 
+completeness, or reliability of the information provided. 
+This app is offered free of charge exclusively to members of the WikiNias community 
 for browsing and editing wiki pages.</p>
+
+<p style="text-align:center">By accessing this gallery, you agree 
+to use the content responsibly and verify its accuracy independently.</p>
 ''';

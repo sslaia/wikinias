@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_widget_from_html/flutter_widget_from_html.dart';
+import 'package:http/http.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 import '../../widgets/flexible_page_header.dart';
@@ -15,8 +16,10 @@ class StoriesScreen extends StatelessWidget {
     final Color color = Theme.of(context).colorScheme.primary;
     final String storiesImage = "assets/images/stories.webp";
     final String spacerImage = "assets/images/ni'owewemagai.webp";
-    final double bodyFontSize =
-        Theme.of(context).textTheme.bodyMedium?.fontSize ?? 14.0;
+    final TextStyle? titleStyle = Theme.of(context).textTheme.titleSmall
+        ?.copyWith(color: Theme.of(context).colorScheme.primary);
+    final TextStyle? headingStyle = Theme.of(context).textTheme.bodyMedium
+        ?.copyWith(color: Theme.of(context).colorScheme.primary, fontFamily: 'Gelasio', fontWeight: FontWeight.w700);
 
     return SafeArea(
       child: Scaffold(
@@ -27,7 +30,7 @@ class StoriesScreen extends StatelessWidget {
               iconTheme: IconThemeData(color: color),
               title: Text(
                 'Nidunö-dunö',
-                style: TextStyle(color: color, fontSize: bodyFontSize * 1.0),
+                style: titleStyle,
               ),
               floating: true,
               expandedHeight: 250,
@@ -40,11 +43,7 @@ class StoriesScreen extends StatelessWidget {
                   SizedBox(height: 16),
                   Text(
                     'Ngawalö nidunö-dunö ba li Niha',
-                    style: TextStyle(
-                      fontSize: bodyFontSize * 1.2,
-                      fontFamily: 'Gelasio',
-                      fontWeight: FontWeight.w700
-                    ),
+                    style: headingStyle,
                   ),
                   SizedBox(height: 16),
                   Image.asset(spacerImage, height: 30, fit: BoxFit.fitHeight),

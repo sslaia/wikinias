@@ -2,12 +2,12 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:html_character_entities/html_character_entities.dart';
 import 'package:provider/provider.dart';
+import 'package:wikinias/wikikamus/guides/create_new_entry.dart';
 
 import '../models/search_result.dart';
 import '../providers/settings_provider.dart';
 import '../services/search_api_service.dart';
 import '../widgets/create_new_page_icon_button.dart';
-import 'guides/create_new_entry.dart';
 import 'wikikamus_page_screen.dart';
 
 class WikikamusSearchResultsScreen extends StatefulWidget {
@@ -56,33 +56,26 @@ class _WikikamusSearchResultsScreenState
 
   @override
   Widget build(BuildContext context) {
-    final Color color = Theme.of(context).colorScheme.primary;
-    final Color errorColor = Theme.of(context).colorScheme.error;
-    final double bodyFontSize =
-        Theme.of(context).textTheme.bodyMedium?.fontSize ?? 14.0;
-
     return SafeArea(
       child: Consumer<SettingsProvider>(
         builder: (context, settingsProvider, child) => Scaffold(
           appBar: AppBar(
-            iconTheme: IconThemeData(color: color),
+            iconTheme: IconThemeData(
+              color: Theme.of(context).colorScheme.primary,
+            ),
             title: Text(
-              'search_results',
-              style: TextStyle(color: color, fontSize: bodyFontSize * 1.0),
-            ).tr(),
-            actions: [
-              CreateNewPageIconButton(
-                label: 'create_new_entry',
-                destination: CreateNewEntry(),
-                color: color,
+              'search_results'.tr(),
+              style: Theme.of(context).textTheme.titleSmall?.copyWith(
+                color: Theme.of(context).colorScheme.primary,
               ),
-            ],
+            ),
+            actions: [CreateNewPageIconButton(destination: CreateNewEntry())],
           ),
           body: _isLoading
               ? Center(child: CircularProgressIndicator())
               : _error.isNotEmpty
               ? Center(
-                  child: Text(_error, style: TextStyle(color: errorColor)),
+                  child: Text(_error, style: TextStyle(color: Theme.of(context).colorScheme.error)),
                 )
               : _searchResults.isEmpty
               ? Center(child: Text('search_no_results').tr())

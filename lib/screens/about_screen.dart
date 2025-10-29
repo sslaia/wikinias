@@ -15,42 +15,43 @@ class AboutScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final double bodyFontSize =
-        Theme.of(context).textTheme.bodyMedium?.fontSize ?? 14.0;
-    final Color color = Theme.of(context).colorScheme.primary;
+    final TextStyle? titleStyle = Theme.of(context).textTheme.titleSmall
+        ?.copyWith(color: Theme.of(context).colorScheme.primary);
+    final TextStyle? bodyStyle = Theme.of(
+      context,
+    ).textTheme.bodyMedium?.copyWith(fontFamily: 'Gelasio');
 
     return Scaffold(
       body: Consumer<SettingsProvider>(
-            builder: (context, settingsProvider, child) => CustomScrollView(
-              slivers: [
-                SliverAppBar(
-                  iconTheme: IconThemeData(color: color),
-                  title: Text(title, style: TextStyle(color: color, fontSize: bodyFontSize * 1.0)).tr(),
-                  floating: true,
-                  expandedHeight: 200,
-                  flexibleSpace: FlexiblePageHeader(
-                    image: settingsProvider.getProjectPageImage(),
-                  ),
+        builder: (context, settingsProvider, child) => CustomScrollView(
+          slivers: [
+            SliverAppBar(
+              iconTheme: IconThemeData(
+                color: Theme.of(context).colorScheme.primary,
+              ),
+              title: Text(title.tr(), style: titleStyle),
+              floating: true,
+              expandedHeight: 200,
+              flexibleSpace: FlexiblePageHeader(
+                image: settingsProvider.getProjectPageImage(),
+              ),
+            ),
+            SliverToBoxAdapter(
+              child: Padding(
+                padding: const EdgeInsets.all(16.0),
+                child: HtmlWidget(
+                  html,
+                  textStyle: bodyStyle,
+                  onTapUrl: (url) {
+                    launchUrl(Uri.parse(url));
+                    return true;
+                  },
                 ),
-                SliverToBoxAdapter(
-                  child: Padding(
-                    padding: const EdgeInsets.all(16.0),
-                    child: HtmlWidget(
-                      html,
-                      textStyle: TextStyle(
-                        fontFamily: 'Gelasio',
-                        // color: color,
-                        fontSize: bodyFontSize,
-                      ),
-                      onTapUrl: (url) {
-                        launchUrl(Uri.parse(url));
-                        return true;
-                      },
-                    ),
-                  ),
-                ),
-              ],
-            )
-          ));
-        }
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
 }

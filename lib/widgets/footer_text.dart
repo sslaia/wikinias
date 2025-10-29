@@ -11,9 +11,7 @@ class FooterText extends StatelessWidget {
     return Text(
       label,
       style: TextStyle(
-        fontFamily: 'Ubuntu',
-        fontSize: 14.0,
-        color: Colors.black87,
+        fontSize: Theme.of(context).textTheme.bodySmall?.fontSize ?? 10.0,
       ),
       textAlign: TextAlign.center,
     ).tr();

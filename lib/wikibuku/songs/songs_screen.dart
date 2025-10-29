@@ -10,21 +10,13 @@ class SongsScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final String image = 'assets/images/songs.webp';
-    final Color color = Theme.of(context).colorScheme.primary;
-    final double bodyFontSize =
-        Theme.of(context).textTheme.bodyMedium?.fontSize ?? 14.0;
+    final TextStyle? titleStyle = Theme.of(context).textTheme.titleSmall
+        ?.copyWith(color: Theme.of(context).colorScheme.primary);
 
     return SafeArea(
       child: Scaffold(
         appBar: AppBar(
-          title: Text(
-            'Sinunö',
-            style: TextStyle(
-              fontFamily: 'Gelasio',
-              color: color,
-              fontSize: bodyFontSize * 1.0,
-            ),
-          ),
+          title: Text('Sinunö', style: titleStyle),
         ),
         // bottomNavigationBar: BottomAppBar(),
         body: SingleChildScrollView(

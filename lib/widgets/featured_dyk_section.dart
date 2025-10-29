@@ -1,19 +1,20 @@
 import 'package:flutter/material.dart';
+import 'package:wikinias/models/featured_content_item.dart';
 import 'section_body.dart';
 import 'section_title.dart';
 
 class FeaturedDykSection extends StatelessWidget {
-  final Map<String, dynamic> dykData;
+  final FeaturedContentItem? dykData;
 
   const FeaturedDykSection({super.key, required this.dykData});
 
   @override
   Widget build(BuildContext context) {
-    if (dykData.isEmpty) {
+    if (dykData == null || dykData!.text.isEmpty) {
       return const SizedBox.shrink();
     }
 
-    final String text = dykData['text'] ?? 'no_data';
+    final String text = dykData!.text;
     final Color color = Theme.of(context).colorScheme.primary;
 
     return Column(

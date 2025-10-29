@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:wikinias/courses/courses_screen.dart';
-import 'package:wikinias/data/wikibuku_titles.dart';
 import 'package:wikinias/gallery/gallery_screen.dart';
 import 'package:wikinias/niaspedia/niaspedia_home_screen.dart';
 import 'package:wikinias/niaspedia/widgets/niaspedia_drawer_section.dart';
@@ -14,10 +13,6 @@ import 'package:wikinias/wikikamus/widgets/wikikamus_shortcuts.dart';
 import 'package:wikinias/wikikamus/wikikamus_home_screen.dart';
 
 import '../courses/courses_drawer_section.dart';
-import '../data/courses_titles.dart';
-import '../data/gallery_titles.dart';
-import '../data/niaspedia_titles.dart';
-import '../data/wikikamus_titles.dart';
 import '../gallery/gallery_drawer_section.dart';
 import '../wikibuku/widgets/wikibuku_drawer_section.dart';
 import '../wikibuku/widgets/wikibuku_footer.dart';
@@ -134,18 +129,18 @@ class SettingsProvider with ChangeNotifier {
     }
   }
 
-  List getProjectTitles() {
+  String getProjectApiUrl() {
     switch (_selectedProject) {
       case Project.Gallery:
-        return galleryTitles;
+        return 'https://nia.wikipedia.org/w/api.php';
       case Project.Courses:
-        return coursesTitles;
+        return 'https://nia.wikipedia.org/w/api.php';
       case Project.Wikibuku:
-        return wikibukuTitles;
+        return 'https://incubator.wikimedia.org/w/api.php';
       case Project.Wikikamus:
-        return wikikamusTitles;
+        return 'https://nia.wiktionary.org/w/api.php';
       default:
-        return niaspediaTitles;
+        return 'https://nia.wikipedia.org/w/api.php';
     }
   }
 
@@ -228,9 +223,9 @@ class SettingsProvider with ChangeNotifier {
   String getProjectMainImage() {
     switch (_selectedProject) {
       case Project.Gallery:
-        return "assets/images/bowogafasi.webp";
+        return "assets/images/ni'otalingawöliwöli.webp";
       case Project.Courses:
-        return "assets/images/ni'ogazi.webp";
+        return "assets/images/ni'owulurai.webp";
       case Project.Wikibuku:
         return "assets/images/figa.webp";
       case Project.Wikikamus:

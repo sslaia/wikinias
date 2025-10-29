@@ -1,12 +1,14 @@
-const galleryFooter = '''
-<p style="text-align:center">All images on this app are sourced from
-Wikimedia Commons under Creative Commons license.</p>
+const coursesFooter = '''
+<p style="text-align:center">All images in this app are sourced from Wikimedia Commons 
+and are used under the Creative Commons license. 
+The course content is collaboratively created and maintained by the WikiNias community, 
+which maintains various wiki projects on Wikimedia.</p>
 
-<p style="text-align:center">The contents of the courses are created collaboratively by the Nias community,
-which are sourced from all Nias wiki projects on the Wikimedia.
-The app creator cannot therefore guarantee 
-the validity of the information. 
-The app is provided for free
-for the WikiNias community members 
-for browsing and editing wiki pages.</p>
+<p style="text-align:center">While we strive for accuracy, the app creator does not guarantee 
+the validity, completeness, or reliability of the information provided. 
+This app is offered free of charge exclusively to members of 
+the WikiNias community for the purpose of browsing and editing wiki pages.</p>
+
+<p style="text-align:center">By using this app, you acknowledge that you are responsible for 
+verifying the accuracy of any information before relying on it</p>
 ''';

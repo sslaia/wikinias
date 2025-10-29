@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
-import '../models/photo.dart';
-import '../services/photo_api_service.dart';
+import '../models/gallery_content_item.dart';
+import '../services/app_data_service.dart';
 import '../widgets/gallery_carousel.dart';
 
 class GalleryDancesScreen extends StatefulWidget {
@@ -12,26 +13,31 @@ class GalleryDancesScreen extends StatefulWidget {
 }
 
 class _GalleryDancesScreenState extends State<GalleryDancesScreen> {
-  late Future<List<Photo?>> _futurePhotos;
-  final PhotoApiService _photoApiService = PhotoApiService();
+  late Future<List<GalleryContentItem>> futureDancesGallery;
 
   @override
   void initState() {
     super.initState();
-    _futurePhotos = _photoApiService.fetchDancePhotos();
+    final appData = Provider.of<AppDataService>(context, listen: false);
+    futureDancesGallery = appData.loadGalleryData(category: "dances");
   }
 
   @override
   Widget build(BuildContext context) {
-    return FutureBuilder<List<Photo?>>(
-      future: _futurePhotos,
+    return FutureBuilder<List<GalleryContentItem>>(
+      future: futureDancesGallery,
       builder: (context, snapshot) {
-        if (snapshot.hasError) {
-          return Center(child: Text('Error: ${snapshot.error}'));
+        if (snapshot.connectionState == ConnectionState.waiting) {
+          return const Center(child: CircularProgressIndicator());
+        } else if (snapshot.hasError) {
+          return Center(child: Text("Error: ${snapshot.error}"));
+        } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
+          return const Center(child: Text("No photos found in this category."));
+        } else {
+          return snapshot.hasData
+              ? GalleryCarousel(snapshot: snapshot.data)
+              : const CircularProgressIndicator();
         }
-        return snapshot.hasData
-            ? GalleryCarousel(snapshot: snapshot.data)
-            : const CircularProgressIndicator();
       },
     );
   }

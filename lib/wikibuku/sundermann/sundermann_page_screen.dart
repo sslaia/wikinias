@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:url_launcher/url_launcher.dart';
+import 'package:wikinias/screens/image_screen.dart';
 import 'package:wikinias/widgets/flexible_page_header.dart';
 import 'package:wikinias/widgets/footer_section.dart';
 
@@ -32,6 +34,26 @@ class _SundermannPageScreenState extends State<SundermannPageScreen> {
     );
   }
 
+  void _navigateToCreatePage(String newTitle) {
+    final String fullEditUrl =
+        'https://incubator.wikimedia.org/wiki/Wb/nia/$newTitle?action=edit&section=all';
+    launchUrl(Uri.parse(fullEditUrl));
+    // Navigator.of(context).push(
+    //   MaterialPageRoute<void>(
+    //     builder: (context) =>
+    //         CreateNewPageScreen(title: newTitle),
+    //   ),
+    // );
+  }
+
+  void _navigateToImagePage(String imgUrl) {
+    Navigator.of(context).push(
+      MaterialPageRoute<void>(
+        builder: (context) => ImageScreen(imagePath: imgUrl),
+      ),
+    );
+  }
+
   void _navigateToNewPage(String pageTitle) {
     final String title = pageTitle.substring(7);
     Navigator.of(context).push(
@@ -44,25 +66,29 @@ class _SundermannPageScreenState extends State<SundermannPageScreen> {
   @override
   Widget build(BuildContext context) {
     final String baseUrl = 'https://incubator.m.wikimedia.org/wiki/Wb/nia/';
-    final String pageUrl = 'https://incubator.m.wikimedia.org/wiki/Wb/nia/${widget.title}';
-    final Color color = Theme.of(context).colorScheme.primary;
+    final String pageUrl =
+        'https://incubator.m.wikimedia.org/wiki/Wb/nia/${widget.title}';
     final String sundermannImage = "assets/images/bowogafasi.webp";
-    final double bodyFontSize = Theme.of(context).textTheme.bodyMedium?.fontSize ?? 14.0;
+    final TextStyle? titleStyle = Theme.of(context).textTheme.titleSmall
+        ?.copyWith(color: Theme.of(context).colorScheme.primary);
 
     return Scaffold(
       bottomNavigationBar: LabelBottomAppBar(label: 'wikibuku_sundermann'),
       body: CustomScrollView(
         slivers: [
           SliverAppBar(
-            iconTheme: IconThemeData(color: color),
-            title: Text(widget.title.substring(18), style: TextStyle(color: color, fontSize: bodyFontSize * 1.0)),
+            iconTheme: IconThemeData(color: Theme.of(context).colorScheme.primary),
+            title: Text(
+              widget.title.substring(18),
+              style: titleStyle,
+            ),
             floating: true,
             expandedHeight: 230,
             flexibleSpace: FlexiblePageHeader(image: sundermannImage),
             actions: [
-              ShareIconButton(color: color, url: pageUrl),
-              EditIconButton(color: color, url: '$pageUrl?action=edit&section=all'),
-              ViewOnWebIconButton(color: color, url: pageUrl),
+              ShareIconButton(url: pageUrl),
+              EditIconButton(url: '$pageUrl?action=edit&section=all'),
+              ViewOnWebIconButton(url: pageUrl),
             ],
           ),
           SliverToBoxAdapter(
@@ -76,10 +102,12 @@ class _SundermannPageScreenState extends State<SundermannPageScreen> {
                     }
                     return snapshot.hasData
                         ? PageScreenBody(
-                      html: snapshot.data!,
-                      onInternalLinkTap: _navigateToNewPage,
-                      baseUrl: baseUrl,
-                    )
+                            html: snapshot.data!,
+                            baseUrl: baseUrl,
+                            onExistentLinkTap: _navigateToNewPage,
+                            onNonExistentLinkTap: _navigateToCreatePage,
+                            onImageLinkTap: _navigateToImagePage,
+                          )
                         : const Center(child: CircularProgressIndicator());
                   },
                 ),

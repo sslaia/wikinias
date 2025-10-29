@@ -2,23 +2,21 @@ import 'package:flutter/material.dart';
 import 'package:flutter_widget_from_html/flutter_widget_from_html.dart';
 import 'package:url_launcher/url_launcher.dart';
 
-import '../screens/image_screen.dart';
-import '../utils/get_capitalised_title_from_url.dart';
-import '../utils/sanitised_title.dart';
-
-typedef InternalLinkCallback = void Function(String title);
-
 class PageScreenBody extends StatelessWidget {
   const PageScreenBody({
     super.key,
     required this.html,
-    required this.onInternalLinkTap,
     required this.baseUrl,
+    required this.onExistentLinkTap,
+    required this.onNonExistentLinkTap,
+    required this.onImageLinkTap,
   });
 
   final String html;
-  final InternalLinkCallback onInternalLinkTap;
   final String baseUrl;
+  final void Function(String newPageTitle) onExistentLinkTap;
+  final void Function(String newTitle) onNonExistentLinkTap;
+  final void Function(String imgUrl) onImageLinkTap;
 
   @override
   Widget build(BuildContext context) {
@@ -31,21 +29,18 @@ class PageScreenBody extends StatelessWidget {
         html,
         renderMode: RenderMode.column,
         textStyle: baseTextStyle.copyWith(fontFamily: 'Gelasio'),
+
         onTapUrl: (url) {
           // Handle internal wiki links (blue links)
           if (url.startsWith('/wiki/')) {
-            final newPageTitle = sanitisedTitle(url.substring(6));
             // Use the callback to notify the parent screen
-            onInternalLinkTap(newPageTitle);
+            onExistentLinkTap(url);
             return true;
           }
 
           // Handle non-existent pages (red links)
           if (url.startsWith('/w/')) {
-            final String newTitle = getCapitalisedTitleFromUrl(url);
-            final String fullEditUrl =
-                '$baseUrl$newTitle?action=edit&section=all';
-            launchUrl(Uri.parse(fullEditUrl));
+            onNonExistentLinkTap(url);
             return true;
           }
 
@@ -54,24 +49,29 @@ class PageScreenBody extends StatelessWidget {
           return true;
         },
         onTapImage: (image) {
-          Navigator.push(
-            context,
-            MaterialPageRoute<void>(
-              builder: (context) =>
-                  ImageScreen(imagePath: image.sources.first.url),
-            ),
-          );
+          onImageLinkTap(image.sources.first.url);
         },
-        customStylesBuilder: (element) {
-          // Use a relative font size based on the theme's body text for better scaling.
-          final double bodyFontSize =
-              Theme.of(context).textTheme.bodyMedium?.fontSize ?? 14.0;
 
+        customStylesBuilder: (element) {
+          final double headingStyle =
+              Theme.of(context).textTheme.titleSmall?.fontSize ?? 14.0;
+
+          if (element.localName == 'img') {
+            return {'max-width': '100%', 'height': 'auto'};
+          }
+          // this below is a temporary solution
+          // as the package renders the wiki headings too big
+          if (element.classes.contains('mw-page-title-main')) {
+            return {'font-size': '${headingStyle * 0.5}pt'};
+          }
           if (element.classes.contains("mw-heading")) {
-            return {'font-size': '${bodyFontSize * 0.5}pt'};
+            return {'font-size': '${headingStyle * 0.5}pt'};
+          }
+          if (element.classes.contains("mw-heading")) {
+            return {'font-size': '${headingStyle * 0.5}pt'};
           }
           if (element.localName == "figure") {
-            return {'width': '100%'};
+            return {'max-width': '100%', 'height': 'auto'};
           }
           if (element.classes.contains("new")) {
             return {'color': 'sienna'};

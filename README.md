@@ -7,52 +7,26 @@ An app for Niaspedia, Wikikamus and Wikibuku. Get it from Play Store:
 
 ## Version's history
 
-Version 2.0.0:
-- Almost complete rewriten. The first wiki is now called Niaspedia, the second Wikikamus and the third one Wikibuku
-- Two new modules added: Courses and Gallery
-- There is a new form for creating a new page
-- Portals are added to Niaspedia and Wikibuku
-- Most contents are now fetched through Mediawiki API request
-- Compliance with new Play requirements and policies
-- The community shortscuts have been trimmed down to necessary ones
+## New in the 2.1.1:
 
-Version 1.5.0:
-- Increased overall speed
-- Increased the min SDK to 21
-- Used API level 35
-- Updated sdk to the latest
-- Updated deprecated codes
-- Added back and forward navigation buttons
-- Added share to social media button
-- Added edit button for wiki editing in an external browser
-- Improved back button handling (making PopScope works together with WebView)
-- Restructured the code
-
-- Version 1.4:
-- Uses Dart 3 compatible sdk 
-- Updated webview and other packages to the latest version
-- Preferences are now saved.
-- Improved code for better maintenance
-
-Version 1.3:
-- Fixed: menu issue with Android 5 and below
-- Reorganised the menu: all items are divided in Shortcuts and Settings
-- Changing wiki project is now under Settings
-- Changing the language for the menu is also under Settings
-- All shortcuts to community tools are under Shortcuts
-- Added a shortcut to Nias keyboard installation/setup
-- Added shortcuts to about wiki and about the app
-
-Version 1.2:
-- New icons 
-- Minor fixes
-
-Version 1.0:
-- Access Wiktionary, Wikipedia, Wikibooks using WebView
-- Internationalization/localization (en, id/nia), easily change the language
-- All important shortcuts
+- New: Update service settings
+- New: Contents for courses module
+- New: Portals
+- Improved API and html parsing
+- General code spring cleaning
 
 
+## New in the 2.1.0:
+
+- New: dark theme. The app now adapts to the system dark theme.
+- New: users can now change the app font size.
+- New: links are now being handled properly
+- Improved app theme.
+- Reduced API request by caching the featured article and DIY item for one day.
+- Implementing some suggestions from user's feedback.
+- Overall refactoring the whole app code, therefore again a big version number jump.
+- Delayed to next updates: audio handling, mobile screen friendly image width,
+  manually update the data from remote, manually getting the courses contents, therapeutic galleries, etc.
 
 ## Getting the app
 

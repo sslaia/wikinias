@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_widget_from_html/flutter_widget_from_html.dart';
 import 'package:share_plus/share_plus.dart';
 import 'package:url_launcher/url_launcher.dart';
+import 'package:wikinias/screens/image_screen.dart';
 
 import '../../app_bar/label_bottom_app_bar.dart';
 import '../../services/wikinias_api_service.dart';
@@ -33,8 +34,8 @@ class _BibleChapterScreenState extends State<BibleChapterScreen> {
     );
   }
 
-  void _navigateToNewPage(String pageTitle) {
-    final String title = pageTitle.substring(7);
+  void _navigateToNewPage(String newPageTitle) {
+    final String title = newPageTitle.substring(7);
     Navigator.of(context).push(
       MaterialPageRoute<void>(
         builder: (context) => WikibukuPageScreen(title: title),
@@ -42,22 +43,43 @@ class _BibleChapterScreenState extends State<BibleChapterScreen> {
     );
   }
 
+  void _navigateToCreatePage(String newTitle) {
+    final String fullEditUrl =
+        'https://incubator.wikimedia.org/wiki/Wb/nia/$newTitle?action=edit&section=all';
+    launchUrl(Uri.parse(fullEditUrl));
+    // Navigator.of(context).push(
+    //   MaterialPageRoute<void>(
+    //     builder: (context) =>
+    //         CreateNewPageScreen(title: newTitle),
+    //   ),
+    // );
+  }
+
+  void _navigateToImagePage(String imgUrl) {
+    Navigator.of(context).push(
+      MaterialPageRoute<void>(
+        builder: (context) => ImageScreen(imagePath: imgUrl),
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     final String title = widget.title;
-    final Color color = Theme.of(context).colorScheme.primary;
     final String bibleImage = 'assets/images/bible.webp';
     final String baseUrl = 'https://incubator.m.wikimedia.org/wiki/Wb/nia/';
-    final String pageUrl = 'https://incubator.m.wikimedia.org/wiki/Wb/nia/${widget.title}';
-    final double bodyFontSize = Theme.of(context).textTheme.bodyMedium?.fontSize ?? 14.0;
+    final String pageUrl =
+        'https://incubator.m.wikimedia.org/wiki/Wb/nia/${widget.title}';
+    final TextStyle? titleStyle = Theme.of(context).textTheme.titleSmall
+        ?.copyWith(color: Theme.of(context).colorScheme.primary);
 
     return Scaffold(
       bottomNavigationBar: LabelBottomAppBar(label: "wikibuku_bible"),
       body: CustomScrollView(
         slivers: [
           SliverAppBar(
-            iconTheme: IconThemeData(color: color),
-            title: Text(title, style: TextStyle(color: color, fontSize: bodyFontSize * 1.0)),
+            iconTheme: IconThemeData(color: Theme.of(context).colorScheme.primary),
+            title: Text(title, style: titleStyle),
             floating: true,
             expandedHeight: 250,
             flexibleSpace: FlexiblePageHeader(image: bibleImage),
@@ -65,7 +87,7 @@ class _BibleChapterScreenState extends State<BibleChapterScreen> {
               // Share button
               IconButton(
                 tooltip: 'share'.tr(),
-                icon: Icon(Icons.share_outlined, color: color),
+                icon: Icon(Icons.share_outlined, color: Theme.of(context).colorScheme.primary),
                 onPressed: () {
                   SharePlus.instance.share(
                     ShareParams(uri: Uri.parse(pageUrl)),
@@ -78,7 +100,7 @@ class _BibleChapterScreenState extends State<BibleChapterScreen> {
                 onPressed: () {
                   launchUrl(Uri.parse('$pageUrl?action=edit&section=all'));
                 },
-                icon: Icon(Icons.edit_outlined, color: color),
+                icon: Icon(Icons.edit_outlined, color: Theme.of(context).colorScheme.primary),
               ),
             ],
           ),
@@ -95,10 +117,12 @@ class _BibleChapterScreenState extends State<BibleChapterScreen> {
                       }
                       return snapshot.hasData
                           ? PageScreenBody(
-                      html: snapshot.data!,
-                      onInternalLinkTap: _navigateToNewPage,
-                      baseUrl: baseUrl,
-                      )
+                              html: snapshot.data!,
+                              baseUrl: baseUrl,
+                              onExistentLinkTap: _navigateToNewPage,
+                              onNonExistentLinkTap: _navigateToCreatePage,
+                              onImageLinkTap: _navigateToImagePage,
+                            )
                           : const Center(child: CircularProgressIndicator());
                     },
                   ),
@@ -109,7 +133,10 @@ class _BibleChapterScreenState extends State<BibleChapterScreen> {
                 // Attribution
                 Padding(
                   padding: const EdgeInsets.all(8.0),
-                  child: HtmlWidget(wikibukuFooter, textStyle: TextStyle(fontSize: 9),),
+                  child: HtmlWidget(
+                    wikibukuFooter,
+                    textStyle: TextStyle(fontSize: 9),
+                  ),
                 ),
                 const SizedBox(height: 32.0),
               ],

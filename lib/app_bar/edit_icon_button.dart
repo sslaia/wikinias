@@ -5,11 +5,9 @@ import 'package:url_launcher/url_launcher.dart';
 class EditIconButton extends StatelessWidget {
   const EditIconButton({
     super.key,
-    required this.color,
     required this.url,
   });
 
-  final Color color;
   final String url;
 
   @override
@@ -17,7 +15,7 @@ class EditIconButton extends StatelessWidget {
     return IconButton(
       tooltip: 'edit'.tr(),
       icon: Icon(Icons.edit_outlined),
-      color: color,
+      color: Theme.of(context).colorScheme.primary,
       onPressed: () {
         launchUrl(Uri.parse('$url?action=edit&section=all'));
       },

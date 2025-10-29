@@ -1,9 +1,25 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:wikinias/app_bar/bottom_app_bar_label_button.dart';
+import 'package:wikinias/app_bar/drawer_about_section.dart';
+import 'package:wikinias/app_bar/drawer_font_selection_section.dart';
+import 'package:wikinias/app_bar/drawer_header_container.dart';
+import 'package:wikinias/app_bar/drawer_language_selection_section.dart';
+import 'package:wikinias/app_bar/drawer_project_selection_section.dart';
+import 'package:wikinias/app_bar/drawer_update_service_section.dart';
+import 'package:wikinias/app_bar/open_drawer_button.dart';
+import 'package:wikinias/app_bar/random_icon_button.dart';
+import 'package:wikinias/app_bar/refresh_home_icon_button.dart';
+import 'package:wikinias/app_bar/shortcuts_icon_button.dart';
+import 'package:wikinias/app_bar/wikinias_bottom_app_bar.dart';
+import 'package:wikinias/models/featured_content_item.dart';
+import 'package:wikinias/services/app_data_service.dart';
+import 'package:wikinias/wikikamus/widgets/wikikamus_drawer_section.dart';
+import 'package:wikinias/wikikamus/wikikamus_page_screen.dart';
 
 import '../app_bar/wikinias_drawer_menu.dart';
-import '../services/content_service.dart';
+import '../models/word.dart';
 import '../widgets/create_new_page_text_button.dart';
 import '../widgets/footer_section.dart';
 import '../widgets/spacer_color_bar.dart';
@@ -12,10 +28,9 @@ import '../widgets/featured_dyk_section.dart';
 import '../widgets/featured_word_section.dart';
 import '../widgets/main_header_section.dart';
 import '../widgets/main_header_image.dart';
-import 'widgets/wikikamus_search_section.dart';
-import 'widgets/wikikamus_bottom_app.bar.dart';
-import 'widgets/wikikamus_footer.dart';
 import 'guides/create_new_entry.dart';
+import 'widgets/wikikamus_search_section.dart';
+import 'widgets/wikikamus_footer.dart';
 
 class WikikamusHomeScreen extends StatefulWidget {
   const WikikamusHomeScreen({super.key});
@@ -25,31 +40,64 @@ class WikikamusHomeScreen extends StatefulWidget {
 }
 
 class _WikikamusHomeScreenState extends State<WikikamusHomeScreen> {
-  final GlobalKey<ScaffoldState> wikikamusScaffoldKey =
-      GlobalKey<ScaffoldState>();
-
-  late Future<Map<String, dynamic>> _futureContent;
+  late Future<HomeScreenContent> _futureContent;
+  late final AppDataService _appDataService;
 
   @override
   void initState() {
     super.initState();
-    _futureContent = _fetchContent();
+    _appDataService = Provider.of<AppDataService>(context, listen: false);
+    _appDataService.triggerBackgroundUpdate();
+    _futureContent = _fetchScreenContent();
   }
 
-  Future<Map<String, dynamic>> _fetchContent() async {
-    final contentService = Provider.of<ContentService>(context, listen: false);
-
+  Future<HomeScreenContent> _fetchScreenContent() async {
     final results = await Future.wait([
-      contentService.getFeaturedWord(),
-      contentService.getFeaturedDyk(),
+      _appDataService.getDailyDyk(),
+      _appDataService.getDailyWord(),
     ]);
+    return HomeScreenContent(
+      dyk: results[0] as FeaturedContentItem,
+      word: results[1] as Word,
+    );
+  }
 
-    return {'word': results[0], 'dyk': results[1]};
+  void _navigateToNewPage(String pageTitle) {
+    if (mounted) {
+      Navigator.of(context).push(
+        MaterialPageRoute<void>(
+          builder: (context) => WikikamusPageScreen(title: pageTitle),
+        ),
+      );
+    }
   }
 
   @override
   Widget build(BuildContext context) {
-    final String wikikamusMainImage = 'assets/images/baluse.webp';
+    final GlobalKey<ScaffoldState> wikikamusScaffold = GlobalKey<ScaffoldState>();
+
+    // BottomAppBar configuration
+    final List<Widget> barChildren = [
+      OpenDrawerButton(),
+      BottomAppBarLabelButton(label: 'wikikamus'),
+      const Spacer(),
+      RefreshHomeIconButton(route: '/wikikamus',
+      ),
+      ShortcutsIconButton(),
+      RandomIconButton(onRandomTitleFound: _navigateToNewPage),
+    ];
+
+    // MenuDrawer items
+    final List<Widget> drawerChildren = [
+      DrawerHeaderContainer(),
+      WikikamusDrawerSection(),
+      DrawerProjectSelectionSection(),
+      DrawerLanguageSelectionSection(),
+      DrawerFontSelectionSection(),
+      DrawerUpdteServiceSection(),
+      DrawerAboutSection(),
+    ];
+
     final String footer = wikikamusFooter;
 
     return PopScope(
@@ -59,10 +107,16 @@ class _WikikamusHomeScreenState extends State<WikikamusHomeScreen> {
       },
       child: SafeArea(
         child: Scaffold(
-          key: wikikamusScaffoldKey,
-          drawer: WikiniasDrawerMenu(),
-          bottomNavigationBar: WikikamusBottomAppBar(),
-          body: FutureBuilder<Map<String, dynamic>>(
+          key: wikikamusScaffold,
+          drawer: Builder(
+            builder: (drawerContext) {
+              return WikiniasDrawerMenu(
+                children: drawerChildren,
+              );
+            },
+          ),
+          bottomNavigationBar: WikiniasBottomAppBar(children: barChildren),
+          body: FutureBuilder<HomeScreenContent>(
             future: _futureContent,
             builder: (context, snapshot) {
               if (snapshot.connectionState == ConnectionState.waiting) {
@@ -71,8 +125,7 @@ class _WikikamusHomeScreenState extends State<WikikamusHomeScreen> {
               if (snapshot.hasError) {
                 return Center(child: Text('no_data').tr());
               }
-              final featuredWord = snapshot.data!['word'] ?? {};
-              final featuredDyk = snapshot.data!['dyk'] ?? {};
+              final HomeScreenContent content = snapshot.data!;
 
               return SingleChildScrollView(
                 child: Padding(
@@ -80,21 +133,22 @@ class _WikikamusHomeScreenState extends State<WikikamusHomeScreen> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
-                      MainHeaderImage(image: wikikamusMainImage),
+                      MainHeaderImage(),
                       const SizedBox(height: 28.0),
                       MainHeaderSection(),
                       const SizedBox(height: 28.0),
                       const WikikamusSearchSection(),
                       const SizedBox(height: 28.0),
-                      FeaturedWordSection(wordData: featuredWord),
+                      FeaturedWordSection(wordData: content.word),
                       const SizedBox(height: 28.0),
                       const SpacerImage(),
                       const SizedBox(height: 28.0),
-                      FeaturedDykSection(dykData: featuredDyk),
+                      FeaturedDykSection(dykData: content.dyk),
                       const SizedBox(height: 28.0),
                       SpacerColorBar(imageWidth: 250),
+                      const SizedBox(height: 28.0),
                       CreateNewPageTextButton(
-                        label: 'create_new_entry',
+                        label: 'create_new_page',
                         destination: CreateNewEntry(),
                       ),
                       FooterSection(footer: footer),
@@ -108,4 +162,11 @@ class _WikikamusHomeScreenState extends State<WikikamusHomeScreen> {
       ),
     );
   }
+}
+
+class HomeScreenContent {
+  final FeaturedContentItem? dyk;
+  final Word? word;
+
+  HomeScreenContent({required this.dyk, required this.word});
 }

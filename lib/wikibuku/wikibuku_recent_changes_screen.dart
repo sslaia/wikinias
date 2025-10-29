@@ -1,44 +1,76 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
+import 'package:wikinias/app_bar/bottom_app_bar_label_button.dart';
+import 'package:wikinias/app_bar/home_icon_button.dart';
+import 'package:wikinias/app_bar/refresh_icon_button.dart';
+import 'package:wikinias/app_bar/shortcuts_icon_button.dart';
+import 'package:wikinias/app_bar/wikinias_bottom_app_bar.dart';
+import 'package:wikinias/wikibuku/widgets/random_icon_button2.dart';
+import 'package:wikinias/wikibuku/wikibuku_page_screen.dart';
 
 import '../app_bar/view_on_web_icon_button.dart';
 import '../models/recent_changes.dart';
 import '../services/wikinias_api_service.dart';
-import 'widgets/wikibuku_recent_changes_bottom_app_bar.dart';
 
 class WikibukuRecentChangesScreen extends StatefulWidget {
   const WikibukuRecentChangesScreen({super.key});
 
   @override
-  State<WikibukuRecentChangesScreen> createState() => _WikibukuRecentChangesScreenState();
+  State<WikibukuRecentChangesScreen> createState() =>
+      _WikibukuRecentChangesScreenState();
 }
 
-class _WikibukuRecentChangesScreenState extends State<WikibukuRecentChangesScreen> {
+class _WikibukuRecentChangesScreenState
+    extends State<WikibukuRecentChangesScreen> {
   final WikiniasApiService wikiniasApiService = WikiniasApiService();
   late Future<List<RecentChanges>> futureRecentChanges;
 
   @override
   void initState() {
-    futureRecentChanges = wikiniasApiService.fetchWikibukuRecentChanges(limit: 50);
+    futureRecentChanges = wikiniasApiService.fetchWikibukuRecentChanges(
+      limit: 50,
+    );
     super.initState();
+  }
+
+  void _navigateToRandomPage(String newRandomTitle) {
+    // final String title = newRandomTitle.substring(7);
+    Navigator.of(context).push(
+      MaterialPageRoute<void>(
+        builder: (context) => WikibukuPageScreen(title: newRandomTitle),
+      ),
+    );
   }
 
   @override
   Widget build(BuildContext context) {
-    final Color color = Theme.of(context).colorScheme.primary;
-    final String url = 'https://incubator.wikimedia.org/wiki/Special:RecentChanges?hidebots=1&translations=filter&hidecategorization=1&hideWikibase=1&hideWikifunctions=1&limit=250&days=30&urlversion=2';
-    final double bodyFontSize = Theme.of(context).textTheme.bodyMedium?.fontSize ?? 14.0;
+    // BottomAppBar configuration
+    final List<Widget> barChildren = [
+      BottomAppBarLabelButton(label: 'recent_changes'),
+      const Spacer(),
+      HomeIconButton(),
+      RefreshIconButton(destination: WikibukuRecentChangesScreen()),
+      ShortcutsIconButton(),
+      RandomIconButton2(onRandomButtonTap: _navigateToRandomPage),
+    ];
+    final String url =
+        'https://incubator.wikimedia.org/wiki/Special:RecentChanges?hidebots=1&translations=filter&hidecategorization=1&hideWikibase=1&hideWikifunctions=1&limit=250&days=30&urlversion=2';
 
     return SafeArea(
       child: Scaffold(
         appBar: AppBar(
-          iconTheme: IconThemeData(color: color),
-          title: Text('recent_changes', style: TextStyle(color: color, fontSize: bodyFontSize * 1.0)).tr(),
-            actions: [
-              ViewOnWebIconButton(url: url, color: color),
-            ]
+          iconTheme: IconThemeData(
+            color: Theme.of(context).colorScheme.primary,
+          ),
+          title: Text(
+            'recent_changes'.tr(),
+            style: Theme.of(context).textTheme.titleSmall?.copyWith(
+              color: Theme.of(context).colorScheme.primary,
+            ),
+          ),
+          actions: [ViewOnWebIconButton(url: url)],
         ),
-        bottomNavigationBar: WikibukuRecentChangesBottomAppBar(),
+        bottomNavigationBar: WikiniasBottomAppBar(children: barChildren),
         body: FutureBuilder(
           future: futureRecentChanges,
           builder: (context, snapshot) {

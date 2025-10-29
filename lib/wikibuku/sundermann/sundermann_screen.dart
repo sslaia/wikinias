@@ -12,9 +12,15 @@ class SundermannScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final Color color = Theme.of(context).colorScheme.primary;
+    final TextStyle? titleStyle = Theme.of(context).textTheme.titleSmall
+        ?.copyWith(color: Theme.of(context).colorScheme.primary);
+    final TextStyle? headingStyle = Theme.of(context).textTheme.titleMedium
+        ?.copyWith(
+      color: Theme.of(context).colorScheme.primary,
+      fontFamily: 'Gelasio',
+      fontWeight: FontWeight.w700,
+    );
     final String sundermannImage = "assets/images/sundermann.webp";
-    final double bodyFontSize = Theme.of(context).textTheme.bodyMedium?.fontSize ?? 14.0;
 
     return SafeArea(
       child: Scaffold(
@@ -22,8 +28,8 @@ class SundermannScreen extends StatelessWidget {
         body: CustomScrollView(
           slivers: [
             SliverAppBar(
-              iconTheme: IconThemeData(color: color),
-              title: Text('Kamus Sundermann', style: TextStyle(color: color, fontSize: bodyFontSize * 1.0)),
+              iconTheme: IconThemeData(color: Theme.of(context).colorScheme.primary),
+              title: Text('Kamus Sundermann', style: titleStyle),
               floating: true,
               expandedHeight: 250,
               flexibleSpace: FlexiblePageHeader(image: sundermannImage),
@@ -37,7 +43,7 @@ class SundermannScreen extends StatelessWidget {
                   child: HtmlWidget(sundermannIntroduction),
                 ),
                 SizedBox(height: 30),
-                Text("Molo'ö börö hurufo", style: TextStyle(fontSize: bodyFontSize * 1.2)),
+                Text("Molo'ö börö hurufo", style: headingStyle),
                 Wrap(
                   children: [
                     SundermannDictionaryPage(title: 'A'),

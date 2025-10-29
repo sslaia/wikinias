@@ -1,6 +1,7 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:wikinias/screens/project_selection_screen.dart';
 import '../models/slider_model.dart';
 
 class OnboardingScreen extends StatefulWidget {
@@ -32,7 +33,12 @@ class OnboardingScreenState extends State<OnboardingScreen> {
     final prefs = await SharedPreferences.getInstance();
     await prefs.setBool('onboarding_complete', true);
     if (!mounted) return;
-    Navigator.of(context).pushReplacementNamed('/settings');
+    Navigator.of(context);
+    Navigator.of(context).push(
+      MaterialPageRoute<void>(
+        builder: (context) => ProjectSelectionScreen(),
+      ),
+    );
   }
 
   Widget _buildPageIndicator() {
@@ -63,6 +69,9 @@ class OnboardingScreenState extends State<OnboardingScreen> {
   Widget build(BuildContext context) {
     const englishSelected = SnackBar(
       content: Text('English is selected for the interface language!'),
+    );
+    const indonesiaSelected = SnackBar(
+      content: Text('Bahasa Indonesia menjadi bahasa antar muka menu!'),
     );
     const niasSelected = SnackBar(
       content: Text("Te'oroma'ö ngawalö duria ba li Niha!"),
@@ -105,14 +114,14 @@ class OnboardingScreenState extends State<OnboardingScreen> {
                     ).showSnackBar(englishSelected);
                   },
                   child: Text(
-                    'english',
-                    style: TextStyle(color: isDarkMode ? color : Color(0xff9b00a1)),
-                  ).tr(),
+                    'english'.tr(),
+                    style: TextStyle(color: isDarkMode ? color : Color(0xff121298)),
+                  ),
                 ),
                 const SizedBox(width: 8.0),
                 Text('|'),
                 const SizedBox(width: 8.0),
-                // Nias
+                // Indonesia
                 TextButton(
                   onPressed: () {
                     context.setLocale(Locale('id'));
@@ -121,9 +130,25 @@ class OnboardingScreenState extends State<OnboardingScreen> {
                     ).showSnackBar(niasSelected);
                   },
                   child: Text(
-                    'nias',
+                    'indonesia'.tr(),
+                    style: TextStyle(color: isDarkMode ? color : Color(0xff9b00a1)),
+                  ),
+                ),
+                const SizedBox(width: 8.0),
+                Text('|'),
+                const SizedBox(width: 8.0),
+                // Nias
+                TextButton(
+                  onPressed: () {
+                    context.setLocale(Locale('nia'));
+                    ScaffoldMessenger.of(
+                      context,
+                    ).showSnackBar(niasSelected);
+                  },
+                  child: Text(
+                    'nias'.tr(),
                     style: TextStyle(color: isDarkMode ? color : Color(0xff121298)),
-                  ).tr(),
+                  ),
                 ),
               ],
             ),
@@ -136,7 +161,7 @@ class OnboardingScreenState extends State<OnboardingScreen> {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   if (_currentPage < slides.length - 1)
-                    TextButton(
+                    ElevatedButton(
                       onPressed: _onDone,
                       child: Text("skip").tr(),
                     ),

@@ -3,8 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:html_character_entities/html_character_entities.dart';
 import 'package:provider/provider.dart';
 import 'package:wikinias/providers/settings_provider.dart';
+import 'package:wikinias/widgets/create_new_page_form.dart';
 
-import '../widgets/create_new_page_form.dart';
 import '../widgets/create_new_page_icon_button.dart';
 import '../models/search_result.dart';
 import '../services/search_api_service.dart';
@@ -48,7 +48,7 @@ class _NiaspediaSearchResultsScreenState
       });
     } catch (e) {
       setState(() {
-        _error = 'search_error_occurred: $e'.tr();
+        _error = "'search_error_occurred'.tr(): $e";
         _isLoading = false;
       });
     }
@@ -56,35 +56,30 @@ class _NiaspediaSearchResultsScreenState
 
   @override
   Widget build(BuildContext context) {
-    final Color color = Theme.of(context).colorScheme.primary;
-    final Color errorColor = Theme.of(context).colorScheme.error;
-    final double bodyFontSize =
-        Theme.of(context).textTheme.bodyMedium?.fontSize ?? 14.0;
+    final String niaspediaUrl = 'https://nia.wikipedia.org/wiki/';
 
     return SafeArea(
       child: Consumer<SettingsProvider>(
         builder: (context, settingsProvider, child) => Scaffold(
           appBar: AppBar(
             iconTheme: IconThemeData(
-              color: color,
+              color: Theme.of(context).colorScheme.primary,
             ),
             title: Text(
-              'search_results',
-              style: TextStyle(color: color, fontSize: bodyFontSize * 1.0),
-            ).tr(),
-            actions: [
-              CreateNewPageIconButton(
-                label: 'create_new_page',
-                destination: CreateNewPageForm(url: settingsProvider.getProjectUrl()),
-                color: color,
+              'search_results'.tr(),
+              style: Theme.of(context).textTheme.titleSmall?.copyWith(
+                color: Theme.of(context).colorScheme.primary,
               ),
+            ),
+            actions: [
+              CreateNewPageIconButton(destination: CreateNewPageForm(url: niaspediaUrl)),
             ],
           ),
           body: _isLoading
               ? Center(child: CircularProgressIndicator())
               : _error.isNotEmpty
               ? Center(
-                  child: Text(_error, style: TextStyle(color: errorColor)),
+                  child: Text(_error, style: TextStyle(color: Theme.of(context).colorScheme.error)),
                 )
               : _searchResults.isEmpty
               ? Center(child: Text('search_no_results').tr())

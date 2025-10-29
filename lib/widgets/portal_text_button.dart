@@ -3,11 +3,10 @@ import 'package:flutter/material.dart';
 
 class PortalTextButton extends StatelessWidget {
   const PortalTextButton({
-    super.key, required this.label, required this.color, required this.destination,
+    super.key, required this.label, required this.destination,
   });
 
   final String label;
-  final Color color;
   final Widget destination;
 
   @override
@@ -25,13 +24,13 @@ class PortalTextButton extends StatelessWidget {
         shape: WidgetStateProperty.all(
           RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(8.0),
-            side: BorderSide(color: color),
+            side: BorderSide(color: Theme.of(context).colorScheme.primary),
           ),
         ),
       ),
       child: Text(
         label,
-        style: TextStyle(color: color),
+        style: TextStyle(color: Theme.of(context).colorScheme.primary),
       ).tr(),
     );
   }

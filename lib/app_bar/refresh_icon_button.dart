@@ -2,13 +2,8 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 
 class RefreshIconButton extends StatelessWidget {
-  const RefreshIconButton({
-    super.key,
-    required this.color,
-    required this.destination,
-  });
+  const RefreshIconButton({super.key, required this.destination});
 
-  final Color color;
   final Widget destination;
 
   @override
@@ -16,11 +11,9 @@ class RefreshIconButton extends StatelessWidget {
     return IconButton(
       tooltip: 'refresh'.tr(),
       icon: Icon(Icons.refresh_outlined),
-      color: color,
+      color: Theme.of(context).colorScheme.primary,
       onPressed: () {
-        Navigator.pop(context);
-        Navigator.push(
-          context,
+        Navigator.of(context).pushReplacement(
           MaterialPageRoute<void>(
             builder: (context) => destination,
           ),

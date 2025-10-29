@@ -2,6 +2,11 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
+
+import 'package:wikinias/localizations/nia_material_localizations.dart';
+import 'package:wikinias/services/api_service.dart';
+import 'package:wikinias/services/app_data_service.dart';
 import 'package:wikinias/courses/courses_screen.dart';
 import 'package:wikinias/gallery/gallery_screen.dart';
 import 'package:wikinias/niaspedia/niaspedia_home_screen.dart';
@@ -9,34 +14,27 @@ import 'package:wikinias/providers/font_size_provider.dart';
 import 'package:wikinias/providers/settings_provider.dart';
 import 'package:wikinias/providers/theme_provider.dart';
 import 'package:wikinias/screens/onboarding_screen.dart';
-import 'package:wikinias/screens/settings_screen.dart';
-import 'package:wikinias/services/content_service.dart';
-import 'package:wikinias/services/title_api_service.dart';
 import 'package:wikinias/wikibuku/wikibuku_home_screen.dart';
 import 'package:wikinias/wikikamus/wikikamus_home_screen.dart';
 
 late bool onboardingComplete;
-// late String selectedRoute;
-late ContentService contentService;
-late TitleApiService titleApiService;
-// late GalleryApiService galleryApiService;
+late ApiService apiService;
+late AppDataService appDataService;
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   final prefs = await SharedPreferences.getInstance();
   onboardingComplete = prefs.getBool('onboarding_complete') ?? false;
-  // selectedRoute = prefs.getString('selected_route') ?? '/';
   await EasyLocalization.ensureInitialized();
 
-  contentService = ContentService(prefs);
-  titleApiService = TitleApiService(prefs);
-  // galleryApiService = GalleryApiService(prefs);
+  apiService = ApiService(prefs);
+  appDataService = AppDataService(apiService, prefs);
 
   runApp(
     EasyLocalization(
-      supportedLocales: const [Locale('en'), Locale('id')],
-      startLocale: Locale('id'),
-      fallbackLocale: const Locale('en'),
+      supportedLocales: const [Locale('nia'), Locale('id'), Locale('en')],
+      startLocale: Locale('nia'),
+      fallbackLocale: const Locale('id'),
       path: 'assets/translations',
       child: WikiNias(prefs: prefs),
     ),
@@ -51,9 +49,8 @@ class WikiNias extends StatelessWidget {
   Widget build(BuildContext context) {
     return MultiProvider(
       providers: [
-        // Provider<GalleryApiService>.value(value: galleryApiService),
-        Provider<TitleApiService>.value(value: titleApiService),
-        Provider<ContentService>.value(value: contentService),
+        Provider<ApiService>.value(value: apiService),
+        Provider<AppDataService>.value(value: appDataService),
         ChangeNotifierProvider(create: (_) => SettingsProvider(prefs)),
         ChangeNotifierProvider(create: (_) => FontSizeProvider()),
         ChangeNotifierProxyProvider<SettingsProvider, ThemeProvider>(
@@ -105,7 +102,13 @@ class WikiNias extends StatelessWidget {
                   .merge(baseTextTheme)
                   .apply(fontSizeFactor: scale),
             ),
-            localizationsDelegates: context.localizationDelegates,
+            localizationsDelegates: [
+              EasyLocalization.of(context)!.delegate,
+              const NiaMaterialLocalizationsDelegate(),
+              GlobalMaterialLocalizations.delegate,
+              GlobalWidgetsLocalizations.delegate,
+              GlobalCupertinoLocalizations.delegate,
+            ],
             supportedLocales: context.supportedLocales,
             locale: context.locale,
             initialRoute: onboardingComplete ? '/' : '/onboarding',
@@ -117,7 +120,6 @@ class WikiNias extends StatelessWidget {
               '/onboarding': (context) => const OnboardingScreen(),
               '/courses': (context) => const CoursesScreen(),
               '/gallery': (context) => const GalleryScreen(),
-              '/settings': (context) => const SettingsScreen(),
             },
           );
         },

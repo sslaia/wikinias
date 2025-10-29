@@ -2,20 +2,21 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_widget_from_html/flutter_widget_from_html.dart';
 import 'package:url_launcher/url_launcher.dart';
+import 'package:wikinias/utils/capitalize.dart';
 
 import 'create_new_page_introduction.dart';
 
 class CreateNewPageForm extends StatefulWidget {
-  const CreateNewPageForm({super.key, required this.url});
+  const CreateNewPageForm({super.key, required this.url, this.form});
 
   final String url;
+  final String? form;
 
   @override
   State<CreateNewPageForm> createState() => _CreateNewPageFormState();
 }
 
 class _CreateNewPageFormState extends State<CreateNewPageForm> {
-  final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   final TextEditingController _titleController = TextEditingController();
 
@@ -27,15 +28,17 @@ class _CreateNewPageFormState extends State<CreateNewPageForm> {
 
   @override
   Widget build(BuildContext context) {
-    final Color color = Theme.of(context).colorScheme.primary;
-    final double bodyFontSize =
-        Theme.of(context).textTheme.bodyMedium?.fontSize ?? 14.0;
 
     return SafeArea(
       child: Scaffold(
-        key: _scaffoldKey,
         appBar: AppBar(
-          title: Text("create_new_page", style: TextStyle(color: color, fontSize: bodyFontSize * 1.0)).tr(),
+          title: Text(
+            "create_new_page".tr(),
+            style: Theme.of(context).textTheme.titleMedium?.copyWith(
+              color: Theme.of(context).colorScheme.primary,
+              fontWeight: FontWeight.w700,
+            ),
+          ),
         ),
         body: Form(
           key: _formKey,
@@ -80,24 +83,46 @@ class _CreateNewPageFormState extends State<CreateNewPageForm> {
                 ElevatedButton(
                   onPressed: () {
                     String title = _titleController.text.toLowerCase();
-                    String capitalizedTitle = title.split(" ").map((word) => word.capitalize()).join(" ");
+                    String capitalizedTitle = title
+                        .split(" ")
+                        .map((word) => word.capitalize())
+                        .join(" ");
                     if (_formKey.currentState?.validate() ?? false) {
+                      Navigator.pop(context);
                       // Open the link in an external browser
-                      launchUrl(Uri.parse('${widget.url}$capitalizedTitle?action=edit&section=all'));
+                      if (widget.form != null) {
+                        launchUrl(
+                          Uri.parse(
+                            '${widget
+                                .url}$capitalizedTitle?action=edit&section=all&${widget.form}',
+                          ),
+                        );
+                      } else {
+                        launchUrl(
+                          Uri.parse(
+                            '${widget
+                                .url}$capitalizedTitle?action=edit&section=all',
+                          ),
+                        );
+                      }
                     }
                   },
                   style: ElevatedButton.styleFrom(
                     foregroundColor: Colors.deepOrange,
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(
-                        0.0,
+                        5.0,
                       ), // Set border radius to 0 for a square
                     ),
                   ),
                   child: Text(
-                    'create_submit',
-                    style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: color),
-                  ).tr(),
+                    'create_submit'.tr(),
+                    style: TextStyle(
+                      fontSize: 16,
+                      fontWeight: FontWeight.bold,
+                      color: Theme.of(context).colorScheme.primary,
+                    ),
+                  ),
                 ),
               ],
             ),
@@ -105,11 +130,5 @@ class _CreateNewPageFormState extends State<CreateNewPageForm> {
         ),
       ),
     );
-  }
-}
-
-extension StringExtension on String {
-  String capitalize() {
-    return "${this[0].toUpperCase()}${substring(1)}";
   }
 }

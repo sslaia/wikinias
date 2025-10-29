@@ -1,5 +1,14 @@
 const whatsNew = '''
 
+<h3>New in the 2.1.1+13 version</h3>
+<ul>
+<li>New: Update service settings</li>
+<li>New: Contents for courses module</li>
+<li>New: Portals</li>
+<li>Improved API and html parsing</li>
+<li>General code spring cleaning</li>
+</ul>
+
 <h3>New in the 2.1.0 version</h3>
 <ul>
 <li>New: dark theme. The app now adapts to the system dark theme.</li>

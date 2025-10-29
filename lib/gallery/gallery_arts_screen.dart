@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
-import '../models/photo.dart';
-import '../services/photo_api_service.dart';
+import '../models/gallery_content_item.dart';
+import '../services/app_data_service.dart';
 import '../widgets/gallery_carousel.dart';
 
 class GalleryArtsScreen extends StatefulWidget {
@@ -12,26 +13,29 @@ class GalleryArtsScreen extends StatefulWidget {
 }
 
 class _GalleryArtsScreenState extends State<GalleryArtsScreen> {
-  late Future<List<Photo?>> _futurePhotos;
-  final PhotoApiService _photoApiService = PhotoApiService();
+  late Future<List<GalleryContentItem>> futureArtsGallery;
 
   @override
   void initState() {
     super.initState();
-    _futurePhotos = _photoApiService.fetchArtPhotos();
+    final appData = Provider.of<AppDataService>(context, listen: false);
+    futureArtsGallery = appData.loadGalleryData(category: "arts");
   }
 
   @override
   Widget build(BuildContext context) {
-    return FutureBuilder<List<Photo?>>(
-      future: _futurePhotos,
+    return FutureBuilder<List<GalleryContentItem>>(
+      future: futureArtsGallery,
       builder: (context, snapshot) {
-        if (snapshot.hasError) {
+        if (snapshot.connectionState == ConnectionState.waiting) {
+          return const Center(child: CircularProgressIndicator());
+        } else if (snapshot.hasError) {
           return Center(child: Text('Error: ${snapshot.error}'));
+        } else {
+          return snapshot.hasData
+              ? GalleryCarousel(snapshot: snapshot.data)
+              : const CircularProgressIndicator();
         }
-        return snapshot.hasData
-            ? GalleryCarousel(snapshot: snapshot.data)
-            : const CircularProgressIndicator();
       },
     );
   }

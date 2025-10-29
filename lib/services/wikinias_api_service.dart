@@ -5,6 +5,38 @@ import 'package:http/http.dart' as http;
 import '../models/recent_changes.dart';
 
 class WikiniasApiService {
+  // fetch random wiki pages
+  Future<String?> fetchSingleRandomTitle({
+    required String projectApiUrl,
+  }) async {
+    final queryParams = {
+      'format': 'json',
+      'action': 'query',
+      'list': 'random',
+      'rnnamespace': '0',
+      'rnlimit': '1',
+    };
+
+    try {
+      final response = await http.get(Uri.parse(projectApiUrl).replace(queryParameters: queryParams));
+
+      if (response.statusCode == 200) {
+        final data = json.decode(response.body);
+        final randomPages = data['query']['random'] as List?;
+
+        if (randomPages != null && randomPages.isNotEmpty) {
+          return randomPages[0]['title'] as String?;
+        }
+        return null;
+      } else {
+        throw Exception('Failed to load random page: Status code ${response.statusCode}');
+      }
+    } catch (e) {
+      print('Error fetching random page: $e');
+      throw Exception('Failed to connect to the wiki server.');
+    }
+  }
+
   // fetch the content of the online Niaspedia page
   Future<String> fetchNiaspediaPage(String title) async {
     final uri = Uri.https('nia.m.wikipedia.org', '/w/api.php', {

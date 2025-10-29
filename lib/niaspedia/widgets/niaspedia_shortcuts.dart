@@ -1,10 +1,10 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
+import 'package:wikinias/niaspedia/niaspedia_page_screen.dart';
 
 import '../../app_bar/shortcuts_kb_text_button.dart';
 import '../../app_bar/shortcuts_rc_text_button.dart';
 import '../../app_bar/shortcuts_special_text_button.dart';
-import '../niaspedia_special_pages_screen.dart';
 import '../niaspedia_recent_changes_screen.dart';
 
 class NiaspediaShortcuts extends StatelessWidget {
@@ -19,7 +19,6 @@ class NiaspediaShortcuts extends StatelessWidget {
       width: double.infinity,
       height: 300.0,
       decoration: const BoxDecoration(
-        // color: Color(0xfffaf6ed),
         borderRadius: BorderRadius.only(
           topLeft: Radius.circular(30.0),
           topRight: Radius.circular(30.0),
@@ -30,9 +29,9 @@ class NiaspediaShortcuts extends StatelessWidget {
         mainAxisSize: MainAxisSize.min,
         children: [
           Text(
-            'shortcuts',
-            style: TextStyle(fontSize: 14.0, color: color),
-          ).tr(),
+            'shortcuts'.tr(),
+            style: TextStyle(color: color),
+          ),
           const SizedBox(height: 20.0),
           Wrap(
             alignment: WrapAlignment.center,
@@ -40,32 +39,32 @@ class NiaspediaShortcuts extends StatelessWidget {
             children: [
               ShortcutsRcTextButton(rcScreen: NiaspediaRecentChangesScreen(), color: color),
               ShortcutsSpecialTextButton(
-                screen: NiaspediaSpecialPagesScreen(title: 'Wikipedia:Angombakhata'),
+                screen: NiaspediaPageScreen(title: 'Wikipedia:Angombakhata'),
                 text: 'announcement',
                 color: altColor,
               ),
               ShortcutsSpecialTextButton(
-                screen: NiaspediaSpecialPagesScreen(title: 'Wikipedia:Bawagöli zato'),
+                screen: NiaspediaPageScreen(title: 'Wikipedia:Bawagöli zato'),
                 text: 'community_portal',
                 color: color,
               ),
               ShortcutsSpecialTextButton(
-                screen: NiaspediaSpecialPagesScreen(title: 'Wikipedia:Monganga afo'),
+                screen: NiaspediaPageScreen(title: 'Wikipedia:Monganga afo'),
                 text: 'village_pump',
                 color: altColor,
               ),
               ShortcutsSpecialTextButton(
-                screen: NiaspediaSpecialPagesScreen(title: 'Wikipedia:Nahia wamakori'),
+                screen: NiaspediaPageScreen(title: 'Wikipedia:Nahia wamakori'),
                 text: 'sandbox',
                 color: color,
               ),
               ShortcutsSpecialTextButton(
-                screen: NiaspediaSpecialPagesScreen(title: 'Fanolo:Fanolo'),
+                screen: NiaspediaPageScreen(title: 'Fanolo:Fanolo'),
                 text: 'help',
                 color: altColor,
               ),
               ShortcutsSpecialTextButton(
-                screen: NiaspediaSpecialPagesScreen(title: 'Wikipedia:Sangai halöŵö'),
+                screen: NiaspediaPageScreen(title: 'Wikipedia:Sangai halöŵö'),
                 text: 'helpers',
                 color: color,
               ),

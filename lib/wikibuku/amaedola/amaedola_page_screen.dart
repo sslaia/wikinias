@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_widget_from_html/flutter_widget_from_html.dart';
 import 'package:share_plus/share_plus.dart';
 import 'package:url_launcher/url_launcher.dart';
+import 'package:wikinias/screens/image_screen.dart';
 
 import '../../app_bar/label_bottom_app_bar.dart';
 import '../../services/wikinias_api_service.dart';
@@ -33,8 +34,8 @@ class _BibleChapterScreenState extends State<AmaedolaPageScreen> {
     );
   }
 
-  void _navigateToNewPage(String pageTitle) {
-    final String title = pageTitle.substring(7);
+  void _navigateToNewPage(String newPageTitle) {
+    final String title = newPageTitle.substring(7);
     Navigator.of(context).push(
       MaterialPageRoute<void>(
         builder: (context) => WikibukuPageScreen(title: title),
@@ -42,25 +43,43 @@ class _BibleChapterScreenState extends State<AmaedolaPageScreen> {
     );
   }
 
+  void _navigateToCreatePage(String newTitle) {
+    final String fullEditUrl =
+        'https://incubator.wikimedia.org/wiki/Wb/nia/$newTitle?action=edit&section=all';
+    launchUrl(Uri.parse(fullEditUrl));
+    // Navigator.of(context).push(
+    //   MaterialPageRoute<void>(
+    //     builder: (context) =>
+    //         CreateNewPageScreen(title: newTitle),
+    //   ),
+    // );
+  }
+
+  void _navigateToImagePage(String imgUrl) {
+    Navigator.of(context).push(
+      MaterialPageRoute<void>(
+        builder: (context) => ImageScreen(imagePath: imgUrl),
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     final String title = widget.title;
-    final Color color = Theme.of(context).colorScheme.primary;
     final String amaedolaImage = 'assets/images/amaedola.webp';
     final String baseUrl = 'https://incubator.m.wikimedia.org/wiki/Wb/nia/';
-    final double bodyFontSize =
-        Theme.of(context).textTheme.bodyMedium?.fontSize ?? 14.0;
+    final TextStyle? titleStyle = Theme.of(context).textTheme.titleSmall
+        ?.copyWith(color: Theme.of(context).colorScheme.primary);
 
     return Scaffold(
       bottomNavigationBar: LabelBottomAppBar(label: 'wikibuku_amaedola'),
       body: CustomScrollView(
         slivers: [
           SliverAppBar(
-            iconTheme: IconThemeData(color: color),
-            title: Text(
-              'Amaedola: ${title.substring(9)}',
-              style: TextStyle(color: color, fontSize: bodyFontSize * 1.0),
+            iconTheme: IconThemeData(
+              color: Theme.of(context).colorScheme.primary,
             ),
+            title: Text('Amaedola: ${title.substring(9)}', style: titleStyle),
             floating: true,
             expandedHeight: 250,
             flexibleSpace: FlexiblePageHeader(image: amaedolaImage),
@@ -68,7 +87,10 @@ class _BibleChapterScreenState extends State<AmaedolaPageScreen> {
               // Share button
               IconButton(
                 tooltip: 'share'.tr(),
-                icon: Icon(Icons.share_outlined, color: color),
+                icon: Icon(
+                  Icons.share_outlined,
+                  color: Theme.of(context).colorScheme.primary,
+                ),
                 onPressed: () {
                   SharePlus.instance.share(
                     ShareParams(uri: Uri.parse('$baseUrl$title')),
@@ -79,7 +101,7 @@ class _BibleChapterScreenState extends State<AmaedolaPageScreen> {
               IconButton(
                 tooltip: 'edit'.tr(),
                 icon: Icon(Icons.edit_outlined),
-                color: color,
+                color: Theme.of(context).colorScheme.primary,
                 onPressed: () {
                   launchUrl(
                     Uri.parse('$baseUrl$title?action=edit&section=all'),
@@ -102,8 +124,10 @@ class _BibleChapterScreenState extends State<AmaedolaPageScreen> {
                       return snapshot.hasData
                           ? PageScreenBody(
                               html: snapshot.data!,
-                              onInternalLinkTap: _navigateToNewPage,
                               baseUrl: baseUrl,
+                              onExistentLinkTap: _navigateToNewPage,
+                              onNonExistentLinkTap: _navigateToCreatePage,
+                              onImageLinkTap: _navigateToImagePage,
                             )
                           : const Center(child: CircularProgressIndicator());
                     },

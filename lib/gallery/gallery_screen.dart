@@ -1,5 +1,11 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
+import 'package:wikinias/app_bar/drawer_about_section.dart';
+import 'package:wikinias/app_bar/drawer_font_selection_section.dart';
+import 'package:wikinias/app_bar/drawer_header_container.dart';
+import 'package:wikinias/app_bar/drawer_language_selection_section.dart';
+import 'package:wikinias/app_bar/drawer_project_selection_section.dart';
+import 'package:wikinias/app_bar/drawer_update_service_section.dart';
 
 import '../app_bar/wikinias_drawer_menu.dart';
 import 'gallery_arts_screen.dart';
@@ -15,7 +21,6 @@ class GalleryScreen extends StatefulWidget {
 }
 
 class _GalleryScreenState extends State<GalleryScreen> {
-  final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
   final String project = 'Gallery';
   final String image = "assets/images/ni'ogazi.webp";
   final Color color = Color(0xff9b00a1);
@@ -62,9 +67,21 @@ class _GalleryScreenState extends State<GalleryScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final GlobalKey<ScaffoldState> galleryScaffold = GlobalKey<ScaffoldState>();
+
+    final List<Widget> drawerChildren = [
+      DrawerHeaderContainer(),
+      // GalleryDrawerSection(),
+      DrawerProjectSelectionSection(),
+      DrawerLanguageSelectionSection(),
+      DrawerFontSelectionSection(),
+      DrawerUpdteServiceSection(),
+      DrawerAboutSection(),
+    ];
+
     return SafeArea(
       child: Scaffold(
-        key: _scaffoldKey,
+        key: galleryScaffold,
         appBar: AppBar(
           title: Text(
             'gallery',
@@ -77,7 +94,13 @@ class _GalleryScreenState extends State<GalleryScreen> {
           // backgroundColor: color,
           iconTheme: IconThemeData(color: Theme.of(context).colorScheme.onSurface),
         ),
-        drawer: WikiniasDrawerMenu(),
+        drawer: Builder(
+          builder: (drawerContext) {
+            return WikiniasDrawerMenu(
+              children: drawerChildren,
+            );
+          },
+        ),
         bottomNavigationBar: BottomNavigationBar(
           // backgroundColor: color,
           type: BottomNavigationBarType.fixed,

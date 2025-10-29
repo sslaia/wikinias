@@ -1,11 +1,9 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 import 'package:webview_flutter_android/webview_flutter_android.dart';
+import 'package:wikinias/widgets/create_new_page_form.dart';
 
-import '../providers/settings_provider.dart';
-import '../widgets/create_new_page_form.dart';
 import '../widgets/create_new_page_icon_button.dart';
 
 class WikibukuSearchResultsScreen extends StatefulWidget {
@@ -22,10 +20,6 @@ class _WikibukuSearchResultsScreenState
     extends State<WikibukuSearchResultsScreen> {
   late final WebViewController _controller;
   var loadingProgress = 0;
-
-  // Keys
-  final GlobalKey wikiKey = GlobalKey();
-  final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
 
   @override
   void initState() {
@@ -79,30 +73,23 @@ class _WikibukuSearchResultsScreenState
 
   @override
   Widget build(BuildContext context) {
-    final Color color = Theme.of(context).colorScheme.primary;
-    final double bodyFontSize =
-        Theme.of(context).textTheme.bodyMedium?.fontSize ?? 14.0;
+    final String wikibukuUrl = 'https://incubator.m.wikimedia.org/wiki/Wb/nia/';
+    final String wikibukuForm = 'preload=Template:Wb/nia/Famörögö wanura';
 
     return SafeArea(
       child: Scaffold(
-        key: _scaffoldKey,
         appBar: AppBar(
-          iconTheme: IconThemeData(color: color),
-          title: Text('search_results', style: TextStyle(color: color, fontSize: bodyFontSize * 1.0)).tr(),
+          iconTheme: IconThemeData(color: Theme.of(context).colorScheme.primary),
+          title: Text('search_results'.tr(), style: Theme.of(context).textTheme.titleSmall?.copyWith(
+            color: Theme.of(context).colorScheme.primary,
+          )),
           actions: [
-            Consumer<SettingsProvider>(
-              builder: (context, settingsProvider, child) =>
-                  CreateNewPageIconButton(
-                    label: 'create_new_page',
-                    destination: CreateNewPageForm(url: settingsProvider.getProjectUrl()),
-                    color: color,
-                  ),
-            ),
+            CreateNewPageIconButton(destination: CreateNewPageForm(url: wikibukuUrl, form: wikibukuForm)),
           ],
         ),
         body: Stack(
           children: [
-            WebViewWidget(key: wikiKey, controller: _controller),
+            WebViewWidget(controller: _controller),
             if (loadingProgress < 100)
               LinearProgressIndicator(
                 backgroundColor: Colors.amber,

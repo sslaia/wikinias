@@ -1,11 +1,11 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 
-import '../../app_bar/shortcuts_kb_text_button.dart';
-import '../../app_bar/shortcuts_rc_text_button.dart';
-import '../../app_bar/shortcuts_special_text_button.dart';
-import '../wikibuku_recent_changes_screen.dart';
-import '../wikibuku_special_pages_screen.dart';
+import 'package:wikinias/wikibuku/wikibuku_page_screen.dart';
+import 'package:wikinias/wikibuku/wikibuku_recent_changes_screen.dart';
+import 'package:wikinias/app_bar/shortcuts_kb_text_button.dart';
+import 'package:wikinias/app_bar/shortcuts_rc_text_button.dart';
+import 'package:wikinias/app_bar/shortcuts_special_text_button.dart';
 
 class WikibukuShortcuts extends StatelessWidget {
   const WikibukuShortcuts({super.key});
@@ -39,32 +39,32 @@ class WikibukuShortcuts extends StatelessWidget {
             children: [
               ShortcutsRcTextButton(rcScreen: WikibukuRecentChangesScreen(), color: color),
               ShortcutsSpecialTextButton(
-                screen: WikibukuSpecialPagesScreen(title: 'Wikibooks:Angombakhata'),
+                screen: WikibukuPageScreen(title: 'Wikibooks:Angombakhata'),
                 text: 'announcement',
                 color: altColor,
               ),
               ShortcutsSpecialTextButton(
-                screen: WikibukuSpecialPagesScreen(title: 'Wikibooks:Bawagöli zato'),
+                screen: WikibukuPageScreen(title: 'Wikibooks:Bawagöli zato'),
                 text: 'community_portal',
                 color: color,
               ),
               ShortcutsSpecialTextButton(
-                screen: WikibukuSpecialPagesScreen(title: 'Wikibooks:Monganga afo'),
+                screen: WikibukuPageScreen(title: 'Wikibooks:Monganga afo'),
                 text: 'village_pump',
                 color: altColor,
               ),
               ShortcutsSpecialTextButton(
-                screen: WikibukuSpecialPagesScreen(title: 'Wikibooks:Nahia wamakori'),
+                screen: WikibukuPageScreen(title: 'Wikibooks:Nahia wamakori'),
                 text: 'sandbox',
                 color: color,
               ),
               ShortcutsSpecialTextButton(
-                screen: WikibukuSpecialPagesScreen(title: 'Help:Fanolo'),
+                screen: WikibukuPageScreen(title: 'Help:Fanolo'),
                 text: 'help',
                 color: altColor,
               ),
               ShortcutsSpecialTextButton(
-                screen: WikibukuSpecialPagesScreen(title: 'Wikibooks:Sangai halöŵö'),
+                screen: WikibukuPageScreen(title: 'Wikibooks:Sangai halöŵö'),
                 text: 'helpers',
                 color: color,
               ),

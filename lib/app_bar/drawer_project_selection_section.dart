@@ -6,9 +6,7 @@ import '../providers/font_size_provider.dart';
 import '../providers/settings_provider.dart';
 
 class DrawerProjectSelectionSection extends StatelessWidget {
-  const DrawerProjectSelectionSection({super.key, required this.project});
-
-  final String project;
+  const DrawerProjectSelectionSection({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -17,16 +15,15 @@ class DrawerProjectSelectionSection extends StatelessWidget {
         final double baseFontSize = fontSizeProvider.scaledFontSize;
         return Consumer<SettingsProvider>(
           builder: (context, settingsProvider, child) => ExpansionTile(
-            initiallyExpanded: false,
+            initiallyExpanded: true,
             title: Text(
-              'projects',
-              style: TextStyle(
-                fontFamily: 'Gelasio',
+              'projects'.tr(),
+              style: Theme.of(context).textTheme.titleSmall?.copyWith(
                 color: Theme.of(context).colorScheme.primary,
-                fontSize: baseFontSize,
+                fontFamily: 'Gelasio',
                 fontWeight: FontWeight.w700,
               ),
-            ).tr(),
+            ),
             children: [
               ListTile(
                 leading: Icon(
@@ -37,7 +34,7 @@ class DrawerProjectSelectionSection extends StatelessWidget {
                   'Niaspedia',
                   style: TextStyle(fontSize: baseFontSize),
                 ),
-                trailing: (project == 'Niaspedia') ? Icon(Icons.done) : null,
+                trailing: ( settingsProvider.getProjectName() == 'Niaspedia') ? Icon(Icons.done) : null,
                 onTap: () {
                   settingsProvider.selectedProject = Project.Niaspedia;
                   Navigator.pop(context);
@@ -53,7 +50,7 @@ class DrawerProjectSelectionSection extends StatelessWidget {
                   'Wikikamus',
                   style: TextStyle(fontSize: baseFontSize),
                 ),
-                trailing: (project == 'Wikikamus') ? Icon(Icons.done) : null,
+                trailing: ( settingsProvider.getProjectName() == 'Wikikamus') ? Icon(Icons.done) : null,
                 onTap: () {
                   settingsProvider.selectedProject = Project.Wikikamus;
                   Navigator.pop(context);
@@ -69,7 +66,7 @@ class DrawerProjectSelectionSection extends StatelessWidget {
                   'Wikibuku',
                   style: TextStyle(fontSize: baseFontSize),
                 ),
-                trailing: (project == 'Wikibuku') ? Icon(Icons.done) : null,
+                trailing: ( settingsProvider.getProjectName() == 'Wikibuku') ? Icon(Icons.done) : null,
                 onTap: () {
                   settingsProvider.selectedProject = Project.Wikibuku;
                   Navigator.pop(context);
@@ -82,7 +79,7 @@ class DrawerProjectSelectionSection extends StatelessWidget {
                   'courses',
                   style: TextStyle(fontSize: baseFontSize),
                 ).tr(),
-                trailing: (project == 'Courses') ? Icon(Icons.done) : null,
+                trailing: ( settingsProvider.getProjectName() == 'Courses') ? Icon(Icons.done) : null,
                 onTap: () {
                   settingsProvider.selectedProject = Project.Courses;
                   Navigator.pop(context);
@@ -98,7 +95,7 @@ class DrawerProjectSelectionSection extends StatelessWidget {
                   'gallery',
                   style: TextStyle(fontSize: baseFontSize),
                 ).tr(),
-                trailing: (project == 'Gallery') ? Icon(Icons.done) : null,
+                trailing: ( settingsProvider.getProjectName() == 'Gallery') ? Icon(Icons.done) : null,
                 onTap: () {
                   settingsProvider.selectedProject = Project.Gallery;
                   Navigator.pop(context);

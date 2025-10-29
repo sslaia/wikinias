@@ -1,32 +1,27 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:wikinias/providers/settings_provider.dart';
 
 class CreateNewPageIconButton extends StatelessWidget {
-  const CreateNewPageIconButton({
-    super.key,
-    required this.label,
-    required this.destination,
-    required this.color
-  });
-
-  final String label;
   final Widget destination;
-  final Color color;
+
+  const CreateNewPageIconButton({super.key, required this.destination});
 
   @override
   Widget build(BuildContext context) {
-    return IconButton(
-      tooltip: 'create_new_page'.tr(),
-      icon: Icon(Icons.edit_outlined),
-      color: color,
-      onPressed: () {
-        Navigator.push(
-          context,
-          MaterialPageRoute<void>(
-            builder: (context) => destination,
-          ),
-        );
-      },
+    return Consumer<SettingsProvider>(
+      builder: (context, settingsProvider, child) => IconButton(
+        tooltip: 'create_new_page'.tr(),
+        icon: Icon(Icons.edit_outlined),
+        color: Theme.of(context).colorScheme.primary,
+        onPressed: () {
+          Navigator.push(
+            context,
+            MaterialPageRoute<void>(builder: (context) => destination),
+          );
+        },
+      ),
     );
   }
 }

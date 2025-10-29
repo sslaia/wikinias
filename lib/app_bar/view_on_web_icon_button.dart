@@ -6,18 +6,16 @@ class ViewOnWebIconButton extends StatelessWidget {
   const ViewOnWebIconButton({
     super.key,
     required this.url,
-    required this.color,
   });
 
   final String url;
-  final Color color;
 
   @override
   Widget build(BuildContext context) {
     return IconButton(
       tooltip: 'view_on_the_web'.tr(),
       icon: Icon(Icons.visibility_outlined),
-      color: color,
+      color: Theme.of(context).colorScheme.primary,
       onPressed: () {
         launchUrl(Uri.parse(url));
         },

@@ -1,3 +1,0 @@
-const List<String> galleryTitles = [
-  ""
-];

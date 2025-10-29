@@ -19,14 +19,13 @@ class DrawerFontSelectionSection extends StatelessWidget {
             return ExpansionTile(
               initiallyExpanded: false,
               title: Text(
-                'font_size',
-                style: TextStyle(
-                  fontFamily: 'Gelasio',
+                'font_size'.tr(),
+                style: Theme.of(context).textTheme.titleSmall?.copyWith(
                   color: Theme.of(context).colorScheme.primary,
-                  fontSize: baseFontSize,
-                  fontWeight: FontWeight.bold,
+                  fontFamily: 'Gelasio',
+                  fontWeight: FontWeight.w700,
                 ),
-              ).tr(),
+              ),
               children: [
                 ListTile(
                   leading: Icon(Icons.text_decrease_outlined),
@@ -40,6 +39,7 @@ class DrawerFontSelectionSection extends StatelessWidget {
                       ? Icon(Icons.done)
                       : null,
                   onTap: () {
+                    Navigator.pop(context);
                     fontSizeProvider.setFontSize('small');
                     settingsProvider.selectedFontSize = FontSize.Small;
                   },
@@ -56,6 +56,7 @@ class DrawerFontSelectionSection extends StatelessWidget {
                       ? Icon(Icons.done)
                       : null,
                   onTap: () {
+                    Navigator.pop(context);
                     fontSizeProvider.setFontSize('normal');
                     settingsProvider.selectedFontSize = FontSize.Normal;
                   },
@@ -72,6 +73,7 @@ class DrawerFontSelectionSection extends StatelessWidget {
                       ? Icon(Icons.done)
                       : null,
                   onTap: () {
+                    Navigator.pop(context);
                     fontSizeProvider.setFontSize('large');
                     settingsProvider.selectedFontSize = FontSize.Large;
                   },
@@ -88,6 +90,7 @@ class DrawerFontSelectionSection extends StatelessWidget {
                       ? Icon(Icons.done)
                       : null,
                   onTap: () {
+                    Navigator.pop(context);
                     fontSizeProvider.setFontSize('extra_large');
                     settingsProvider.selectedFontSize = FontSize.ExtraLarge;
                   },

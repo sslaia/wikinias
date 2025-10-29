@@ -11,9 +11,14 @@ class HohoScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final Color color = Theme.of(context).colorScheme.primary;
-    final double bodyFontSize =
-        Theme.of(context).textTheme.bodyMedium?.fontSize ?? 14.0;
+    final TextStyle? titleStyle = Theme.of(context).textTheme.titleSmall
+        ?.copyWith(color: Theme.of(context).colorScheme.primary);
+    final TextStyle? headingStyle = Theme.of(context).textTheme.titleMedium
+        ?.copyWith(
+          color: Theme.of(context).colorScheme.primary,
+          fontFamily: 'Gelasio',
+          fontWeight: FontWeight.w700,
+        );
     final String hohoImage = "assets/images/hoho.webp";
 
     return SafeArea(
@@ -21,15 +26,10 @@ class HohoScreen extends StatelessWidget {
         body: CustomScrollView(
           slivers: [
             SliverAppBar(
-              iconTheme: IconThemeData(color: color),
-              title: Text(
-                'Ngawalö hoho',
-                style: TextStyle(
-                  fontFamily: 'Gelasio',
-                  color: color,
-                  fontSize: bodyFontSize * 1.0,
-                ),
+              iconTheme: IconThemeData(
+                color: Theme.of(context).colorScheme.primary,
               ),
+              title: Text('Ngawalö hoho', style: titleStyle),
               floating: true,
               expandedHeight: 250,
               flexibleSpace: FlexiblePageHeader(image: hohoImage),
@@ -40,13 +40,7 @@ class HohoScreen extends StatelessWidget {
                   SizedBox(height: 16),
                   Text("Ba da'a so ngawalö hoho"),
                   SizedBox(height: 32),
-                  Text(
-                    "Hoho soya ngawalö",
-                    style: TextStyle(
-                      fontSize: bodyFontSize * 1.2,
-                      fontWeight: FontWeight.w700,
-                    ),
-                  ),
+                  Text("Hoho soya ngawalö", style: headingStyle),
                   Column(
                     children: [
                       SizedBox(height: 16),
@@ -59,19 +53,14 @@ class HohoScreen extends StatelessWidget {
                       HohoList(title: "Tanömö zi Siŵa Motöi"),
                     ],
                   ),
+                  SizedBox(height: 32),
                   Image.asset(
                     "assets/images/ni'owewemagai.webp",
                     height: 30,
                     fit: BoxFit.fitHeight,
                   ),
-                  SizedBox(height: 16),
-                  Text(
-                    "Hikaya Duada Hia",
-                    style: TextStyle(
-                      fontSize: bodyFontSize * 1.2,
-                      fontWeight: FontWeight.w700,
-                    ),
-                  ),
+                  SizedBox(height: 32),
+                  Text("Hikaya Duada Hia", style: headingStyle),
                   SizedBox(height: 16),
                   Column(
                     children: [

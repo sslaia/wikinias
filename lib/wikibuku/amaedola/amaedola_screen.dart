@@ -14,8 +14,15 @@ class AmaedolaScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     final Color color = Theme.of(context).colorScheme.primary;
     final String amaedolaImage = "assets/images/amaedola.webp";
-    final double bodyFontSize =
-        Theme.of(context).textTheme.bodyMedium?.fontSize ?? 14.0;
+    final TextStyle? titleStyle =
+    Theme.of(context).textTheme.titleSmall?.copyWith(
+        color: Theme.of(context).colorScheme.primary);
+    final TextStyle? headingStyle = Theme.of(context).textTheme.titleMedium
+        ?.copyWith(
+      color: Theme.of(context).colorScheme.primary,
+      fontFamily: 'Gelasio',
+      fontWeight: FontWeight.w700,
+    );
 
     return Scaffold(
       // bottomNavigationBar: LabelBottomAppBar(label: title, color: color),
@@ -25,7 +32,7 @@ class AmaedolaScreen extends StatelessWidget {
             iconTheme: IconThemeData(color: color),
             title: Text(
               'Ngawalö gamaedola',
-              style: TextStyle(color: color, fontSize: bodyFontSize * 1.0),
+              style: titleStyle,
             ),
             floating: true,
             expandedHeight: 250,
@@ -41,7 +48,7 @@ class AmaedolaScreen extends StatelessWidget {
                 const SizedBox(height: 16),
                 Text(
                   "Molo'ö börö hurufo",
-                  style: Theme.of(context).textTheme.titleMedium,
+                  style: headingStyle,
                 ),
                 Wrap(
                   children: [
@@ -75,7 +82,7 @@ class AmaedolaScreen extends StatelessWidget {
                 const SizedBox(height: 16),
                 Text(
                   "Molo'ö tuho",
-                  style: Theme.of(context).textTheme.titleMedium,
+                  style: headingStyle,
                 ),
                 const SizedBox(height: 16),
                 ListTile(

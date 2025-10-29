@@ -1,13 +1,16 @@
 name: wikinias
 description: "An app for Niaspedia, Wikikamus and Wikibuku"
 publish_to: 'none'
-version: 2.1.0+12
+version: 2.1.1+13
 
 environment:
   sdk: '>=3.9.2 <4.0.0'
 
 dependencies:
   flutter:
+    sdk: flutter
+
+  flutter_localizations:
     sdk: flutter
 
   provider: ^6.1.5+1
@@ -21,6 +24,7 @@ dependencies:
   flutter_widget_from_html: ^0.17.1
   html_character_entities: ^1.0.0+1
   http: ^1.5.0
+  html: ^0.15.6
 
 dev_dependencies:
   flutter_test:
@@ -35,21 +39,12 @@ flutter:
     - assets/fonts/
     - assets/images/
     - assets/translations/
-    - assets/data/courses_data.json
+    - assets/data/courses_content_data.json
     - assets/data/featured_content_data.json
-    - assets/data/gallery_data.json
-    - assets/data/portal_data.json
-    - assets/data/titles_data.json
-    - assets/data/featured_articles_data.json
-    - assets/data/featured_stories_data.json
-    - assets/data/featured_words_data.json
-    - assets/data/featured_dyks_data.json
-    - assets/data/gallery_dances.json
-    - assets/data/gallery_buildings.json
-    - assets/data/gallery_arts.json
-    - assets/data/gallery_others.json
+    - assets/data/gallery_content_data.json
     - assets/translations/en.json
     - assets/translations/id.json
+    - assets/translations/nia.json
   fonts:
     - family: CinzelDecorative
       fonts:
@@ -64,15 +59,5 @@ flutter:
         - asset: assets/fonts/Gelasio-Bold.ttf
           weight: 700
         - asset: assets/fonts/Gelasio-BoldItalic.ttf
-          weight: 700
-          style: italic
-    - family: Ubuntu
-      fonts:
-        - asset: assets/fonts/Ubuntu-Regular.ttf
-        - asset: assets/fonts/Ubuntu-Italic.ttf
-          style: italic
-        - asset: assets/fonts/Ubuntu-Bold.ttf
-          weight: 700
-        - asset: assets/fonts/Ubuntu-BoldItalic.ttf
           weight: 700
           style: italic

@@ -11,7 +11,7 @@ class SectionTitle extends StatelessWidget {
   Widget build(BuildContext context) {
     final baseStyle = Theme.of(context).textTheme.titleSmall;
     return Text(
-      label,
+      label.tr(),
       style: baseStyle?.merge(
         TextStyle(
           fontFamily: 'CinzelDecorative',
@@ -19,6 +19,6 @@ class SectionTitle extends StatelessWidget {
           fontWeight: FontWeight.bold,
         ),
       ),
-    ).tr();
+    );
   }
 }

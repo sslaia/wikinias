@@ -1,8 +1,14 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
+import 'package:wikinias/app_bar/bottom_app_bar_label_button.dart';
+import 'package:wikinias/app_bar/home_icon_button.dart';
+import 'package:wikinias/app_bar/random_icon_button.dart';
+import 'package:wikinias/app_bar/refresh_icon_button.dart';
+import 'package:wikinias/app_bar/shortcuts_icon_button.dart';
+import 'package:wikinias/app_bar/wikinias_bottom_app_bar.dart';
+import 'package:wikinias/wikikamus/wikikamus_page_screen.dart';
 
 import '../app_bar/view_on_web_icon_button.dart';
-import 'widgets/wikikamus_recent_changes_bottom_app_bar.dart';
 import '../models/recent_changes.dart';
 import '../services/wikinias_api_service.dart';
 
@@ -25,23 +31,41 @@ class _WikikamusRecentChangesScreenState
     super.initState();
   }
 
+  void _navigateToRandomPage(String newRandomTitle) {
+    // final String title = url.substring(7);
+    Navigator.of(context).pushReplacement(
+      MaterialPageRoute<void>(
+        builder: (context) => WikikamusPageScreen(title: newRandomTitle),
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
-    final Color color = Theme.of(context).colorScheme.primary;
-    final String url = 'https://nia.wiktionary.org/wiki/Spesial:Perubahan_terbaru?hidebots=1&hideWikibase=1&hideWikifunctions=1&limit=50&days=7&enhanced=1&urlversion=2';
-    final double bodyFontSize = Theme.of(context).textTheme.bodyMedium?.fontSize ?? 14.0;
+    // BottomAppBar configuration
+    final List<Widget> barChildren = [
+      BottomAppBarLabelButton(label: 'wikikamus'),
+      const Spacer(),
+      HomeIconButton(),
+      RefreshIconButton(destination: WikikamusRecentChangesScreen()),
+      ShortcutsIconButton(),
+      RandomIconButton(onRandomTitleFound: _navigateToRandomPage),
+    ];
+    final String url =
+        'https://nia.wiktionary.org/wiki/Spesial:Perubahan_terbaru?hidebots=1&hideWikibase=1&hideWikifunctions=1&limit=50&days=7&enhanced=1&urlversion=2';
 
     return Scaffold(
       appBar: AppBar(
-        iconTheme: IconThemeData(color: color),
+        iconTheme: IconThemeData(color: Theme.of(context).colorScheme.primary),
         title: Text(
-          'recent_changes',
-          style: TextStyle(fontFamily: 'Gelasio', fontSize: bodyFontSize * 1.0, color: color)).tr(),
-        actions: [
-          ViewOnWebIconButton(url: url, color: color),
-        ],
+          'recent_changes'.tr(),
+          style: Theme.of(context).textTheme.titleSmall?.copyWith(
+            color: Theme.of(context).colorScheme.primary,
+          ),
+        ),
+        actions: [ViewOnWebIconButton(url: url)],
       ),
-      bottomNavigationBar: WikikamusRecentChangesBottomAppBar(),
+      bottomNavigationBar: WikiniasBottomAppBar(children: barChildren),
       body: FutureBuilder(
         future: futureRecentChanges,
         builder: (context, snapshot) {
@@ -52,7 +76,7 @@ class _WikikamusRecentChangesScreenState
             final List<RecentChanges> items = snapshot.data!;
 
             if (items.isEmpty) {
-              return const Center(child: Text('No data available.'));
+              return Center(child: Text('no_data'.tr()));
             }
             return ListView.builder(
               itemCount: items.length,
@@ -62,7 +86,7 @@ class _WikikamusRecentChangesScreenState
                 if (item.comment != null || item.comment != '') {
                   summary = item.comment;
                 } else {
-                  summary = 'No summary';
+                  summary = 'no_summary'.tr();
                 }
                 return ListTile(
                   title: Text(
@@ -74,7 +98,7 @@ class _WikikamusRecentChangesScreenState
               },
             );
           } else if (snapshot.hasError) {
-            return Center(child: Text('Error: ${snapshot.error}'));
+            return Center(child: Text("'error'.tr(): ${snapshot.error}"));
           }
           return const CircularProgressIndicator();
         },

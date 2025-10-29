@@ -5,11 +5,9 @@ import 'package:share_plus/share_plus.dart';
 class ShareIconButton extends StatelessWidget {
   const ShareIconButton({
     super.key,
-    required this.color,
     required this.url,
   });
 
-  final Color color;
   final String url;
 
   @override
@@ -17,7 +15,7 @@ class ShareIconButton extends StatelessWidget {
     return IconButton(
       tooltip: 'share'.tr(),
       icon: Icon(Icons.share_outlined),
-      color: color,
+      color: Theme.of(context).colorScheme.primary,
       onPressed: () {
         SharePlus.instance.share(ShareParams(uri: Uri.parse(url)));
       },
