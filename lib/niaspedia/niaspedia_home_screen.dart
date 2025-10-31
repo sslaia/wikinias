@@ -8,6 +8,7 @@ import 'package:wikinias/app_bar/bottom_app_bar_label_button.dart';
 import 'package:wikinias/app_bar/drawer_about_section.dart';
 import 'package:wikinias/app_bar/drawer_font_selection_section.dart';
 import 'package:wikinias/app_bar/drawer_language_selection_section.dart';
+import 'package:wikinias/app_bar/drawer_mode_section.dart';
 import 'package:wikinias/app_bar/drawer_project_selection_section.dart';
 import 'package:wikinias/app_bar/drawer_update_service_section.dart';
 import 'package:wikinias/app_bar/open_drawer_button.dart';
@@ -147,6 +148,7 @@ class _NiaspediaHomeScreenState extends State<NiaspediaHomeScreen> {
       DrawerLanguageSelectionSection(),
       DrawerFontSelectionSection(),
       DrawerUpdteServiceSection(),
+      DrawerModeSection(),
       DrawerAboutSection(),
     ];
 

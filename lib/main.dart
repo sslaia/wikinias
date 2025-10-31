@@ -14,6 +14,7 @@ import 'package:wikinias/providers/font_size_provider.dart';
 import 'package:wikinias/providers/settings_provider.dart';
 import 'package:wikinias/providers/theme_provider.dart';
 import 'package:wikinias/screens/onboarding_screen.dart';
+import 'package:wikinias/theme/theme_manager.dart';
 import 'package:wikinias/wikibuku/wikibuku_home_screen.dart';
 import 'package:wikinias/wikikamus/wikikamus_home_screen.dart';
 
@@ -88,38 +89,45 @@ class WikiNias extends StatelessWidget {
             Brightness.dark,
           );
 
-          return MaterialApp(
-            title: 'WikiNias',
-            debugShowCheckedModeBanner: false,
-            themeMode: ThemeMode.system,
-            theme: lightTheme.copyWith(
-              textTheme: lightTheme.textTheme
-                  .merge(baseTextTheme)
-                  .apply(fontSizeFactor: scale),
-            ),
-            darkTheme: darkTheme.copyWith(
-              textTheme: darkTheme.textTheme
-                  .merge(baseTextTheme)
-                  .apply(fontSizeFactor: scale),
-            ),
-            localizationsDelegates: [
-              EasyLocalization.of(context)!.delegate,
-              const NiaMaterialLocalizationsDelegate(),
-              GlobalMaterialLocalizations.delegate,
-              GlobalWidgetsLocalizations.delegate,
-              GlobalCupertinoLocalizations.delegate,
-            ],
-            supportedLocales: context.supportedLocales,
-            locale: context.locale,
-            initialRoute: onboardingComplete ? '/' : '/onboarding',
-            routes: {
-              '/': (context) => const HomeWrapper(),
-              '/niaspedia': (context) => NiaspediaHomeScreen(),
-              '/wikikamus': (context) => WikikamusHomeScreen(),
-              '/wikibuku': (context) => WikibukuHomeScreen(),
-              '/onboarding': (context) => const OnboardingScreen(),
-              '/courses': (context) => const CoursesScreen(),
-              '/gallery': (context) => const GalleryScreen(),
+          // final ValueNotifier<ThemeMode> notifier = ValueNotifier(ThemeMode.light);
+
+          return ValueListenableBuilder<ThemeMode>(
+            valueListenable: themeNotifier,
+            builder: (context, currentMode, child) {
+              return MaterialApp(
+                title: 'WikiNias',
+                debugShowCheckedModeBanner: false,
+                themeMode: currentMode,
+                theme: lightTheme.copyWith(
+                  textTheme: lightTheme.textTheme
+                      .merge(baseTextTheme)
+                      .apply(fontSizeFactor: scale),
+                ),
+                darkTheme: darkTheme.copyWith(
+                  textTheme: darkTheme.textTheme
+                      .merge(baseTextTheme)
+                      .apply(fontSizeFactor: scale),
+                ),
+                localizationsDelegates: [
+                  EasyLocalization.of(context)!.delegate,
+                  const NiaMaterialLocalizationsDelegate(),
+                  GlobalMaterialLocalizations.delegate,
+                  GlobalWidgetsLocalizations.delegate,
+                  GlobalCupertinoLocalizations.delegate,
+                ],
+                supportedLocales: context.supportedLocales,
+                locale: context.locale,
+                initialRoute: onboardingComplete ? '/' : '/onboarding',
+                routes: {
+                  '/': (context) => const HomeWrapper(),
+                  '/niaspedia': (context) => NiaspediaHomeScreen(),
+                  '/wikikamus': (context) => WikikamusHomeScreen(),
+                  '/wikibuku': (context) => WikibukuHomeScreen(),
+                  '/onboarding': (context) => const OnboardingScreen(),
+                  '/courses': (context) => const CoursesScreen(),
+                  '/gallery': (context) => const GalleryScreen(),
+                },
+              );
             },
           );
         },
@@ -133,8 +141,9 @@ class HomeWrapper extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final Project selectedProject =
-        context.watch<SettingsProvider>().selectedProject;
+    final Project selectedProject = context
+        .watch<SettingsProvider>()
+        .selectedProject;
 
     switch (selectedProject) {
       case Project.Wikikamus:
@@ -146,7 +155,7 @@ class HomeWrapper extends StatelessWidget {
       case Project.Gallery:
         return const GalleryScreen();
       case Project.Niaspedia:
-      return NiaspediaHomeScreen();
+        return NiaspediaHomeScreen();
     }
   }
 }
