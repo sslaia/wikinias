@@ -4,6 +4,7 @@ import 'package:wikinias/app_bar/drawer_about_section.dart';
 import 'package:wikinias/app_bar/drawer_font_selection_section.dart';
 import 'package:wikinias/app_bar/drawer_header_container.dart';
 import 'package:wikinias/app_bar/drawer_language_selection_section.dart';
+import 'package:wikinias/app_bar/drawer_mode_section.dart';
 import 'package:wikinias/app_bar/drawer_project_selection_section.dart';
 import 'package:wikinias/app_bar/drawer_update_service_section.dart';
 
@@ -76,6 +77,7 @@ class _GalleryScreenState extends State<GalleryScreen> {
       DrawerLanguageSelectionSection(),
       DrawerFontSelectionSection(),
       DrawerUpdteServiceSection(),
+      DrawerModeSection(),
       DrawerAboutSection(),
     ];
 
