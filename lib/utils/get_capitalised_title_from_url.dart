@@ -10,7 +10,7 @@ String getCapitalisedTitleFromUrl (String url) {
   final sanitisedNewTitle = sanitisedTitle(newTitle);
 
   // the following is deactivated as it creates issues with Namespace:XYZ
-  // for example Wiktionary:Angombakhata becomes Wiktionary:angomakhata
+  // for example Wikikamus:Angombakhata becomes Wikikamus:angomakhata
   // final newPageTitle = (sanitisedNewTitle).toLowerCase();
 
   final capitalisedTitle = sanitisedNewTitle.split(" ").map((word) => word.capitalize()).join(" ");

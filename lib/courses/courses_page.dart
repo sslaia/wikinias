@@ -33,11 +33,11 @@ class _CoursesPageState extends State<CoursesPage> {
   @override
   void initState() {
     super.initState();
-    _futurePageContent = _wikiApiService.fetchWikikamusPage('Wiktionary:Sulu/${widget.title}');
+    _futurePageContent = _wikiApiService.fetchWikikamusPage('Wikikamus:Sulu/${widget.title}');
   }
 
   void _navigateToNewPage(String url) {
-    final newPageTitle = sanitisedTitle(url.substring(6)).replaceAll('Wiktionary:Sulu/', '');
+    final newPageTitle = sanitisedTitle(url.substring(6)).replaceAll('Wikikamus:Sulu/', '');
     // Navigate to new page
     Navigator.of(context).push(
       MaterialPageRoute<void>(
@@ -73,7 +73,7 @@ class _CoursesPageState extends State<CoursesPage> {
       RefreshIconButton(destination: CoursesPage(title: widget.title)),
     ];
 
-    final String pageUrl = 'https://nia.m.wiktionary.org/wiki/Wiktionary:Sulu/${widget.title}';
+    final String pageUrl = 'https://nia.m.wiktionary.org/wiki/Wikikamus:Sulu/${widget.title}';
 
     return SafeArea(
       child: Consumer<SettingsProvider>(

@@ -40,22 +40,22 @@ class WikikamusShortcuts extends StatelessWidget {
             children: [
               ShortcutsRcTextButton(color: color, rcScreen: WikikamusRecentChangesScreen()),
               ShortcutsSpecialTextButton(
-                screen: WikikamusPageScreen(title: 'Wiktionary:Angombakhata'),
+                screen: WikikamusPageScreen(title: 'Wikikamus:Angombakhata'),
                 text: 'announcement',
                 color: altColor
               ),
               ShortcutsSpecialTextButton(
-                screen: WikikamusPageScreen(title: 'Wiktionary:Bawagöli zato'),
+                screen: WikikamusPageScreen(title: 'Wikikamus:Bawagöli zato'),
                 text: 'community_portal',
                 color: color,
               ),
               ShortcutsSpecialTextButton(
-                screen: WikikamusPageScreen(title: 'Wiktionary:Monganga afo'),
+                screen: WikikamusPageScreen(title: 'Wikikamus:Monganga afo'),
                 text: 'village_pump',
                 color: altColor,
               ),
               ShortcutsSpecialTextButton(
-                screen: WikikamusPageScreen(title: 'Wiktionary:Nahia wamakori'),
+                screen: WikikamusPageScreen(title: 'Wikikamus:Nahia wamakori'),
                 text: 'sandbox',
                 color: color,
               ),
@@ -65,7 +65,7 @@ class WikikamusShortcuts extends StatelessWidget {
                 color: altColor,
               ),
               ShortcutsSpecialTextButton(
-                screen: WikikamusPageScreen(title: 'Wiktionary:Sangai halöŵö'),
+                screen: WikikamusPageScreen(title: 'Wikikamus:Sangai halöŵö'),
                 text: 'helpers',
                 color: color,
               ),

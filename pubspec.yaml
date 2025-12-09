@@ -1,7 +1,7 @@
 name: wikinias
 description: "An app for Niaspedia, Wikikamus and Wikibuku"
 publish_to: 'none'
-version: 2.1.1+13
+version: 2.1.2+14
 
 environment:
   sdk: '>=3.9.2 <4.0.0'

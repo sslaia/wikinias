@@ -1,4 +1,5 @@
 import 'package:easy_localization/easy_localization.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
@@ -30,6 +31,13 @@ void main() async {
 
   apiService = ApiService(prefs);
   appDataService = AppDataService(apiService, prefs);
+
+  // Error handling: prevent the user from seeing ugly error messages
+  if (kReleaseMode) {
+    ErrorWidget.builder = (FlutterErrorDetails errorDetails) {
+      return const SizedBox.shrink();
+    };
+  }
 
   // Edge-to-edge requirement for Android 15
   SystemChrome.setEnabledSystemUIMode(SystemUiMode.edgeToEdge);
