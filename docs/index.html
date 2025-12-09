@@ -1,0 +1,406 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WikiNias</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    
+    <style>
+        :root {
+            --primary-color: #001f7d; /* Deep Blue based on your icon */
+            --secondary-color: #f4f4f4;
+            --accent-color: #ffcc00; /* Contrast color for buttons */
+            --text-color: #333;
+            --white: #ffffff;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            line-height: 1.6;
+            color: var(--text-color);
+            background-color: var(--secondary-color);
+        }
+
+        /* Navigation */
+        nav {
+            background-color: var(--primary-color);
+            padding: 1rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            color: var(--white);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+        }
+
+        .logo-container {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .nav-logo-img {
+            height: 40px;
+            width: 40px;
+            border-radius: 5px;
+        }
+
+        .lang-switch button {
+            background: transparent;
+            border: 1px solid var(--white);
+            color: var(--white);
+            padding: 5px 15px;
+            cursor: pointer;
+            border-radius: 20px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+
+        .lang-switch button:hover {
+            background: var(--white);
+            color: var(--primary-color);
+        }
+
+        /* Hero Section */
+        .hero {
+            background: linear-gradient(135deg, var(--primary-color) 0%, #0033a0 100%);
+            color: var(--white);
+            padding: 4rem 2rem;
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .app-icon-large {
+            width: 150px;
+            height: 150px;
+            border-radius: 25px;
+            margin-bottom: 2rem;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.3);
+            border: 4px solid var(--white);
+        }
+
+        .hero h1 {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .hero p {
+            font-size: 1.2rem;
+            max-width: 600px;
+            margin-bottom: 2rem;
+            opacity: 0.9;
+        }
+
+        .cta-button {
+            background-color: var(--accent-color);
+            color: #000;
+            padding: 15px 30px;
+            text-decoration: none;
+            border-radius: 30px;
+            font-weight: bold;
+            font-size: 1.1rem;
+            transition: transform 0.2s;
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .cta-button:hover {
+            transform: scale(1.05);
+        }
+
+        /* Features Section */
+        .features {
+            padding: 4rem 2rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .section-title {
+            text-align: center;
+            margin-bottom: 3rem;
+            color: var(--primary-color);
+        }
+
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+        }
+
+        .feature-card {
+            background: var(--white);
+            padding: 2rem;
+            border-radius: 15px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+            transition: transform 0.3s;
+            text-align: left;
+            border-top: 5px solid var(--primary-color);
+        }
+
+        .feature-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .feature-card i {
+            font-size: 2rem;
+            color: var(--primary-color);
+            margin-bottom: 1rem;
+        }
+
+        .feature-card h3 {
+            margin-bottom: 0.5rem;
+            font-size: 1.2rem;
+        }
+
+        /* Footer */
+        footer {
+            background-color: #222;
+            color: #aaa;
+            padding: 3rem 2rem;
+            text-align: center;
+        }
+
+        .footer-links {
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            margin-bottom: 2rem;
+            flex-wrap: wrap;
+        }
+
+        .footer-links a {
+            color: var(--white);
+            text-decoration: none;
+            font-size: 1rem;
+            transition: color 0.3s;
+        }
+
+        .footer-links a:hover {
+            color: var(--accent-color);
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .hero h1 { font-size: 2rem; }
+            .features-grid { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+
+    <nav>
+        <div class="logo-container">
+            <img src="./wikinias-icon.png" alt="WikiNias Logo" class="nav-logo-img">
+            <span style="font-weight: bold; font-size: 1.2rem;">WikiNias</span>
+        </div>
+        <div class="lang-switch">
+            <button id="langBtn" onclick="toggleLanguage()">ID (Indonesian)</button>
+        </div>
+    </nav>
+
+    <section class="hero">
+        <img src="./wikinias-icon.png" alt="WikiNias App Icon" class="app-icon-large">
+        <h1 id="heroTitle">Gateway to Everything Nias</h1>
+        <p id="heroSubtitle">Learn the language, explore proverbs, and discover the beauty of Nias ornaments.</p>
+        
+        <a href="https://play.google.com/store/apps/details?id=com.blogspot.wikinias" class="cta-button" target="_blank">
+            <i class="fab fa-google-play"></i> <span id="downloadBtn">Download on Google Play</span>
+        </a>
+    </section>
+
+    <section class="features">
+        <h2 class="section-title" id="featuresTitle">Key Features</h2>
+        <div class="features-grid">
+            
+            <div class="feature-card">
+                <i class="fas fa-rocket"></i>
+                <h3 id="f1-title">New Modules</h3>
+                <p id="f1-desc">Experience faster loading and beautiful images.</p>
+            </div>
+
+            <div class="feature-card">
+                <i class="fas fa-search"></i>
+                <h3 id="f2-title">New Search</h3>
+                <p id="f2-desc">Now you can start searching immediately.</p>
+            </div>
+
+            <div class="feature-card">
+                <i class="fas fa-bars"></i>
+                <h3 id="f3-title">New Menu Drawer</h3>
+                <p id="f3-desc">Even faster switching between modules.</p>
+            </div>
+
+            <div class="feature-card">
+                <i class="fas fa-font"></i>
+                <h3 id="f4-title">New Font Setting</h3>
+                <p id="f4-desc">Adjust the font to a comfortable size.</p>
+            </div>
+
+            <div class="feature-card">
+                <i class="fas fa-pen-nib"></i>
+                <h3 id="f5-title">New Create Page Form</h3>
+                <p id="f5-desc">Creating a new page or a new entry.</p>
+            </div>
+
+            <div class="feature-card">
+                <i class="fas fa-moon"></i>
+                <h3 id="f6-title">New Dark Mode</h3>
+                <p id="f6-desc">Eye-friendly reading in dark mode.</p>
+            </div>
+
+            <div class="feature-card">
+                <i class="fas fa-book-open"></i>
+                <h3 id="f7-title">New Courses</h3>
+                <p id="f7-desc">Learn Nias language through proverbs, songs, and tales.</p>
+            </div>
+
+            <div class="feature-card">
+                <i class="fas fa-images"></i>
+                <h3 id="f8-title">New Galleries</h3>
+                <p id="f8-desc">Explore Nias through photo galleries.</p>
+            </div>
+
+            <div class="feature-card">
+                <i class="fas fa-shapes"></i>
+                <h3 id="f9-title">New Ornaments</h3>
+                <p id="f9-desc">Enjoy Nias arts and ornaments.</p>
+            </div>
+
+        </div>
+    </section>
+
+    <footer>
+        <div class="footer-links">
+            <a href="https://wikinias.blogspot.com" target="_blank">
+                <i class="fas fa-globe"></i> <span id="linkHome">Official Website</span>
+            </a>
+            <a href="https://github.com/sslaia/wikinias" target="_blank">
+                <i class="fab fa-github"></i> <span id="linkRepo">GitHub Repository</span>
+            </a>
+            <a href="https://play.google.com/store/apps/details?id=com.blogspot.wikinias" target="_blank">
+                <i class="fab fa-google-play"></i> Google Play
+            </a>
+        </div>
+        <p>&copy; <script>document.write(new Date().getFullYear())</script> WikiNias. All rights reserved.</p>
+    </footer>
+
+    <script>
+        let currentLang = 'en';
+
+        const translations = {
+            en: {
+                btn: "ID (Indonesian)",
+                heroTitle: "Gateway to Nias Culture",
+                heroSubtitle: "Learn the language through proverbs, stories and songs; Search the meaning of Nias words; Read articles about Nias on Wikipedia and Wikibuku; Discover the beauty of Nias ornaments and photos.",
+                downloadBtn: "Download on Google Play",
+                featuresTitle: "Key Features",
+                // Features based on wikinias-features.txt 
+                f1Title: "New Modules",
+                f1Desc: "In addition to Wikipedia, Wikikamus and Wikibuku, two new modules were added: Nias language courses and gallery.",
+                f2Title: "New Search",
+                f2Desc: "Now you can start searching immediately.",
+                f3Title: "New Menu Drawer",
+                f3Desc: "Even faster switching between modules.",
+                f4Title: "New Font Setting",
+                f4Desc: "Adjust the font to a comfortable size.",
+                f5Title: "New Create Page Form",
+                f5Desc: "Creating a new page using a form.",
+                f6Title: "New Dark Mode",
+                f6Desc: "Eye-friendly reading in dark mode.",
+                f7Title: "New Courses",
+                f7Desc: "Learn Nias language through proverbs, songs, and stories.",
+                f8Title: "New Galleries",
+                f8Desc: "Explore Nias through photo galleries.",
+                f9Title: "New Ornaments",
+                f9Desc: "Enjoy Nias arts and ornaments.",
+                // Links
+                linkHome: "Official Website",
+                linkRepo: "GitHub Repository"
+            },
+            id: {
+                btn: "EN (English)",
+                heroTitle: "Gerbang Segala Sesuatu Tentang Nias",
+                heroSubtitle: "Belajar bahasa Nias melalui cerita, amaedola dan lagu; Cari makna kata Nias di kamus; Baca tulisan tentang Nias di Wikipedia dan Wikibuku; Temukan keindahan foto dan ornamen Nias.",
+                downloadBtn: "Unduh di Google Play",
+                featuresTitle: "Fitur Utama",
+                // Indonesian Translations
+                f1Title: "Modul Baru",
+                f1Desc: "Selain Wikipedia, Wikikamus dan Wikibuku, ada dua modul baru: Kursus belajar bahasa Nias dan galeri foto.",
+                f2Title: "Pencarian Baru",
+                f2Desc: "Sekarang Anda dapat mulai mencari dengan segera.",
+                f3Title: "Laci Menu Baru",
+                f3Desc: "Beralih antar modul dengan lebih cepat.",
+                f4Title: "Pengaturan Huruf",
+                f4Desc: "Sesuaikan ukuran huruf agar nyaman dibaca.",
+                f5Title: "Formulir Halaman Baru",
+                f5Desc: "Membuat halaman baru atau entri baru dengan mudah.",
+                f6Title: "Mode Gelap Baru",
+                f6Desc: "Membaca lebih nyaman di mata dengan mode gelap.",
+                f7Title: "Kursus Baru",
+                f7Desc: "Belajar bahasa Nias melalui peribahasa, lagu, dan cerita.",
+                f8Title: "Galeri Baru",
+                f8Desc: "Jelajahi Nias melalui galeri foto.",
+                f9Title: "Ornamen Baru",
+                f9Desc: "Nikmati seni dan ornamen khas Nias.",
+                // Links
+                linkHome: "Situs Resmi",
+                linkRepo: "Repositori GitHub"
+            }
+        };
+
+        function toggleLanguage() {
+            currentLang = currentLang === 'en' ? 'id' : 'en';
+            const t = translations[currentLang];
+
+            // Update Header
+            document.getElementById('langBtn').innerText = t.btn;
+            
+            // Update Hero
+            document.getElementById('heroTitle').innerText = t.heroTitle;
+            document.getElementById('heroSubtitle').innerText = t.heroSubtitle;
+            document.getElementById('downloadBtn').innerText = t.downloadBtn;
+            
+            // Update Features Title
+            document.getElementById('featuresTitle').innerText = t.featuresTitle;
+
+            // Update Feature Cards
+            document.getElementById('f1-title').innerText = t.f1Title;
+            document.getElementById('f1-desc').innerText = t.f1Desc;
+            document.getElementById('f2-title').innerText = t.f2Title;
+            document.getElementById('f2-desc').innerText = t.f2Desc;
+            document.getElementById('f3-title').innerText = t.f3Title;
+            document.getElementById('f3-desc').innerText = t.f3Desc;
+            document.getElementById('f4-title').innerText = t.f4Title;
+            document.getElementById('f4-desc').innerText = t.f4Desc;
+            document.getElementById('f5-title').innerText = t.f5Title;
+            document.getElementById('f5-desc').innerText = t.f5Desc;
+            document.getElementById('f6-title').innerText = t.f6Title;
+            document.getElementById('f6-desc').innerText = t.f6Desc;
+            document.getElementById('f7-title').innerText = t.f7Title;
+            document.getElementById('f7-desc').innerText = t.f7Desc;
+            document.getElementById('f8-title').innerText = t.f8Title;
+            document.getElementById('f8-desc').innerText = t.f8Desc;
+            document.getElementById('f9-title').innerText = t.f9Title;
+            document.getElementById('f9-desc').innerText = t.f9Desc;
+
+            // Update Footer
+            document.getElementById('linkHome').innerText = t.linkHome;
+            document.getElementById('linkRepo').innerText = t.linkRepo;
+        }
+    </script>
+</body>
+</html>
