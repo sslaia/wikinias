@@ -24,17 +24,23 @@
 * **Cultural Learning:** Courses on proverbs, songs, and tales.
 * **Visuals:** Galleries and Nias ornament explorations.
 
----
+## 🛠 How to Edit the Landing Page
 
-## 🌐 Setting up the Landing Page
+The landing page (`index.html`) is a self-contained file including HTML, CSS, and JavaScript.
 
-To make the `index.html` file visible as a website:
+### Changing Text & Translations
+The website supports **English** and **Indonesian**. To change the text, locate the `<script>` tag at the bottom of `index.html`.
 
-1.  Go to the **Settings** tab of this repository.
-2.  Click on **Pages** in the left sidebar.
-3.  Under **Build and deployment** > **Branch**, select `main` (or `master`) and ensure the folder is set to `/ (root)`.
-4.  Click **Save**.
-5.  Your site will be live at: `https://sslaia.github.io/wikinias/`
+Look for the `translations` object:
 
----
-
+```javascript
+const translations = {
+    en: {
+        heroTitle: "Gateway to Nias Culture",
+        // ... change English text here
+    },
+    id: {
+        heroTitle: "Gerbang Budaya Nias",
+        // ... change Indonesian text here
+    }
+};
