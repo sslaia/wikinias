@@ -7,6 +7,11 @@ An app for Niaspedia, Wikikamus and Wikibuku. Get it from Play Store:
 
 ## Version's history
 
+## New in the 2.1.2:
+
+- Emergency update due to namespace change on Nias Wiktionary
+- Implemented the edge-to-edge requirement for Android 15 and above
+
 ## New in the 2.1.1:
 
 - New: Update service settings
@@ -14,7 +19,6 @@ An app for Niaspedia, Wikikamus and Wikibuku. Get it from Play Store:
 - New: Portals
 - Improved API and html parsing
 - General code spring cleaning
-
 
 ## New in the 2.1.0:
 

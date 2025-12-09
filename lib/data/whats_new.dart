@@ -1,4 +1,9 @@
 const whatsNew = '''
+<h3>New in the 2.1.2</h3>
+<ul>
+<li>Emergency update due to namespace change on Nias Wiktionary</li>
+<li>Implemented the edge-to-edge requirement for Android 15 and above</li>
+</ul>
 
 <h3>New in the 2.1.1+13 version</h3>
 <ul>
