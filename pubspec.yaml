@@ -1,63 +1,42 @@
 name: wikinias
 description: "An app for Niaspedia, Wikikamus and Wikibuku"
 publish_to: 'none'
-version: 2.1.2+14
+version: 2.5.0+15
 
 environment:
-  sdk: '>=3.9.2 <4.0.0'
+  sdk: ^3.11.4
 
 dependencies:
   flutter:
     sdk: flutter
-
-  flutter_localizations:
-    sdk: flutter
-
-  provider: ^6.1.5+1
-  shared_preferences: ^2.5.3
+  beautiful_soup_dart: ^0.3.0
   easy_localization: ^3.0.8
-  google_fonts: ^6.3.1
-  share_plus: ^12.0.0
-  webview_flutter: ^4.13.0
-  webview_flutter_android: ^4.10.2
-  url_launcher: ^6.3.2
-  flutter_widget_from_html: ^0.17.1
-  html_character_entities: ^1.0.0+1
-  http: ^1.5.0
+  flutter_riverpod: ^3.2.1
+  flutter_widget_from_html: ^0.17.2
+  google_fonts: ^8.0.2
   html: ^0.15.6
+  http: ^1.6.0
+  just_audio: ^0.10.4
+  shared_preferences: ^2.5.5
+  share_plus: ^13.1.0
+  url_launcher: ^6.3.2
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
-
   flutter_lints: ^6.0.0
 
 flutter:
   uses-material-design: true
   assets:
     - assets/data/
-    - assets/fonts/
     - assets/images/
+    - assets/images/onboarding1.webp
+    - assets/images/onboarding2.webp
+    - assets/images/onboarding3.webp
+    - assets/images/onboarding4.webp
+    - assets/images/onboarding5.webp
     - assets/translations/
-    - assets/data/courses_content_data.json
-    - assets/data/featured_content_data.json
-    - assets/data/gallery_content_data.json
     - assets/translations/en.json
     - assets/translations/id.json
     - assets/translations/nia.json
-  fonts:
-    - family: CinzelDecorative
-      fonts:
-        - asset: assets/fonts/CinzelDecorative-Regular.ttf
-        - asset: assets/fonts/CinzelDecorative-Bold.ttf
-          weight: 700
-    - family: Gelasio
-      fonts:
-        - asset: assets/fonts/Gelasio-Regular.ttf
-        - asset: assets/fonts/Gelasio-Italic.ttf
-          style: italic
-        - asset: assets/fonts/Gelasio-Bold.ttf
-          weight: 700
-        - asset: assets/fonts/Gelasio-BoldItalic.ttf
-          weight: 700
-          style: italic

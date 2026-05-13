@@ -1,0 +1,339 @@
+{
+  "global": {
+    "wikipedia": {
+      "remove": [
+        ".ambox",
+        ".catlinks",
+        ".hatnote",
+        ".metadata",
+        ".mw-editsection",
+        ".navbox",
+        ".nomobile",
+        ".noprint",
+        "script",
+        "style"
+      ],
+      "hide": [
+        ".references",
+        ".reflist"
+      ],
+      "referenceKeywords": [
+        "reference",
+        "reflist",
+        "referensi",
+        "umbu",
+        "famotokhi ba gahe",
+        "catatan kaki"
+      ]
+    },
+    "wiktionary": {
+      "remove": [
+        ".reflist",
+        ".navbox",
+        ".metadata",
+        ".ambox",
+        ".noprint",
+        ".mw-editsection",
+        "style",
+        "script"
+      ],
+      "hide": [],
+      "referenceKeywords": [
+        "reference",
+        "reflist"
+      ]
+    },
+    "wikibooks": {
+      "remove": [
+        ".reflist",
+        ".navbox",
+        ".metadata",
+        ".ambox",
+        ".noprint",
+        ".mw-editsection",
+        "style",
+        "script"
+      ],
+      "hide": [],
+      "referenceKeywords": [
+        "reference",
+        "reflist"
+      ]
+    }
+  },
+  "en": {
+    "wikipedia": {
+      "remove": [
+        ".infobox",
+        ".navbox",
+        ".ambox",
+        ".hatnote",
+        ".catlinks",
+        ".mw-editsection",
+        ".side-box-flex",
+        ".toc",
+        "toc"
+      ],
+      "hide": [
+        ".references"
+      ],
+      "referenceKeywords": [
+        "reference",
+        "reflist",
+        "notes"
+      ],
+      "homePageSections": {
+        "featuredArticle": {
+          "selector": "mp-tfa",
+          "keep": "p",
+          "firstOnly": true
+        },
+        "featuredImage": {
+          "selector": "mp-tfp",
+          "keep": "p",
+          "firstOnly": true
+        },
+        "doYouKnow": {
+          "selector": "mp-dyk",
+          "keep": "ul",
+          "firstOnly": true
+        },
+        "inTheNews": {
+          "selector": "mp-itn",
+          "keep": "ul",
+          "firstOnly": true
+        },
+        "onThisDay": {
+          "selector": "mp-otd",
+          "keep": ["p", "ul"],
+          "firstOnly": true
+        },
+        "featuredList": {
+          "selector": "mp-tfl",
+          "keep": "p",
+          "firstOnly": true
+        }
+      }
+    },
+    "wiktionary": {
+      "remove": [
+        ".infobox"
+      ],
+      "hide": [
+        ".gallery"
+      ],
+      "referenceKeywords": [
+        "reference",
+        "reflist",
+        "notes",
+        ".side-box-flex",
+        ".toc",
+        "toc"
+      ],
+      "homePageSections": {
+        "wordOfTheDay": {
+          "selector": "mf-wotd",
+          "keep": "p",
+          "firstOnly": true
+        },
+        "foreignWordOfTheDay": {
+          "selector": "mf-fwotd",
+          "keep": "p",
+          "firstOnly": true
+        }
+      }
+    },
+    "wikibooks": {
+      "remove": [
+        ".infobox"
+      ],
+      "hide": [
+        ".gallery"
+      ],
+      "referenceKeywords": [
+        "reference",
+        "reflist",
+        "notes"
+      ],
+      "homePageSections": {
+        "featuredArticle": "mf-artikelpilihan",
+        "featuredImage": "mf-gambarpilihan",
+        "recentEvents": "mf-peristiwaterkini",
+        "doYouKnow": "mf-tahukahanda",
+        "onThisDay": "mf-hids"
+      }
+    }
+  },
+  "id": {
+    "wikipedia": {
+      "remove": [
+        ".infobox",
+        ".navbox",
+        ".mw-editsection",
+        "style",
+        "script",
+        ".noprint",
+        ".side-box-flex",
+        ".toc",
+        "toc"
+      ],
+      "hide": [
+        ".nomobile",
+        ".references",
+        ".reflist"
+      ],
+      "referenceKeywords": [
+        "referensi",
+        "catatan kaki",
+        "rujukan",
+        "sumber",
+        "cathetan",
+        "cathetan suku",
+        "ruju'an",
+        "jujuhutan",
+        "daptar jujuhutan"
+      ],
+      "homePageSections": {
+        "featuredArticle": {
+          "selector": "mf-artikelpilihan",
+          "keep": "p",
+          "firstOnly": true
+        },
+        "featuredImage": {
+          "selector": "mf-gambarpilihan",
+          "keep": "div",
+          "firstOnly": true,
+          "stripStyle": true
+        },
+        "recentEvents": {
+          "selector": "mf-peristiwaterkini",
+          "keep": "ul",
+          "firstOnly": true
+        },
+        "doYouKnow": {
+          "selector": "mf-tahukahanda",
+          "keep": "ul",
+          "firstOnly": true
+        },
+        "onThisDay": {
+          "selector": "mf-hids",
+          "keep": "ul",
+          "firstOnly": true
+        }
+      }
+    },
+    "wiktionary": {
+      "remove": [
+        ".nomobile",
+        ".side-box-flex",
+        ".toc",
+        "toc"
+      ],
+      "hide": [
+        ".nomobile"
+      ],
+      "referenceKeywords": [
+        "referensi",
+        "catatan kaki",
+        "rujukan",
+        "sumber"
+      ],
+      "homePageSections": {
+        "featuredWord": {
+          "selector": "mf-lematerpilih",
+          "keep": "p",
+          "firstOnly": true
+        },
+        "doYouKnow": {
+          "selector": "mf-tahukahanda",
+          "keep": "ul",
+          "firstOnly": true
+        },
+        "newWords": {
+          "selector": "mf-lemabaru",
+          "keep": "ul",
+          "firstOnly": true
+        }
+      }
+    },
+    "wikibooks": {
+      "remove": [
+        ".nomobile"
+      ],
+      "hide": [
+        ".nomobile"
+      ],
+      "referenceKeywords": [
+        "referensi",
+        "catatan kaki",
+        "rujukan",
+        "sumber",
+        "cathetan",
+        "cathetan suku",
+        "ruju'an",
+        "jujuhutan",
+        "daptar jujuhutan"
+      ],
+      "homePageSections": {
+        "featuredBook": "Buku_bagus"
+      }
+    }
+  },
+  "nia": {
+    "wikipedia": {
+      "remove": [
+        ".infobox",
+        ".navbox",
+        ".side-box-flex",
+        ".toc",
+        "toc"
+      ],
+      "hide": [
+        ".mw-editsection",
+        "#Umbu"
+      ],
+      "referenceKeywords": [
+        "famotokhi ba gahe",
+        "referensi",
+        "umbu"
+      ],
+      "homePageSections": {
+        "featuredArticle": "mp-featured-article-body",
+        "doYouKnow": "mp-dyk-body",
+        "featuredImage": "mp-featured-photo-body",
+        "onThisMonth": "mp-otm-body"
+      }
+    },
+    "wiktionary": {
+      "remove": [
+        ".side-box-flex",
+        ".toc",
+        "toc"
+      ],
+      "hide": [
+      ],
+      "referenceKeywords": [
+      ],
+      "homePageSections": {
+        "featuredWord": "mp-featured-word-body",
+        "doYouKnow": "mp-dyk-body"
+      }
+    },
+    "wikibooks": {
+      "remove": [
+        ".nomobile"
+      ],
+      "hide": [
+        ".nomobile"
+      ],
+      "referenceKeywords": [
+        "umbu"
+      ],
+      "homePageSections": {
+        "featuredStory": "mp-featured-article-body",
+        "featuredImage": "mp-featured-photo-body",
+        "doYouKnow": "mp-dyk-body"
+      }
+    }
+  }
+}

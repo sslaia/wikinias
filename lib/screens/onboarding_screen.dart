@@ -1,218 +1,278 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
-import 'package:shared_preferences/shared_preferences.dart';
-import 'package:wikinias/screens/project_selection_screen.dart';
-import '../models/slider_model.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:google_fonts/google_fonts.dart';
 
-class OnboardingScreen extends StatefulWidget {
+import '../providers/onboarding_provider.dart';
+import 'home_screen.dart';
+
+class OnboardingScreen extends ConsumerStatefulWidget {
   const OnboardingScreen({super.key});
 
   @override
-  OnboardingScreenState createState() => OnboardingScreenState();
+  ConsumerState<OnboardingScreen> createState() => _OnboardingScreenState();
 }
 
-class OnboardingScreenState extends State<OnboardingScreen> {
-  late PageController _pageController;
+class _OnboardingScreenState extends ConsumerState<OnboardingScreen> {
+  final PageController _pageController = PageController();
   int _currentPage = 0;
-  late List<SliderModel> slides;
 
-  @override
-  void initState() {
-    super.initState();
-    _pageController = PageController(initialPage: _currentPage);
-    slides = getSlides();
-  }
-
-  @override
-  void dispose() {
-    _pageController.dispose();
-    super.dispose();
-  }
-
-  void _onDone() async {
-    final prefs = await SharedPreferences.getInstance();
-    await prefs.setBool('onboarding_complete', true);
-    if (!mounted) return;
-    Navigator.of(context);
-    Navigator.of(context).push(
-      MaterialPageRoute<void>(
-        builder: (context) => ProjectSelectionScreen(),
-      ),
-    );
-  }
-
-  Widget _buildPageIndicator() {
-    List<Widget> indicators = [];
-    for (int i = 0; i < slides.length; i++) {
-      indicators.add(i == _currentPage ? _indicator(true) : _indicator(false));
-    }
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: indicators,
-    );
-  }
-
-  Widget _indicator(bool isActive) {
-    return AnimatedContainer(
-      duration: const Duration(milliseconds: 150),
-      margin: const EdgeInsets.symmetric(horizontal: 8.0),
-      height: 8.0,
-      width: isActive ? 24.0 : 8.0,
-      decoration: BoxDecoration(
-        color: isActive ? Colors.deepPurple : Colors.grey[400],
-        borderRadius: const BorderRadius.all(Radius.circular(12)),
-      ),
-    );
-  }
+  final List<OnboardingData> _pages = [
+    OnboardingData(
+      titleKey: 'onboarding_title_1',
+      descKey: 'onboarding_desc_1',
+      imagePath: 'assets/images/onboarding1.webp',
+      color: const Color(0xFF121298),
+    ),
+    OnboardingData(
+      titleKey: 'onboarding_title_2',
+      descKey: 'onboarding_desc_2',
+      imagePath: 'assets/images/onboarding2.webp',
+      color: const Color(0xFF9B00A1),
+    ),
+    OnboardingData(
+      titleKey: 'onboarding_title_3',
+      descKey: 'onboarding_desc_3',
+      imagePath: 'assets/images/onboarding3.webp',
+      color: const Color(0xFF121298),
+    ),
+    OnboardingData(
+      titleKey: 'onboarding_title_4',
+      descKey: 'onboarding_desc_4',
+      imagePath: 'assets/images/onboarding4.webp',
+      color: const Color(0xFFFF5722),
+    ),
+    OnboardingData(
+      titleKey: 'onboarding_title_5',
+      descKey: 'onboarding_desc_5',
+      imagePath: 'assets/images/onboarding5.webp',
+      color: const Color(0xFF9B00A1),
+    ),
+  ];
 
   @override
   Widget build(BuildContext context) {
-    const englishSelected = SnackBar(
-      content: Text('English is selected for the interface language!'),
-    );
-    const indonesiaSelected = SnackBar(
-      content: Text('Bahasa Indonesia menjadi bahasa antar muka menu!'),
-    );
-    const niasSelected = SnackBar(
-      content: Text("Te'oroma'ö ngawalö duria ba li Niha!"),
-    );
-    final Color color = Theme.of(context).colorScheme.primary;
-    var brightness = View.of(context).platformDispatcher.platformBrightness;
-    bool isDarkMode = brightness == Brightness.dark;
+    final theme = Theme.of(context);
+    final size = MediaQuery.of(context).size;
 
-    return SafeArea(
-      child: Scaffold(
-        body: Column(
-          children: [
-            Expanded(
-              child: PageView.builder(
-                controller: _pageController,
-                itemCount: slides.length,
-                onPageChanged: (int page) {
-                  setState(() {
-                    _currentPage = page;
-                  });
-                },
-                itemBuilder: (context, index) {
-                  return SlideTile(
-                    imagePath: slides[index].imageAssetPath,
-                    title: slides[index].title,
-                    description: slides[index].description,
-                  );
-                },
-              ),
-            ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                // English
-                TextButton(
-                  onPressed: () {
-                    context.setLocale(Locale('en'));
-                    ScaffoldMessenger.of(
-                      context,
-                    ).showSnackBar(englishSelected);
-                  },
-                  child: Text(
-                    'english'.tr(),
-                    style: TextStyle(color: isDarkMode ? color : Color(0xff121298)),
-                  ),
-                ),
-                const SizedBox(width: 8.0),
-                Text('|'),
-                const SizedBox(width: 8.0),
-                // Indonesia
-                TextButton(
-                  onPressed: () {
-                    context.setLocale(Locale('id'));
-                    ScaffoldMessenger.of(
-                      context,
-                    ).showSnackBar(niasSelected);
-                  },
-                  child: Text(
-                    'indonesia'.tr(),
-                    style: TextStyle(color: isDarkMode ? color : Color(0xff9b00a1)),
-                  ),
-                ),
-                const SizedBox(width: 8.0),
-                Text('|'),
-                const SizedBox(width: 8.0),
-                // Nias
-                TextButton(
-                  onPressed: () {
-                    context.setLocale(Locale('nia'));
-                    ScaffoldMessenger.of(
-                      context,
-                    ).showSnackBar(niasSelected);
-                  },
-                  child: Text(
-                    'nias'.tr(),
-                    style: TextStyle(color: isDarkMode ? color : Color(0xff121298)),
-                  ),
-                ),
-              ],
-            ),
-            SizedBox(height: 20),
-            _buildPageIndicator(),
-            SizedBox(height: 20),
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 20.0),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  if (_currentPage < slides.length - 1)
-                    ElevatedButton(
-                      onPressed: _onDone,
-                      child: Text("skip").tr(),
-                    ),
-                  if (_currentPage == slides.length - 1)
-                    ElevatedButton(
-                      onPressed: _onDone,
-                      child: Text("done").tr(),
-                    ),
-                  if (_currentPage < slides.length - 1)
-                    ElevatedButton(
-                      onPressed: () {
-                        _pageController.nextPage(
-                            duration: const Duration(milliseconds: 500),
-                            curve: Curves.ease);
-                      },
-                      child: Text("next").tr(),
-                    ),
-                ],
-              ),
-            ),
-            SizedBox(height: 50),
-          ],
-        ),
-      ),
-    );
-  }
-}
-
-class SlideTile extends StatelessWidget {
-  final String imagePath, title, description;
-  const SlideTile(
-      {super.key,
-        required this.imagePath,
-        required this.title,
-        required this.description});
-
-  @override
-  Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.all(40.0),
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
+    return Scaffold(
+      backgroundColor: theme.colorScheme.surface,
+      body: Stack(
         children: [
-          Image.asset(imagePath),
-          SizedBox(height: 20),
-          Text(title,
-              style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold)).tr(),
-          SizedBox(height: 10),
-          Text(description, textAlign: TextAlign.center).tr(),
+          PageView.builder(
+            controller: _pageController,
+            itemCount: _pages.length,
+            onPageChanged: (index) {
+              setState(() => _currentPage = index);
+            },
+            itemBuilder: (context, index) {
+              return _buildPage(_pages[index], size, theme);
+            },
+          ),
+
+          Positioned(
+            bottom: 40,
+            left: 0,
+            right: 0,
+            child: Center(
+              child: ConstrainedBox(
+                constraints: const BoxConstraints(maxWidth: 800),
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 24.0),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      if (_currentPage > 0)
+                        IconButton(
+                          onPressed: () {
+                            _pageController.previousPage(
+                              duration: const Duration(milliseconds: 500),
+                              curve: Curves.easeInOut,
+                            );
+                          },
+                          icon: Icon(Icons.arrow_back_ios_rounded,
+                              color: theme.colorScheme.onSurface.withValues(alpha: 0.5)),
+                        )
+                      else
+                        TextButton(
+                          onPressed: () => _complete(ref, context),
+                          child: Text('skip'.tr(),
+                              style: TextStyle(color: theme.colorScheme.onSurface.withValues(alpha: 0.5))),
+                        ),
+
+                      Row(
+                        children: List.generate(
+                          _pages.length,
+                              (index) => _buildIndicator(index, theme),
+                        ),
+                      ),
+
+                      _currentPage == _pages.length - 1
+                          ? ElevatedButton(
+                        onPressed: () => _complete(ref, context),
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: _pages[_currentPage].color,
+                          foregroundColor: Colors.white,
+                          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+                        ),
+                        child: Text('get_started'.tr()),
+                      )
+                          : IconButton(
+                        onPressed: () {
+                          _pageController.nextPage(
+                            duration: const Duration(milliseconds: 500),
+                            curve: Curves.easeInOut,
+                          );
+                        },
+                        icon: Icon(Icons.arrow_forward_ios_rounded, color: _pages[_currentPage].color),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+            ),
+          ),
         ],
       ),
     );
   }
+
+  Widget _buildPage(OnboardingData page, Size size, ThemeData theme) {
+    final isLandscape = size.width > size.height;
+    final isTablet = size.width > 600;
+
+    if (isLandscape) {
+      return Padding(
+        padding: const EdgeInsets.only(bottom: 80.0), // Space for bottom controls
+        child: Row(
+          children: [
+            Expanded(
+              flex: 1,
+              child: Padding(
+                padding: EdgeInsets.all(isTablet ? 40.0 : 20.0),
+                child: Image.asset(
+                  page.imagePath,
+                  fit: BoxFit.contain,
+                ),
+              ),
+            ),
+            Expanded(
+              flex: 1,
+              child: SingleChildScrollView(
+                child: Padding(
+                  padding: EdgeInsets.symmetric(horizontal: isTablet ? 60.0 : 20.0),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        page.titleKey.tr(),
+                        style: GoogleFonts.montserratAlternates(
+                          fontSize: isTablet ? 32 : 24,
+                          fontWeight: FontWeight.w800,
+                          color: page.color,
+                        ),
+                      ),
+                      SizedBox(height: isTablet ? 24 : 12),
+                      Text(
+                        page.descKey.tr(),
+                        style: GoogleFonts.notoSerif(
+                          fontSize: isTablet ? 18 : 14,
+                          height: 1.5,
+                          color: theme.colorScheme.onSurface.withValues(alpha: 0.7),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+            ),
+          ],
+        ),
+      );
+    }
+
+    // Portrait screens
+    return SingleChildScrollView(
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          SizedBox(height: size.height * 0.1),
+          Container(
+            width: isTablet ? 500 : size.width,
+            height: size.height * 0.4,
+            decoration: BoxDecoration(
+              image: DecorationImage(
+                image: AssetImage(page.imagePath),
+                fit: BoxFit.contain,
+              ),
+            ),
+          ),
+          Padding(
+            padding: EdgeInsets.symmetric(horizontal: isTablet ? 80.0 : 40.0),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                const SizedBox(height: 40),
+                Text(
+                  page.titleKey.tr(),
+                  textAlign: TextAlign.center,
+                  style: GoogleFonts.montserratAlternates(
+                    fontSize: isTablet ? 32 : 26,
+                    fontWeight: FontWeight.w800,
+                    color: page.color,
+                  ),
+                ),
+                const SizedBox(height: 16),
+                Text(
+                  page.descKey.tr(),
+                  textAlign: TextAlign.center,
+                  style: GoogleFonts.notoSerif(
+                    fontSize: isTablet ? 18 : 16,
+                    height: 1.4,
+                    color: theme.colorScheme.onSurface.withValues(alpha: 0.7),
+                  ),
+                ),
+              ],
+            ),
+          ),
+          SizedBox(height: isTablet ? 160 : 120),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildIndicator(int index, ThemeData theme) {
+    return AnimatedContainer(
+      duration: const Duration(milliseconds: 300),
+      margin: const EdgeInsets.only(right: 8),
+      height: 8,
+      width: _currentPage == index ? 24 : 8,
+      decoration: BoxDecoration(
+        color: _currentPage == index ? _pages[_currentPage].color : theme.colorScheme.outlineVariant,
+        borderRadius: BorderRadius.circular(4),
+      ),
+    );
+  }
+
+  Future<void> _complete(WidgetRef ref, BuildContext context) async {
+    await ref.read(onboardingProvider.notifier).completeOnboarding();
+    if (context.mounted) {
+      Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (_) => const HomeScreen()));
+    }
+  }
+}
+
+class OnboardingData {
+  final String titleKey;
+  final String descKey;
+  final String imagePath; // Changed from IconData
+  final Color color;
+
+  OnboardingData({
+    required this.titleKey,
+    required this.descKey,
+    required this.imagePath,
+    required this.color,
+  });
 }

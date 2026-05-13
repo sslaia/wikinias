@@ -1,58 +1,40 @@
 import 'package:flutter/material.dart';
-import 'package:wikinias/providers/settings_provider.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'shared_prefs_provider.dart';
 
-import '../theme/wikinias_theme.dart';
-
-class ThemeProvider with ChangeNotifier {
-  final SettingsProvider _settingsProvider;
-
-  Project? _lastProject;
-
-  ThemeProvider(this._settingsProvider) {
-    _settingsProvider.addListener(_onSettingsChanged);
-    _lastProject = _settingsProvider.selectedProject;
-  }
-
-  void _onSettingsChanged() {
-    if (_settingsProvider.selectedProject != _lastProject) {
-      _lastProject = _settingsProvider.selectedProject;
-      notifyListeners();
-    }
-  }
+class ThemeModeNotifier extends Notifier<ThemeMode> {
+  static const _themeKey = 'selected_theme_mode';
 
   @override
-  void dispose() {
-    _settingsProvider.removeListener(_onSettingsChanged);
-    super.dispose();
+  ThemeMode build() {
+    final prefs = ref.watch(sharedPreferencesProvider);
+    final savedMode = prefs.getString(_themeKey);
+    
+    if (savedMode == 'light') return ThemeMode.light;
+    if (savedMode == 'dark') return ThemeMode.dark;
+    return ThemeMode.system;
   }
 
-  ThemeData getThemeData(Brightness brightness) {
-    final WikiniasTheme wikiniasTheme = _getWikiniasTheme();
-
-    final Color seedColor = brightness == Brightness.light
-        ? wikiniasTheme.lightSeed
-        : wikiniasTheme.darkSeed;
-
-    final colorScheme = ColorScheme.fromSeed(
-      seedColor: seedColor,
-      brightness: brightness,
-    );
-
-    return ThemeData(useMaterial3: true, colorScheme: colorScheme);
-  }
-
-  WikiniasTheme _getWikiniasTheme() {
-    switch (_settingsProvider.selectedProject) {
-      case Project.Niaspedia:
-        return WikiniasTheme.niaspedia;
-      case Project.Wikikamus:
-        return WikiniasTheme.wikikamus;
-      case Project.Wikibuku:
-        return WikiniasTheme.wikibuku;
-      case Project.Courses:
-        return WikiniasTheme.wikibuku;
-      case Project.Gallery:
-        return WikiniasTheme.wikibuku;
-      }
+  void setThemeMode(ThemeMode mode) {
+    state = mode;
+    
+    final prefs = ref.read(sharedPreferencesProvider);
+    String modeString;
+    switch (mode) {
+      case ThemeMode.light:
+        modeString = 'light';
+        break;
+      case ThemeMode.dark:
+        modeString = 'dark';
+        break;
+      case ThemeMode.system:
+        modeString = 'system';
+        break;
+    }
+    prefs.setString(_themeKey, modeString);
   }
 }
+
+final themeModeProvider = NotifierProvider<ThemeModeNotifier, ThemeMode>(() {
+  return ThemeModeNotifier();
+});

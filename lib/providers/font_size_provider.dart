@@ -1,49 +1,44 @@
-import 'package:flutter/material.dart';
-import 'package:shared_preferences/shared_preferences.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'shared_prefs_provider.dart';
 
-class FontSizeProvider with ChangeNotifier {
-  static const double _defaultFontSize = 14.0;
+enum AppFontSize {
+  small('Small', 1.0),
+  normal('Default', 1.2),
+  large('Large', 1.4),
+  extraLarge('Extra Large', 1.6);
 
-  static const double _smallScale = 0.8;
-  static const double _normalScale = 1.0;
-  static const double _largeScale = 1.2;
-  static const double _extraLargeScale = 1.4;
+  final String label;
+  final double scale;
 
-  double _currentScale = _normalScale;
+  const AppFontSize(this.label, this.scale);
 
-  FontSizeProvider() {
-    loadFontSize();
-  }
-  
-  double get currentScale => _currentScale;
-
-  double get scaledFontSize => _defaultFontSize * _currentScale;
-
-  static final Map<String, double> fontScales = {
-    'small': _smallScale,
-    'normal': _normalScale,
-    'large': _largeScale,
-    'extra_large': _extraLargeScale
-  };
-
-  Future<void> setFontSize(String scaleName) async {
-    final scale = fontScales[scaleName];
-    if (scale == null) return;
-
-    _currentScale = scale;
-
-    final prefs = await SharedPreferences.getInstance();
-    await prefs.setString('font_size_scale', scaleName);
-
-    notifyListeners();
-  }
-
-  Future<void> loadFontSize() async {
-    final prefs = await SharedPreferences.getInstance();
-    final savedScaleName = prefs.getString('font_size_scale') ?? 'Normal';
-
-    _currentScale = fontScales[savedScaleName] ?? _normalScale;
-
-    notifyListeners();
+  static AppFontSize fromName(String name) {
+    return AppFontSize.values.firstWhere(
+      (e) => e.name == name,
+      orElse: () => AppFontSize.normal,
+    );
   }
 }
+
+class FontSizeNotifier extends Notifier<AppFontSize> {
+  static const _fontSizeKey = 'app_font_size';
+
+  @override
+  AppFontSize build() {
+    final prefs = ref.watch(sharedPreferencesProvider);
+    final savedName = prefs.getString(_fontSizeKey);
+    if (savedName != null) {
+      return AppFontSize.fromName(savedName);
+    }
+    return AppFontSize.normal;
+  }
+
+  void setFontSize(AppFontSize size) {
+    state = size;
+    ref.read(sharedPreferencesProvider).setString(_fontSizeKey, size.name);
+  }
+}
+
+final fontSizeProvider = NotifierProvider<FontSizeNotifier, AppFontSize>(() {
+  return FontSizeNotifier();
+});
