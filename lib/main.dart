@@ -19,7 +19,7 @@ class WikiHttpOverrides extends HttpOverrides {
   HttpClient createHttpClient(SecurityContext? context) {
     return super.createHttpClient(context)
       ..userAgent =
-          'WikiNias/2.5 (https://io.github.slaia.wikinias; slaia@yahoo.com) Flutter/3.x';
+          'WikiNias/2.5.0 (https://sslaia.github.io/wikinias; slaia@yahoo.com) Flutter/3.x';
   }
 }
 

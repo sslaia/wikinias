@@ -44,6 +44,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
         final isCompactPortrait = isCompact && !isLandscape;
         final isTabletLandscape = isTablet && isLandscape;
         final bool showShortcutsSideBar = isTabletLandscape || deviceType == DeviceType.expanded;
+        final double bottomAppBarHeight = isCompactPortrait ? 80.0 : 0.0;
 
         return Scaffold(
           key: _scaffoldKey,
@@ -132,7 +133,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                       child: ContributeWidget(project: currentProject),
                     ),
                     const SliverToBoxAdapter(child: WikiFooter()),
-                    const SliverToBoxAdapter(child: SizedBox(height: 80)),
+                    SliverToBoxAdapter(child: SizedBox(height: bottomAppBarHeight)),
                   ],
                 ),
               ),

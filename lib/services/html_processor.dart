@@ -74,11 +74,10 @@ class HtmlProcessor {
     for (var img in images) {
       final src = img.attributes['src'] ?? '';
       if (!WikiUtils.isIcon(src)) {
-        imageUrl = WikiUtils.optimizeImageUrl(
+        imageUrl = await WikiUtils.optimizeImageUrl(
           src,
-          langCode: languageCode,
-          projectStr: projectStr,
-          width: 800,
+          htmlString: img.outerHtml,
+          width: 600,
         );
         heroImageElement = img;
         break;
@@ -90,7 +89,8 @@ class HtmlProcessor {
     }
 
     /// Process all other images using centralized WikiUtils logic
-    document.querySelectorAll('img').forEach((img) {
+    final allImgs = document.querySelectorAll('img');
+    for (var img in allImgs) {
       var src = img.attributes['src'] ?? '';
       if (src.isNotEmpty) {
         // Detect if it's an inline icon by size
@@ -101,22 +101,20 @@ class HtmlProcessor {
             (heightAttr != null && heightAttr <= 48)) {
           img.classes.add('wiki-inline-icon');
           // For inline icons, we don't scale up to 600px
-          img.attributes['src'] = WikiUtils.optimizeImageUrl(
+          img.attributes['src'] = await WikiUtils.optimizeImageUrl(
             src,
-            langCode: languageCode,
-            projectStr: projectStr,
+            htmlString: img.outerHtml,
             width: 100,
           );
         } else {
-          img.attributes['src'] = WikiUtils.optimizeImageUrl(
+          img.attributes['src'] = await WikiUtils.optimizeImageUrl(
             src,
-            langCode: languageCode,
-            projectStr: projectStr,
+            htmlString: img.outerHtml,
             width: 600,
           );
         }
       }
-    });
+    }
 
     /// Apply removals/hides
     for (var s in removeSelectors) {

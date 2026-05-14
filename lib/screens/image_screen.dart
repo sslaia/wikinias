@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import '../services/commons_service.dart';
+import '../utils/wiki_utils.dart';
 
 class ImageScreen extends StatefulWidget {
   final String imagePath;
@@ -44,7 +45,6 @@ class _ImageScreenState extends State<ImageScreen> {
   Widget build(BuildContext context) {
     final String? license = _metadata?['extmetadata']?['LicenseShortName']?['value'];
     final String? artist = _metadata?['extmetadata']?['Artist']?['value'];
-    final String? description = _metadata?['extmetadata']?['ImageDescription']?['value'];
 
     return Scaffold(
       backgroundColor: Colors.black,
@@ -70,6 +70,7 @@ class _ImageScreenState extends State<ImageScreen> {
                     ? Image.network(
                         widget.imagePath,
                         fit: BoxFit.contain,
+                        // headers: WikiUtils.uaHeaders,
                         loadingBuilder: (context, child, loadingProgress) {
                           if (loadingProgress == null) return child;
                           return Center(

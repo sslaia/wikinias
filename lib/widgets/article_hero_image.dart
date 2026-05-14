@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import '../models/project_type.dart';
+import '../utils/wiki_utils.dart';
 
 class ArticleHeroImage extends StatelessWidget {
   const ArticleHeroImage({
@@ -25,7 +26,7 @@ class ArticleHeroImage extends StatelessWidget {
           decoration: BoxDecoration(
             image: DecorationImage(
               image: imageUrl.isNotEmpty
-                  ? NetworkImage(imageUrl)
+                  ? NetworkImage(imageUrl, headers: WikiUtils.uaHeaders)
                   : AssetImage(project.articleHeroImagePath) as ImageProvider,
               fit: BoxFit.cover,
             ),

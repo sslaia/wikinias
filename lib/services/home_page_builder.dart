@@ -65,7 +65,7 @@ class HomePageBuilder {
 
         if (element != null) {
           sections.add(
-            _extractSection(
+            await _extractSection(
               element,
               titleKey,
               languageCode: languageCode,
@@ -104,7 +104,7 @@ class HomePageBuilder {
           for (var section in fallbackSections) {
             if (section.text.trim().length > 50) {
               sections.add(
-                _extractSection(
+                await _extractSection(
                   section,
                   'mainContent',
                   languageCode: languageCode,
@@ -116,7 +116,7 @@ class HomePageBuilder {
           }
         } else {
           sections.add(
-            _extractSection(
+            await _extractSection(
               mainContent,
               'mainContent',
               languageCode: languageCode,
@@ -157,7 +157,7 @@ class HomePageBuilder {
     return list;
   }
 
-  static HomePageSection _extractSection(
+  static Future<HomePageSection> _extractSection(
     dom.Element element,
     String titleKey, {
     required String languageCode,
@@ -167,7 +167,7 @@ class HomePageBuilder {
     dynamic keepSelector,
     bool firstOnly = false,
     bool stripStyle = false,
-  }) {
+  }) async {
     /// Find the first valid image that is NOT an icon
     final allImages = element.querySelectorAll('img');
     dom.Element? validImg;
@@ -187,10 +187,9 @@ class HomePageBuilder {
       final imgClone = validImg.clone(true);
       String? src = imgClone.attributes['src'];
       if (src != null) {
-        imageUrl = WikiUtils.optimizeImageUrl(
+        imageUrl = await WikiUtils.optimizeImageUrl(
           src,
-          langCode: languageCode,
-          projectStr: projectStr,
+          htmlString: validImg.outerHtml,
           width: 600,
         );
         imgClone.attributes['src'] = imageUrl;
@@ -268,8 +267,8 @@ class HomePageBuilder {
     }
 
     final Map<String, String?> sectionData = {
-      if (imageHtml != null) '${titleKey}ImageHtml': imageHtml,
-      if (imageUrl != null) '${titleKey}ImageUrl': imageUrl,
+      '${titleKey}ImageHtml': ?imageHtml,
+      '${titleKey}ImageUrl': ?imageUrl,
     };
 
     return HomePageSection(

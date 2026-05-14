@@ -1,8 +1,10 @@
 import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
+
 import '../models/home_page_section.dart';
 import '../models/project_type.dart';
+import '../utils/wiki_utils.dart';
 import 'home_page_builder.dart';
 import 'html_processor.dart';
 
@@ -77,7 +79,6 @@ class WikiApiService {
       domain = 'incubator.wikimedia.org';
       useActionApiForHome = true;
       if (pageTitle == 'Main Page') {
-        /// Changed from 'Wb/nia' to 'Wb/nia/Olayama'
         finalTitle = 'Wb/nia/Olayama';
       } else if (!pageTitle.contains('Wb/nia/')) {
         final lowerTitle = pageTitle.toLowerCase();
@@ -115,7 +116,7 @@ class WikiApiService {
 
     try {
       final response = await http
-          .get(Uri.parse(url))
+          .get(Uri.parse(url), headers: WikiUtils.uaHeaders)
           .timeout(const Duration(seconds: 15));
 
       if (response.statusCode == 200) {
@@ -144,7 +145,7 @@ class WikiApiService {
               );
               processedResult['html'] =
                   (processedResult['html'] ?? '') + categoryHtml;
-                        }
+            }
 
             await prefs.setString(cacheKey, jsonEncode(processedResult));
             await prefs.setString(
@@ -211,7 +212,7 @@ class WikiApiService {
     );
 
     try {
-      final response = await http.get(url).timeout(const Duration(seconds: 10));
+      final response = await http.get(url, headers: WikiUtils.uaHeaders).timeout(const Duration(seconds: 10));
       if (response.statusCode != 200) throw Exception('Failed to search Wiki');
 
       /// Fixed: Use utf8.decode for correct character encoding
@@ -244,7 +245,7 @@ class WikiApiService {
         'https://$domain/w/api.php?action=query&list=categorymembers&cmtitle=${Uri.encodeComponent(categoryTitle)}&cmlimit=500&cmprop=title|type|ns&format=json';
     try {
       final response = await http
-          .get(Uri.parse(url))
+          .get(Uri.parse(url), headers: WikiUtils.uaHeaders)
           .timeout(const Duration(seconds: 10));
       if (response.statusCode == 200) {
         final data = json.decode(utf8.decode(response.bodyBytes));
@@ -313,7 +314,7 @@ class WikiApiService {
           'https://$domain/w/api.php?action=query&list=search&srsearch=prefix:Wb/nia/&srlimit=50&format=json',
         );
         final response = await http
-            .get(url)
+            .get(url, headers: WikiUtils.uaHeaders)
             .timeout(const Duration(seconds: 10));
         if (response.statusCode == 200) {
           final data = json.decode(utf8.decode(response.bodyBytes));
@@ -337,7 +338,7 @@ class WikiApiService {
     );
 
     try {
-      final response = await http.get(url).timeout(const Duration(seconds: 10));
+      final response = await http.get(url, headers: WikiUtils.uaHeaders).timeout(const Duration(seconds: 10));
       if (response.statusCode == 200) {
         final data = json.decode(utf8.decode(response.bodyBytes));
         final randomList = data['query']?['random'] as List?;

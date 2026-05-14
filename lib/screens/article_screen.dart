@@ -323,7 +323,11 @@ class _ArticleScreenState extends ConsumerState<ArticleScreen> {
                   children: [
                     Hero(
                       tag: fullImageUrl,
-                      child: Image.network(fullImageUrl, fit: BoxFit.cover),
+                      child: Image.network(
+                        fullImageUrl, 
+                        fit: BoxFit.cover,
+                        headers: WikiUtils.uaHeaders,
+                      ),
                     ),
                     Positioned(
                       bottom: 0,
@@ -392,6 +396,7 @@ class _ArticleScreenState extends ConsumerState<ArticleScreen> {
                   fullImageUrl,
                   width: double.infinity,
                   fit: BoxFit.fitWidth,
+                  headers: WikiUtils.uaHeaders,
                 ),
               ),
             ),

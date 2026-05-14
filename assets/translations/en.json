@@ -185,6 +185,8 @@
   "search": "Search",
   "search_wikipedia": "Search...",
   "select_language": "Select language",
+  "select_project_language": "Select wiki language",
+  "select_language_description": "Choose the language of the wiki project you want to work on. At the moment there are Nias, Indonesian and English wikis.",
   "settings": "Settings",
   "share": "Share",
   "shortcuts": "Community Shortcuts",
