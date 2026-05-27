@@ -23,12 +23,14 @@
         "referensi",
         "umbu",
         "famotokhi ba gahe",
-        "catatan kaki"
+        "catatan kaki",
+        "rujukan",
+        "sumber",
+        "notes"
       ]
     },
     "wiktionary": {
       "remove": [
-        ".reflist",
         ".navbox",
         ".metadata",
         ".ambox",
@@ -37,15 +39,20 @@
         "style",
         "script"
       ],
-      "hide": [],
+      "hide": [
+        ".reflist",
+        ".references"
+      ],
       "referenceKeywords": [
         "reference",
-        "reflist"
+        "reflist",
+        "referensi",
+        "catatan kaki",
+        "notes"
       ]
     },
     "wikibooks": {
       "remove": [
-        ".reflist",
         ".navbox",
         ".metadata",
         ".ambox",
@@ -54,10 +61,18 @@
         "style",
         "script"
       ],
-      "hide": [],
+      "hide": [
+        ".reflist",
+        ".references"
+      ],
       "referenceKeywords": [
         "reference",
-        "reflist"
+        "reflist",
+        "referensi",
+        "catatan kaki",
+        "umbu",
+        "famotokhi ba gahe",
+        "notes"
       ]
     }
   },
@@ -65,22 +80,9 @@
     "wikipedia": {
       "remove": [
         ".infobox",
-        ".navbox",
-        ".ambox",
-        ".hatnote",
-        ".catlinks",
-        ".mw-editsection",
         ".side-box-flex",
         ".toc",
         "toc"
-      ],
-      "hide": [
-        ".references"
-      ],
-      "referenceKeywords": [
-        "reference",
-        "reflist",
-        "notes"
       ],
       "homePageSections": {
         "featuredArticle": {
@@ -105,7 +107,10 @@
         },
         "onThisDay": {
           "selector": "mp-otd",
-          "keep": ["p", "ul"],
+          "keep": [
+            "p",
+            "ul"
+          ],
           "firstOnly": true
         },
         "featuredList": {
@@ -121,14 +126,6 @@
       ],
       "hide": [
         ".gallery"
-      ],
-      "referenceKeywords": [
-        "reference",
-        "reflist",
-        "notes",
-        ".side-box-flex",
-        ".toc",
-        "toc"
       ],
       "homePageSections": {
         "wordOfTheDay": {
@@ -150,48 +147,19 @@
       "hide": [
         ".gallery"
       ],
-      "referenceKeywords": [
-        "reference",
-        "reflist",
-        "notes"
-      ],
-      "homePageSections": {
-        "featuredArticle": "mf-artikelpilihan",
-        "featuredImage": "mf-gambarpilihan",
-        "recentEvents": "mf-peristiwaterkini",
-        "doYouKnow": "mf-tahukahanda",
-        "onThisDay": "mf-hids"
-      }
+      "homePageSections": {}
     }
   },
   "id": {
     "wikipedia": {
       "remove": [
         ".infobox",
-        ".navbox",
-        ".mw-editsection",
-        "style",
-        "script",
-        ".noprint",
         ".side-box-flex",
         ".toc",
         "toc"
       ],
       "hide": [
-        ".nomobile",
-        ".references",
-        ".reflist"
-      ],
-      "referenceKeywords": [
-        "referensi",
-        "catatan kaki",
-        "rujukan",
-        "sumber",
-        "cathetan",
-        "cathetan suku",
-        "ruju'an",
-        "jujuhutan",
-        "daptar jujuhutan"
+        ".nomobile"
       ],
       "homePageSections": {
         "featuredArticle": {
@@ -233,8 +201,6 @@
         ".nomobile"
       ],
       "referenceKeywords": [
-        "referensi",
-        "catatan kaki",
         "rujukan",
         "sumber"
       ],
@@ -264,18 +230,11 @@
         ".nomobile"
       ],
       "referenceKeywords": [
-        "referensi",
-        "catatan kaki",
         "rujukan",
-        "sumber",
-        "cathetan",
-        "cathetan suku",
-        "ruju'an",
-        "jujuhutan",
-        "daptar jujuhutan"
+        "sumber"
       ],
       "homePageSections": {
-        "featuredBook": "Buku_bagus"
+        "featuredBook": "buku_bagus"
       }
     }
   },
@@ -283,18 +242,12 @@
     "wikipedia": {
       "remove": [
         ".infobox",
-        ".navbox",
         ".side-box-flex",
         ".toc",
         "toc"
       ],
       "hide": [
         ".mw-editsection",
-        "#Umbu"
-      ],
-      "referenceKeywords": [
-        "famotokhi ba gahe",
-        "referensi",
         "umbu"
       ],
       "homePageSections": {
@@ -305,14 +258,21 @@
       }
     },
     "wiktionary": {
+      "processingFlags": [
+        "removeEmptySections",
+        "removeEmptyImageSections"
+      ],
       "remove": [
         ".side-box-flex",
         ".toc",
         "toc"
       ],
       "hide": [
+        ".mw-editsection",
+        ".nomobile"
       ],
       "referenceKeywords": [
+        "umbu"
       ],
       "homePageSections": {
         "featuredWord": "mp-featured-word-body",
@@ -320,14 +280,14 @@
       }
     },
     "wikibooks": {
+      "domainOverride": "incubator.wikimedia.org",
+      "apiPrefix": "Wb/nia/",
       "remove": [
         ".nomobile"
       ],
       "hide": [
+        ".mw-editsection",
         ".nomobile"
-      ],
-      "referenceKeywords": [
-        "umbu"
       ],
       "homePageSections": {
         "featuredStory": "mp-featured-article-body",
