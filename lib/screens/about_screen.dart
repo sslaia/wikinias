@@ -4,8 +4,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_widget_from_html/flutter_widget_from_html.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:url_launcher/url_launcher.dart';
-
-import '../widgets/wiki_footer.dart';
+import 'package:wikinias/widgets/wiki_footer.dart';
 
 class AboutScreen extends ConsumerWidget {
   final String title;

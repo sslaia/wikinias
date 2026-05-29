@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import '../models/project_type.dart';
+import 'package:wikimedia_core/wikimedia_core.dart';
 import '../providers/font_size_provider.dart';
 
 class AppTheme {

@@ -2,7 +2,7 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../models/project_type.dart';
+import 'package:wikimedia_core/wikimedia_core.dart';
 import '../providers/app_state.dart';
 import '../providers/shortcuts_provider.dart';
 import '../utils/shortcut_utils.dart';
@@ -73,7 +73,7 @@ class ShortcutsSidebar extends ConsumerWidget {
                 );
               },
               loading: () => const Center(child: CircularProgressIndicator()),
-              error: (err, _) => Center(child: Text('Error: $err')),
+              error: (err, _) => Center(child: Text('${'error'.tr()}: $err')),
             ),
           ),
         ],

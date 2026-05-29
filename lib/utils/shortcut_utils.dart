@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher.dart';
-import '../models/project_type.dart';
+import 'package:wikimedia_core/wikimedia_core.dart';
 import '../screens/article_screen.dart';
 
 class ShortcutUtils {
@@ -46,13 +46,7 @@ class ShortcutUtils {
       final lowerTitle = pageTitle.toLowerCase();
       isSpecialPage =
           lowerTitle.startsWith('special:') ||
-          lowerTitle.startsWith('spesial:') ||
-          lowerTitle.startsWith('mirunggan:') ||
-          lowerTitle.startsWith('istimewa:') ||
-          lowerTitle.startsWith('istimiwa:') ||
-          lowerTitle.startsWith('istimèwa:') ||
-          lowerTitle.startsWith('khas:') ||
-          lowerTitle.startsWith('husus:');
+          lowerTitle.startsWith('spesial:');
     }
 
     if (isSpecialPage || pageTitle.isEmpty) {

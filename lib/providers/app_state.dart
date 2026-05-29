@@ -1,17 +1,27 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import '../models/project_type.dart';
+import 'package:wikimedia_core/wikimedia_core.dart';
 import 'shared_prefs_provider.dart';
 
 /// Notifier for the current project type (Wikipedia, Wiktionary, Wikibooks)
 class AppStateNotifier extends Notifier<ProjectType> {
+  static const _projectKey = 'selected_project_type';
+
   @override
   ProjectType build() {
+    final prefs = ref.watch(sharedPreferencesProvider);
+    final projectStr = prefs.getString(_projectKey);
+    if (projectStr != null) {
+      try {
+        return ProjectType.values.firstWhere((e) => e.toString() == projectStr);
+      } catch (_) {}
+    }
     return ProjectType.wikipedia;
   }
 
   void setProject(ProjectType project, String langCode) {
     if (project.isSupported(langCode)) {
       state = project;
+      ref.read(sharedPreferencesProvider).setString(_projectKey, project.toString());
     }
   }
 }
@@ -27,7 +37,7 @@ class LanguageNotifier extends Notifier<String> {
   @override
   String build() {
     final prefs = ref.watch(sharedPreferencesProvider);
-    return prefs.getString(_languageKey) ?? 'nia';
+    return prefs.getString(_languageKey) ?? 'id';
   }
 
   void setLanguage(String code) {

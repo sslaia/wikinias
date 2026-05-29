@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import '../services/commons_service.dart';
-import '../utils/wiki_utils.dart';
 
 class ImageScreen extends StatefulWidget {
   final String imagePath;
@@ -70,7 +69,7 @@ class _ImageScreenState extends State<ImageScreen> {
                     ? Image.network(
                         widget.imagePath,
                         fit: BoxFit.contain,
-                        // headers: WikiUtils.uaHeaders,
+                        // headers: WikiUtils.uaHeaders, // Removed headers
                         loadingBuilder: (context, child, loadingProgress) {
                           if (loadingProgress == null) return child;
                           return Center(

@@ -15,5 +15,5 @@ dalam bahasa yang Anda kuasai</p>
 <p>Kode aplikasi tersedia di <a href="https://github.com/sslaia/wikinias">https://github.com/sslaia/wikinias</a>. Silakan menyumbang kode bagi penyempurnaan aplikasi ini di sana.</p>
 
 <p>Beberapa aplikasi lainnya yang saya buat untuk mendukung pembebasan pengetahuan
-di Tanah Air ada di <a href="https://sslaia.github.io/">Aplikasi Nusa</a></p>
+di Tanah Air ada di <a href="https://sslaia.github.io/">Aplikasi-Aplikasi Nusa</a></p>
 ''';

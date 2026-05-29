@@ -4,9 +4,9 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 import '../models/home_page_section.dart';
 import '../models/project_type.dart';
-import '../utils/wiki_utils.dart';
-import 'home_page_builder.dart';
 import 'html_processor.dart';
+import 'home_page_builder.dart';
+import '../core/wiki_config.dart';
 
 class WikiApiService {
   static String _getCacheKey(
@@ -70,39 +70,44 @@ class WikiApiService {
       }
     }
 
-    String domain = '$languageCode.${project.name.toLowerCase()}.org';
+    String domain = WikiConfig.getDomain(languageCode, project.name.toLowerCase());
     String finalTitle = pageTitle;
     bool useActionApiForHome = false;
+    String apiPrefix = WikiConfig.getApiPrefix(languageCode, project.name.toLowerCase());
 
-    /// Temporary solution while Nias Wikibooks is still in the Incubator
-    if (languageCode == 'nia' && project == ProjectType.wikibooks) {
-      domain = 'incubator.wikimedia.org';
-      useActionApiForHome = true;
-      if (pageTitle == 'Main Page') {
-        finalTitle = 'Wb/nia/Olayama';
-      } else if (!pageTitle.contains('Wb/nia/')) {
-        final lowerTitle = pageTitle.toLowerCase();
-        if (lowerTitle.startsWith('special:') ||
-            lowerTitle.startsWith('spesial:') ||
-            lowerTitle.startsWith('mirunggan:') ||
-            lowerTitle.startsWith('istimewa:') ||
-            lowerTitle.startsWith('istimiwa:') ||
-            lowerTitle.startsWith('istimèwa:') ||
-            lowerTitle.startsWith('khas:') ||
-            lowerTitle.startsWith('husus:')) {
-          finalTitle = pageTitle;
-        } else if (lowerTitle.startsWith('category:') ||
-                   lowerTitle.startsWith('kategori:') ||
-                   lowerTitle.startsWith('template:') ||
-                   lowerTitle.startsWith('templat:')) {
-          final parts = pageTitle.split(':');
-          final namespace = parts[0];
-          final rest = parts.sublist(1).join(':');
-          finalTitle = '$namespace:Wb/nia/$rest';
-        } else {
-          finalTitle = 'Wb/nia/$pageTitle';
-        }
+    if (apiPrefix.isNotEmpty) {
+      if (!isArticle) {
+        useActionApiForHome = true;
+        finalTitle = '${apiPrefix}Olayama'; // 'Olayama' is hardcoded main page title, but let's check original logic
       }
+    }
+
+    if (apiPrefix.isNotEmpty && isArticle) {
+        if (pageTitle == 'Main Page') {
+          finalTitle = '${apiPrefix}Olayama';
+        } else if (!pageTitle.contains(apiPrefix)) {
+          final lowerTitle = pageTitle.toLowerCase();
+          if (lowerTitle.startsWith('special:') ||
+              lowerTitle.startsWith('spesial:') ||
+              lowerTitle.startsWith('mirunggan:') ||
+              lowerTitle.startsWith('istimewa:') ||
+              lowerTitle.startsWith('istimiwa:') ||
+              lowerTitle.startsWith('istimèwa:') ||
+              lowerTitle.startsWith('khas:') ||
+              lowerTitle.startsWith('husus:')) {
+            finalTitle = pageTitle;
+          } else if (lowerTitle.startsWith('category:') ||
+                     lowerTitle.startsWith('kategori:') ||
+                     lowerTitle.startsWith('template:') ||
+                     lowerTitle.startsWith('templat:')) {
+            final parts = pageTitle.split(':');
+            final namespace = parts[0];
+            final rest = parts.sublist(1).join(':');
+            finalTitle = '$namespace:$apiPrefix$rest';
+          } else {
+            finalTitle = '$apiPrefix$pageTitle';
+          }
+        }
     }
 
     String url;
@@ -116,7 +121,7 @@ class WikiApiService {
 
     try {
       final response = await http
-          .get(Uri.parse(url), headers: WikiUtils.uaHeaders)
+          .get(Uri.parse(url), headers: WikiConfig.uaHeaders)
           .timeout(const Duration(seconds: 15));
 
       if (response.statusCode == 200) {
@@ -145,7 +150,7 @@ class WikiApiService {
               );
               processedResult['html'] =
                   (processedResult['html'] ?? '') + categoryHtml;
-            }
+                        }
 
             await prefs.setString(cacheKey, jsonEncode(processedResult));
             await prefs.setString(
@@ -194,43 +199,50 @@ class WikiApiService {
     }
   }
 
-  static Future<List<Map<String, dynamic>>> searchArticles(
+  static Future<Map<String, dynamic>> searchArticles(
     String query,
     String langCode,
-    String projectStr,
-  ) async {
-    String domain = '$langCode.$projectStr.org';
+    String projectStr, {
+    int offset = 0,
+    int limit = 20,
+  }) async {
+    String domain = WikiConfig.getDomain(langCode, projectStr);
     String searchQuery = query;
+    String apiPrefix = WikiConfig.getApiPrefix(langCode, projectStr);
 
-    if (langCode == 'nia' && projectStr == 'wikibooks') {
-      domain = 'incubator.wikimedia.org';
-      searchQuery = 'Wb/nia/$query';
+    if (apiPrefix.isNotEmpty) {
+      searchQuery = '$apiPrefix$query';
     }
 
     final url = Uri.parse(
-      'https://$domain/w/api.php?action=query&list=search&srsearch=${Uri.encodeComponent(searchQuery)}&format=json&utf8=1',
+      'https://$domain/w/api.php?action=query&list=search&srsearch=${Uri.encodeComponent(searchQuery)}&srlimit=$limit&sroffset=$offset&format=json&utf8=1',
     );
 
     try {
-      final response = await http.get(url, headers: WikiUtils.uaHeaders).timeout(const Duration(seconds: 10));
+      final response = await http.get(url).timeout(const Duration(seconds: 10));
       if (response.statusCode != 200) throw Exception('Failed to search Wiki');
 
       /// Fixed: Use utf8.decode for correct character encoding
       final data = json.decode(utf8.decode(response.bodyBytes));
 
       final List<Map<String, dynamic>> results =
-          List<Map<String, dynamic>>.from(data['query']['search']);
+          List<Map<String, dynamic>>.from(data['query']?['search'] ?? []);
+          
+      final int? nextOffset = data['continue']?['sroffset'];
 
-      if (langCode == 'nia' && projectStr == 'wikibooks') {
+      if (apiPrefix.isNotEmpty) {
         for (var result in results) {
           String title = result['title'] as String;
-          if (title.startsWith('Wb/nia/')) {
-            result['title'] = title.replaceFirst('Wb/nia/', '');
+          if (title.startsWith(apiPrefix)) {
+            result['title'] = title.replaceFirst(apiPrefix, '');
           }
         }
       }
 
-      return results;
+      return {
+        'results': results,
+        'nextOffset': nextOffset,
+      };
     } catch (e) {
       throw Exception('Search error: $e');
     }
@@ -245,13 +257,14 @@ class WikiApiService {
         'https://$domain/w/api.php?action=query&list=categorymembers&cmtitle=${Uri.encodeComponent(categoryTitle)}&cmlimit=500&cmprop=title|type|ns&format=json';
     try {
       final response = await http
-          .get(Uri.parse(url), headers: WikiUtils.uaHeaders)
+          .get(Uri.parse(url))
           .timeout(const Duration(seconds: 10));
       if (response.statusCode == 200) {
         final data = json.decode(utf8.decode(response.bodyBytes));
         final members = data['query']?['categorymembers'] as List?;
-        if (members == null || members.isEmpty)
+        if (members == null || members.isEmpty) {
           return '<p><i>This category currently contains no pages or media.</i></p>';
+        }
 
         final subcats = members.where((m) => m['ns'] == 14).toList();
         final pages = members.where((m) => m['ns'] != 14).toList();
@@ -305,16 +318,16 @@ class WikiApiService {
     String langCode,
     String projectStr,
   ) async {
-    String domain = '$langCode.$projectStr.org';
+    String domain = WikiConfig.getDomain(langCode, projectStr);
+    String apiPrefix = WikiConfig.getApiPrefix(langCode, projectStr);
 
-    if (langCode == 'nia' && projectStr == 'wikibooks') {
-      domain = 'incubator.wikimedia.org';
+    if (apiPrefix.isNotEmpty) {
       try {
         final url = Uri.parse(
-          'https://$domain/w/api.php?action=query&list=search&srsearch=prefix:Wb/nia/&srlimit=50&format=json',
+          'https://$domain/w/api.php?action=query&list=search&srsearch=prefix:$apiPrefix&srlimit=50&format=json',
         );
         final response = await http
-            .get(url, headers: WikiUtils.uaHeaders)
+            .get(url)
             .timeout(const Duration(seconds: 10));
         if (response.statusCode == 200) {
           final data = json.decode(utf8.decode(response.bodyBytes));
@@ -323,8 +336,8 @@ class WikiApiService {
             final randomIndex =
                 (DateTime.now().millisecondsSinceEpoch % searchResults.length);
             String title = searchResults[randomIndex]['title'] as String;
-            if (title.startsWith('Wb/nia/')) {
-              title = title.replaceFirst('Wb/nia/', '');
+            if (title.startsWith(apiPrefix)) {
+              title = title.replaceFirst(apiPrefix, '');
             }
             return title;
           }
@@ -338,7 +351,7 @@ class WikiApiService {
     );
 
     try {
-      final response = await http.get(url, headers: WikiUtils.uaHeaders).timeout(const Duration(seconds: 10));
+      final response = await http.get(url).timeout(const Duration(seconds: 10));
       if (response.statusCode == 200) {
         final data = json.decode(utf8.decode(response.bodyBytes));
         final randomList = data['query']?['random'] as List?;

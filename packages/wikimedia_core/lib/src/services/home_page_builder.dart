@@ -1,10 +1,10 @@
 import 'dart:convert';
-import 'package:flutter/services.dart';
 import 'package:html/parser.dart' as html_parser;
 import 'package:html/dom.dart' as dom;
 import '../models/home_page_section.dart';
 import '../models/project_type.dart';
-import '../utils/wiki_utils.dart';
+import '../utils/wiki_utils.dart'; // TODO: migrate CoreWikiUtils
+import '../core/wiki_config.dart';
 
 class HomePageBuilder {
   static Future<List<HomePageSection>> build(
@@ -18,21 +18,11 @@ class HomePageBuilder {
     final bodyStr = utf8.decode(responseBodyBytes);
     final document = html_parser.parse(bodyStr);
 
-    final jsonString = await rootBundle.loadString(
-      'assets/data/html_rules.json',
-    );
-    final htmlRules = jsonDecode(jsonString);
+    final removeSelectors = WikiConfig.getCombinedRulesList(languageCode, projectStr, 'remove');
+    final hideSelectors = WikiConfig.getCombinedRulesList(languageCode, projectStr, 'hide');
 
-    final projectRules =
-        htmlRules[languageCode]?[projectStr] as Map<String, dynamic>?;
-    final globalRules =
-        htmlRules['global']?[projectStr] as Map<String, dynamic>?;
-
-    final removeSelectors = _getRulesList(globalRules, projectRules, 'remove');
-    final hideSelectors = _getRulesList(globalRules, projectRules, 'hide');
-
-    final sectionsConfig =
-        projectRules?['homePageSections'] as Map<String, dynamic>?;
+    final projectRules = WikiConfig.getRules(languageCode, projectStr);
+    final sectionsConfig = projectRules?['homePageSections'] as Map<String, dynamic>?;
 
     List<HomePageSection> sections = [];
 
@@ -142,21 +132,6 @@ class HomePageBuilder {
     return sections;
   }
 
-  static List<String> _getRulesList(
-    Map<String, dynamic>? global,
-    Map<String, dynamic>? project,
-    String key,
-  ) {
-    final list = <String>[];
-    if (global != null && global[key] != null) {
-      list.addAll((global[key] as List).map((e) => e.toString()));
-    }
-    if (project != null && project[key] != null) {
-      list.addAll((project[key] as List).map((e) => e.toString()));
-    }
-    return list;
-  }
-
   static Future<HomePageSection> _extractSection(
     dom.Element element,
     String titleKey, {
@@ -174,7 +149,7 @@ class HomePageBuilder {
 
     for (var img in allImages) {
       final src = img.attributes['src'] ?? '';
-      if (!WikiUtils.isIcon(src)) {
+      if (!CoreWikiUtils.isIcon(src)) {
         validImg = img;
         break;
       }
@@ -187,10 +162,10 @@ class HomePageBuilder {
       final imgClone = validImg.clone(true);
       String? src = imgClone.attributes['src'];
       if (src != null) {
-        imageUrl = await WikiUtils.optimizeImageUrl(
+        imageUrl = await CoreWikiUtils.optimizeImageUrl(
           src,
           htmlString: validImg.outerHtml,
-          width: 600,
+          width: 500, // Updated to 500
         );
         imgClone.attributes['src'] = imageUrl;
       }
@@ -267,8 +242,8 @@ class HomePageBuilder {
     }
 
     final Map<String, String?> sectionData = {
-      '${titleKey}ImageHtml': ?imageHtml,
-      '${titleKey}ImageUrl': ?imageUrl,
+      '${titleKey}ImageHtml': imageHtml,
+      '${titleKey}ImageUrl': imageUrl,
     };
 
     return HomePageSection(

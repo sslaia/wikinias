@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:google_fonts/google_fonts.dart';
 
-import '../models/project_type.dart';
+import 'package:wikimedia_core/wikimedia_core.dart';
 import 'adaptive_nav_actions.dart';
 
 class CustomBottomAppBar extends ConsumerWidget {

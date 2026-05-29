@@ -1,4 +1,5 @@
 import 'dart:io';
+
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter/material.dart';
@@ -13,6 +14,7 @@ import 'providers/app_state.dart';
 import 'screens/home_screen.dart';
 import 'screens/onboarding_screen.dart';
 import 'theme/app_theme.dart';
+import 'package:wikimedia_core/wikimedia_core.dart';
 
 class WikiHttpOverrides extends HttpOverrides {
   @override
@@ -29,6 +31,9 @@ void main() async {
 
   // Set global User-Agent to comply with Wikimedia's API policy and avoid 429 errors.
   HttpOverrides.global = WikiHttpOverrides();
+
+  // Initialize wikimedia_core configuration
+  await WikiConfig.init(appName: 'wikinias');
 
   final prefs = await SharedPreferences.getInstance();
 
@@ -80,7 +85,7 @@ class WikiNiasApp extends ConsumerWidget {
           child: child!,
         );
       },
-      home: isFirstStart ? const HomeScreen() : const OnboardingScreen(),
+      home: isFirstStart ? HomeScreen(key: ValueKey(currentProject)) : const OnboardingScreen(),
     );
   }
 }

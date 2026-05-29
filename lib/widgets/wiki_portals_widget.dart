@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:google_fonts/google_fonts.dart';
 import '../data/home_portals.dart';
-import '../models/project_type.dart';
+import 'package:wikimedia_core/wikimedia_core.dart';
 import '../providers/app_state.dart';
 import '../utils/wiki_utils.dart';
 
@@ -73,9 +73,10 @@ class WikiPortalsWidget extends ConsumerWidget {
     final label = (portal['label'] as String).tr();
 
     final currentProject = ref.watch(appStateProvider);
+    final langCode = context.locale.languageCode;
 
     return GestureDetector(
-      onTap: () => WikiUtils.handleTapUrl(context, './$title', null, currentProject),
+      onTap: () => WikiUtils.handleTapUrl(context, './$title', null, currentProject, langCode),
       child: Container(
         width: 140,
         margin: const EdgeInsets.all(4),

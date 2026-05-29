@@ -1,11 +1,10 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import '../models/project_type.dart';
+import 'package:wikimedia_core/wikimedia_core.dart';
 import '../providers/app_state.dart';
 import '../providers/random_article_provider.dart';
 import '../providers/wiki_api_provider.dart';
-import '../services/wiki_api_service.dart';
 import 'shortcuts_bottom_sheet.dart';
 
 class NavAction {
@@ -66,13 +65,13 @@ class AdaptiveNavActions {
         },
       ),
       if (showShortcuts)
-      NavAction(
-        icon: Icons.switch_access_shortcut_outlined,
-        label: 'shortcuts'.tr(),
-        onPressed: () {
-          showShortcutsBottomSheet(context, ref);
-        },
-      ),
+        NavAction(
+          icon: Icons.switch_access_shortcut_outlined,
+          label: 'shortcuts'.tr(),
+          onPressed: () {
+            showShortcutsBottomSheet(context, ref);
+          },
+        ),
       NavAction(
         icon: Icons.shuffle,
         label: 'random'.tr(),

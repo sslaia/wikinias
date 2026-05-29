@@ -13,7 +13,7 @@ untuk bekerja di Wiki (mencari, menyunting, membagikan). Bukan hanya untuk mendu
 beberapa aplikasi juga bisa digunakan untuk mengakses situs Wikipedia, Wikikamus dan Wikibuku dalam bahasa daerah lain.</p>
 
 <p>Klik <a href="https://sslaia.github.io/" target="_blank">di sini</a> untuk melihat berbagai aplikasi 
-yang dibuat untuk mendukung relawan wiki di Indonesia: <a href="https://sslaia.github.io/" target="_blank">Nusa apps</a></p>
+yang dibuat untuk mendukung relawan wiki di Indonesia: <a href="https://sslaia.github.io/" target="_blank">Aplikasi-Aplikasi Nusa</a></p>
  
 <h3>Berbagai tulisan saya seputar kegiatan komunitas</h3>
 <ol>

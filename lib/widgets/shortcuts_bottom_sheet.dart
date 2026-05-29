@@ -1,7 +1,7 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import '../models/project_type.dart';
+import 'package:wikimedia_core/wikimedia_core.dart';
 import '../providers/app_state.dart';
 import '../providers/shortcuts_provider.dart';
 import '../utils/shortcut_utils.dart';
@@ -124,7 +124,7 @@ void showShortcutsBottomSheet(BuildContext context, WidgetRef ref) {
                     error: (err, stack) => Center(
                       child: Padding(
                         padding: const EdgeInsets.all(32.0),
-                        child: Text('Error: $err'),
+                        child: Text('${'error'.tr()}: $err'),
                       ),
                     ),
                   ),

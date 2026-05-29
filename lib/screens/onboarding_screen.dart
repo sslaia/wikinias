@@ -2,7 +2,7 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:google_fonts/google_fonts.dart';
-import '../models/project_type.dart';
+import 'package:wikimedia_core/wikimedia_core.dart';
 import '../providers/app_state.dart';
 import '../providers/onboarding_provider.dart';
 import '../utils/responsive_utils.dart';
@@ -24,33 +24,45 @@ class _OnboardingScreenState extends ConsumerState<OnboardingScreen> {
       titleKey: 'onboarding_title_1',
       descKey: 'onboarding_desc_1',
       imagePath: 'assets/images/onboarding1.webp',
-      color: const Color(0xFF121298),
+      color: const Color(0xFF121298), // Blue
     ),
     OnboardingData(
       titleKey: 'onboarding_title_2',
       descKey: 'onboarding_desc_2',
       imagePath: 'assets/images/onboarding2.webp',
-      color: const Color(0xFF9B00A1),
+      color: const Color(0xFF9B00A1), // Purple
     ),
     OnboardingData(
       titleKey: 'onboarding_title_3',
       descKey: 'onboarding_desc_3',
       imagePath: 'assets/images/onboarding3.webp',
-      color: const Color(0xFF121298),
+      color: const Color(0xFFFF5722), // Orange
     ),
     OnboardingData(
       titleKey: 'onboarding_title_4',
       descKey: 'onboarding_desc_4',
       imagePath: 'assets/images/onboarding4.webp',
-      color: const Color(0xFFFF5722),
+      color: const Color(0xFF121298), // Blue
     ),
     OnboardingData(
       titleKey: 'onboarding_title_5',
       descKey: 'onboarding_desc_5',
       imagePath: 'assets/images/onboarding5.webp',
-      color: const Color(0xFF9B00A1),
+      color: const Color(0xFF9B00A1), // Purple
+    ),
+    OnboardingData(
+      titleKey: 'onboarding_title_6',
+      descKey: 'onboarding_desc_6',
+      imagePath: 'assets/images/onboarding6.webp',
+      color: const Color(0xFFFF5722), // Orange
     ),
   ];
+
+  @override
+  void dispose() {
+    _pageController.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -65,16 +77,12 @@ class _OnboardingScreenState extends ConsumerState<OnboardingScreen> {
             Expanded(
               child: PageView.builder(
                 controller: _pageController,
-                itemCount: _pages.length + 1, // +1 for the final language selection page
+                itemCount: _pages.length,
                 onPageChanged: (index) {
                   setState(() => _currentPage = index);
                 },
                 itemBuilder: (context, index) {
-                  if (index < _pages.length) {
-                    return _buildPage(_pages[index], size, theme);
-                  } else {
-                    return _buildFinalLanguageSelectionPage(size, theme);
-                  }
+                  return _buildPage(_pages[index], size, theme);
                 },
               ),
             ),
@@ -100,7 +108,7 @@ class _OnboardingScreenState extends ConsumerState<OnboardingScreen> {
             children: [
               // Left Button (Back or Skip)
               SizedBox(
-                width: isCompact ? 70 : 100,
+                width: 100,
                 child: _buildLeftButton(theme),
               ),
 
@@ -109,7 +117,7 @@ class _OnboardingScreenState extends ConsumerState<OnboardingScreen> {
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: List.generate(
-                    _pages.length + 1,
+                    _pages.length,
                     (index) => _buildIndicator(index, theme),
                   ),
                 ),
@@ -141,11 +149,7 @@ class _OnboardingScreenState extends ConsumerState<OnboardingScreen> {
       );
     } else {
       return TextButton(
-        onPressed: () => _pageController.animateToPage(
-          _pages.length,
-          duration: const Duration(milliseconds: 500),
-          curve: Curves.easeInOut,
-        ),
+        onPressed: () => _complete(ref, context),
         child: Text('skip'.tr(),
             textAlign: TextAlign.left,
             style: TextStyle(color: theme.colorScheme.onSurface.withValues(alpha: 0.5))),
@@ -154,7 +158,7 @@ class _OnboardingScreenState extends ConsumerState<OnboardingScreen> {
   }
 
   Widget _buildRightButton(ThemeData theme) {
-    if (_currentPage == _pages.length) {
+    if (_currentPage == _pages.length - 1) {
       return ElevatedButton(
         onPressed: () => _complete(ref, context),
         style: ElevatedButton.styleFrom(
@@ -174,9 +178,7 @@ class _OnboardingScreenState extends ConsumerState<OnboardingScreen> {
           );
         },
         icon: Icon(Icons.arrow_forward_ios_rounded,
-            color: _currentPage < _pages.length
-                ? _pages[_currentPage].color
-                : theme.colorScheme.primary),
+            color: _pages[_currentPage].color),
       );
     }
   }
@@ -225,8 +227,6 @@ class _OnboardingScreenState extends ConsumerState<OnboardingScreen> {
                         color: theme.colorScheme.onSurface.withValues(alpha: 0.7),
                       ),
                     ),
-                    SizedBox(height: isTablet ? 40 : 20),
-                    _buildLanguageSelector(context, theme),
                   ],
                 ),
               ),
@@ -279,8 +279,6 @@ class _OnboardingScreenState extends ConsumerState<OnboardingScreen> {
                       color: theme.colorScheme.onSurface.withValues(alpha: 0.7),
                     ),
                   ),
-                  const SizedBox(height: 24),
-                  _buildLanguageSelector(context, theme),
                 ],
               ),
             ),
@@ -290,48 +288,7 @@ class _OnboardingScreenState extends ConsumerState<OnboardingScreen> {
     );
   }
 
-  Widget _buildFinalLanguageSelectionPage(Size size, ThemeData theme) {
-    final isTablet = ResponsiveUtils.isTablet(context);
-    final isCompact = ResponsiveUtils.isCompact(context);
 
-    return SingleChildScrollView(
-      physics: const BouncingScrollPhysics(),
-      child: Padding(
-        padding: EdgeInsets.symmetric(
-          horizontal: isTablet ? 80.0 : 40.0,
-          vertical: 40.0,
-        ),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Icon(Icons.translate, size: isCompact ? 60 : 80, color: theme.colorScheme.primary),
-            SizedBox(height: isCompact ? 24 : 40),
-            Text(
-              'select_project_language'.tr(),
-              textAlign: TextAlign.center,
-              style: GoogleFonts.montserratAlternates(
-                fontSize: isCompact ? 22 : (isTablet ? 32 : 26),
-                fontWeight: FontWeight.w800,
-                color: theme.colorScheme.primary,
-              ),
-            ),
-            const SizedBox(height: 16),
-            Text(
-              'select_language_description'.tr(),
-              textAlign: TextAlign.center,
-              style: GoogleFonts.notoSerif(
-                fontSize: isCompact ? 14 : (isTablet ? 18 : 16),
-                height: 1.4,
-                color: theme.colorScheme.onSurface.withValues(alpha: 0.7),
-              ),
-            ),
-            SizedBox(height: isCompact ? 24 : 40),
-            _buildLanguageSelector(context, theme, isFinalPage: true),
-          ],
-        ),
-      ),
-    );
-  }
 
   Widget _buildIndicator(int index, ThemeData theme) {
     final isCompact = ResponsiveUtils.isCompact(context);
@@ -342,7 +299,7 @@ class _OnboardingScreenState extends ConsumerState<OnboardingScreen> {
       width: _currentPage == index ? (isCompact ? 18 : 24) : (isCompact ? 6 : 8),
       decoration: BoxDecoration(
         color: _currentPage == index
-            ? (_currentPage < _pages.length ? _pages[_currentPage].color : theme.colorScheme.primary)
+            ? _pages[_currentPage].color
             : theme.colorScheme.outlineVariant,
         borderRadius: BorderRadius.circular(4),
       ),
@@ -350,8 +307,10 @@ class _OnboardingScreenState extends ConsumerState<OnboardingScreen> {
   }
 
   Future<void> _complete(WidgetRef ref, BuildContext context) async {
+    const currentLang = 'nia';
+    ref.read(languageProvider.notifier).setLanguage(currentLang);
+
     // Ensure project is always set to Wikipedia on completion
-    final currentLang = ref.read(languageProvider);
     ref.read(appStateProvider.notifier).setProject(ProjectType.wikipedia, currentLang);
 
     await ref.read(onboardingProvider.notifier).completeOnboarding();
@@ -360,62 +319,7 @@ class _OnboardingScreenState extends ConsumerState<OnboardingScreen> {
     }
   }
 
-  Widget _buildLanguageSelector(BuildContext context, ThemeData theme, {bool isFinalPage = false}) {
-    final isCompact = ResponsiveUtils.isCompact(context);
-    return PopupMenuButton<Locale>(
-      onSelected: (Locale locale) async {
-        await context.setLocale(locale);
-        ref.read(languageProvider.notifier).setLanguage(locale.languageCode);
-      },
-      icon: Container(
-        padding: EdgeInsets.symmetric(
-          horizontal: isCompact ? 12 : 16,
-          vertical: isCompact ? 8 : 10,
-        ),
-        decoration: BoxDecoration(
-          color: isFinalPage ? theme.colorScheme.primary.withValues(alpha: 0.1) : null,
-          border: Border.all(color: isFinalPage ? theme.colorScheme.primary : theme.colorScheme.outlineVariant),
-          borderRadius: BorderRadius.circular(12),
-        ),
-        child: Row(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            Icon(Icons.translate, size: isCompact ? 18 : 20, color: isFinalPage ? theme.colorScheme.primary : null),
-            SizedBox(width: isCompact ? 8 : 12),
-            Flexible(
-              child: Text(
-                isFinalPage
-                  ? _getLanguageName(context.locale.languageCode)
-                  : 'select_language'.tr(),
-                style: theme.textTheme.labelLarge?.copyWith(
-                  color: isFinalPage ? theme.colorScheme.primary : null,
-                  fontSize: isCompact ? 12 : 14,
-                  fontWeight: FontWeight.bold,
-                ),
-                overflow: TextOverflow.ellipsis,
-              ),
-            ),
-            const SizedBox(width: 8),
-            Icon(Icons.keyboard_arrow_down, size: isCompact ? 18 : 20, color: isFinalPage ? theme.colorScheme.primary : null),
-          ],
-        ),
-      ),
-      itemBuilder: (context) => [
-        const PopupMenuItem(value: Locale('id'), child: Text('Bahasa Indonesia')),
-        const PopupMenuItem(value: Locale('en'), child: Text('English')),
-        const PopupMenuItem(value: Locale('nia'), child: Text('Li Niha')),
-      ],
-    );
-  }
 
-  String _getLanguageName(String code) {
-    switch (code) {
-      case 'id': return 'Bahasa Indonesia';
-      case 'en': return 'English';
-      case 'nia': return 'Li Niha';
-      default: return code.toUpperCase();
-    }
-  }
 }
 
 class OnboardingData {

@@ -2,8 +2,7 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_widget_from_html/flutter_widget_from_html.dart';
 import 'package:google_fonts/google_fonts.dart';
-import '../models/home_page_section.dart';
-import '../models/project_type.dart';
+import 'package:wikimedia_core/wikimedia_core.dart';
 import '../screens/image_screen.dart';
 import '../utils/wiki_utils.dart';
 import '../utils/responsive_utils.dart';
@@ -56,6 +55,7 @@ class AdaptiveSectionCard extends StatelessWidget {
   }
 
   Widget _buildVerticalLayout(BuildContext context) {
+    final langCode = context.locale.languageCode;
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -76,7 +76,7 @@ class AdaptiveSectionCard extends StatelessWidget {
             },
             child: HtmlWidget(
               section.imageHtml!,
-              onTapUrl: (url) => WikiUtils.handleTapUrl(context, url, null, project),
+              onTapUrl: (url) => WikiUtils.handleTapUrl(context, url, null, project, langCode),
             ),
           ),
         Padding(
@@ -88,6 +88,7 @@ class AdaptiveSectionCard extends StatelessWidget {
   }
 
   Widget _buildHorizontalLayout(BuildContext context) {
+    final langCode = context.locale.languageCode;
     return Row(
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
@@ -110,7 +111,7 @@ class AdaptiveSectionCard extends StatelessWidget {
               child: Center(
                 child: HtmlWidget(
                   section.imageHtml!,
-                  onTapUrl: (url) => WikiUtils.handleTapUrl(context, url, null, project),
+                  onTapUrl: (url) => WikiUtils.handleTapUrl(context, url, null, project, langCode),
                 ),
               ),
             ),
@@ -127,9 +128,10 @@ class AdaptiveSectionCard extends StatelessWidget {
   }
 
   Widget _buildBodyText(BuildContext context) {
+    final langCode = context.locale.languageCode;
     return HtmlWidget(
       section.textHtml,
-      onTapUrl: (url) => WikiUtils.handleTapUrl(context, url, null, project),
+      onTapUrl: (url) => WikiUtils.handleTapUrl(context, url, null, project, langCode),
       textStyle: GoogleFonts.notoSerif(
         textStyle: Theme.of(context).textTheme.bodyMedium?.copyWith(
           height: 1.6,

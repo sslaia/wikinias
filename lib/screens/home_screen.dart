@@ -3,17 +3,17 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:google_fonts/google_fonts.dart';
 
-import '../models/project_type.dart';
+import 'package:wikimedia_core/wikimedia_core.dart';
 import '../utils/responsive_utils.dart';
 import '../widgets/shortcuts_side_bar.dart';
 import '../widgets/wiki_portals_widget.dart';
 import '../widgets/contribute_widget.dart';
 import '../widgets/wiki_footer.dart';
-import '../models/home_page_section.dart';
 import '../widgets/search_field_widget.dart';
 import '../widgets/custom_bottom_app_bar.dart';
 import '../widgets/adaptive_section_card.dart';
 import '../widgets/adaptive_nav_actions.dart';
+import '../widgets/skeleton_section_card.dart';
 import '../providers/app_state.dart';
 import '../providers/wiki_api_provider.dart';
 import '../widgets/drawer_menu.dart';
@@ -64,9 +64,10 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                 child: CustomScrollView(
                   slivers: [
                     SliverToBoxAdapter(
-                      child: wikiContent.when(
-                        data: (content) {
+                      child: Builder(
+                        builder: (context) {
                           String? featuredImageUrl;
+                          final content = wikiContent.whenOrNull(data: (d) => d);
                           if (content is List<HomePageSection>) {
                             for (var section in content) {
                               if (section.titleKey == 'featuredImage') {
@@ -92,8 +93,12 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                             featuredImageUrl,
                           );
                         },
-                        loading: () => _buildLoadingHero(currentProject),
-                        error: (err, stack) => _buildErrorHero(currentProject),
+                      ),
+                    ),
+                    SliverToBoxAdapter(
+                      child: WikiPortalsWidget(
+                        project: currentProject,
+                        languageCode: context.locale.languageCode,
                       ),
                     ),
                     wikiContent.when(
@@ -118,16 +123,17 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                           child: SizedBox.shrink(),
                         );
                       },
-                      loading: () =>
-                          const SliverToBoxAdapter(child: SizedBox.shrink()),
-                      error: (err, stack) =>
-                          const SliverToBoxAdapter(child: SizedBox.shrink()),
-                    ),
-                    SliverToBoxAdapter(
-                      child: WikiPortalsWidget(
-                        project: currentProject,
-                        languageCode: context.locale.languageCode,
+                      loading: () => SliverPadding(
+                        padding: const EdgeInsets.all(16.0),
+                        sliver: SliverList(
+                          delegate: SliverChildBuilderDelegate(
+                            (context, index) => const SkeletonSectionCard(),
+                            childCount: 3,
+                          ),
+                        ),
                       ),
+                      error: (err, stack) =>
+                          SliverToBoxAdapter(child: Text(err.toString())),
                     ),
                     SliverToBoxAdapter(
                       child: ContributeWidget(project: currentProject),
@@ -193,19 +199,32 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
           decoration: BoxDecoration(
             color: Theme.of(context).colorScheme.surface,
           ),
-          child: featuredImageUrl != null && featuredImageUrl.isNotEmpty
-              ? Image.network(
-                  featuredImageUrl,
-                  fit: BoxFit.cover,
-                  errorBuilder: (context, error, stackTrace) => Image.asset(
-                    currentProject.homeHeroImagePath,
+          child: AnimatedSwitcher(
+            duration: const Duration(milliseconds: 500),
+            child: featuredImageUrl != null && featuredImageUrl.isNotEmpty
+                ? Image.network(
+                    featuredImageUrl,
+                    key: ValueKey(featuredImageUrl),
                     fit: BoxFit.cover,
+                    width: double.infinity,
+                    height: double.infinity,
+                    headers: WikiConfig.uaHeaders, // Added headers
+                    errorBuilder: (context, error, stackTrace) => Image.asset(
+                      currentProject.homeHeroImagePath,
+                      key: ValueKey('${currentProject.name}_error'),
+                      fit: BoxFit.cover,
+                      width: double.infinity,
+                      height: double.infinity,
+                    ),
+                  )
+                : Image.asset(
+                    currentProject.homeHeroImagePath,
+                    key: ValueKey('${currentProject.name}_default'),
+                    fit: BoxFit.cover,
+                    width: double.infinity,
+                    height: double.infinity,
                   ),
-                )
-              : Image.asset(
-                  currentProject.homeHeroImagePath,
-                  fit: BoxFit.cover,
-                ),
+          ),
         ),
         Container(
           height: 300,
@@ -297,28 +316,5 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
     );
   }
 
-  Widget _buildLoadingHero(ProjectType currentProject) {
-    return Container(
-      height: 200,
-      color: currentProject.primaryColor.withValues(alpha: 0.1),
-      child: const Center(child: CircularProgressIndicator()),
-    );
-  }
 
-  Widget _buildErrorHero(ProjectType currentProject) {
-    return Container(
-      height: 200,
-      decoration: BoxDecoration(
-        image: DecorationImage(
-          image: AssetImage(currentProject.homeHeroImagePath),
-          fit: BoxFit.cover,
-        ),
-      ),
-      child: Container(
-        color: Colors.black.withValues(alpha: 0.3),
-        alignment: Alignment.center,
-        child: const Icon(Icons.error_outline, color: Colors.white),
-      ),
-    );
-  }
 }

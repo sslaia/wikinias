@@ -1,5 +1,5 @@
 name: wikinias
-description: "An app for Niaspedia, Wikikamus and Wikibuku"
+description: "An Android app for Nias Wikipedia, Wiktionary and Wikibooks"
 publish_to: 'none'
 version: 2.5.0+15
 
@@ -19,7 +19,12 @@ dependencies:
   just_audio: ^0.10.4
   shared_preferences: ^2.5.5
   share_plus: ^13.1.0
+  shimmer: ^3.0.0
   url_launcher: ^6.3.2
+  wikimedia_core:
+    path: packages/wikimedia_core
+  flutter_localizations:
+    sdk: flutter
 
 dev_dependencies:
   flutter_test:

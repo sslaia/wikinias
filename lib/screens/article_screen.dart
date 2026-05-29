@@ -9,7 +9,7 @@ import 'package:share_plus/share_plus.dart';
 
 import '../utils/wiki_utils.dart';
 import '../utils/responsive_utils.dart';
-import '../models/project_type.dart';
+import 'package:wikimedia_core/wikimedia_core.dart';
 import '../providers/history_provider.dart';
 import '../providers/bookmarks_provider.dart';
 import '../widgets/shortcuts_side_bar.dart';
@@ -37,6 +37,7 @@ class _ArticleScreenState extends ConsumerState<ArticleScreen> {
   @override
   void initState() {
     super.initState();
+
     /// Register this article in history when opened
     WidgetsBinding.instance.addPostFrameCallback((_) {
       ref.read(historyProvider.notifier).push(widget.title);
@@ -72,9 +73,9 @@ class _ArticleScreenState extends ConsumerState<ArticleScreen> {
             lowerTitle.startsWith('husus:')) {
           // Special pages don't need prefix
         } else if (lowerTitle.startsWith('category:') ||
-                   lowerTitle.startsWith('kategori:') ||
-                   lowerTitle.startsWith('template:') ||
-                   lowerTitle.startsWith('templat:')) {
+            lowerTitle.startsWith('kategori:') ||
+            lowerTitle.startsWith('template:') ||
+            lowerTitle.startsWith('templat:')) {
           final parts = incubatorTitle.split(':');
           final namespace = parts[0];
           final rest = parts.sublist(1).join(':');
@@ -99,7 +100,8 @@ class _ArticleScreenState extends ConsumerState<ArticleScreen> {
         final isCompactLandscape = isCompact && isLandscape;
         final isCompactPortrait = isCompact && !isLandscape;
         final isTabletLandscape = isTablet && isLandscape;
-        final bool showShortcutsSideBar = isTabletLandscape || deviceType == DeviceType.expanded;
+        final bool showShortcutsSideBar =
+            isTabletLandscape || deviceType == DeviceType.expanded;
 
         return PopScope(
           child: Scaffold(
@@ -107,8 +109,7 @@ class _ArticleScreenState extends ConsumerState<ArticleScreen> {
             drawer: DrawerMenu(),
             body: Row(
               children: [
-                if (showShortcutsSideBar)
-                  const ShortcutsSidebar(),
+                if (showShortcutsSideBar) const ShortcutsSidebar(),
                 Expanded(
                   child: Stack(
                     children: [
@@ -141,67 +142,109 @@ class _ArticleScreenState extends ConsumerState<ArticleScreen> {
                                     ),
                                     Padding(
                                       padding: const EdgeInsets.all(16.0),
-                                      child: HtmlWidget(
-                                        htmlContent,
-                                        textStyle: GoogleFonts.notoSerif(
-                                          fontSize: Theme.of(context)
-                                              .textTheme
-                                              .bodyMedium
-                                              ?.fontSize,
-                                          height: 1.8,
-                                          color: Theme.of(context)
-                                              .colorScheme
-                                              .onSurface
-                                              .withValues(alpha: 0.9),
-                                        ).copyWith(fontFamilyFallback: fontFallbacks),
-                                        onTapUrl: (url) => WikiUtils.handleTapUrl(
-                                            context, url, htmlContent, currentProject),
-                                        customStylesBuilder: (element) =>
-                                            WikiUtils.customStyles(context, element),
-                                        customWidgetBuilder: (element) {
-                                          final sharedWidget =
-                                              WikiUtils.customWidgetBuilder(
-                                            context,
-                                            element,
-                                          );
-                                          if (sharedWidget != null) return sharedWidget;
+                                      child: SelectionArea(
+                                        child: HtmlWidget(
+                                          htmlContent,
+                                          key: ValueKey(
+                                            'html_${widget.title}_${currentProject.name}_$langCode',
+                                          ),
+                                          textStyle:
+                                              GoogleFonts.notoSerif(
+                                                fontSize: Theme.of(context)
+                                                    .textTheme
+                                                    .bodyMedium
+                                                    ?.fontSize,
+                                                height: 1.8,
+                                                color: Theme.of(context)
+                                                    .colorScheme
+                                                    .onSurface
+                                                    .withValues(alpha: 0.9),
+                                              ).copyWith(
+                                                fontFamilyFallback:
+                                                    fontFallbacks,
+                                              ),
+                                          onTapUrl: (url) =>
+                                              WikiUtils.handleTapUrl(
+                                                context,
+                                                url,
+                                                htmlContent,
+                                                currentProject,
+                                                langCode,
+                                              ),
+                                          customStylesBuilder: (element) =>
+                                              WikiUtils.customStyles(
+                                                context,
+                                                element,
+                                              ),
+                                          customWidgetBuilder: (element) {
+                                            final sharedWidget =
+                                                WikiUtils.customWidgetBuilder(
+                                                  context,
+                                                  element,
+                                                );
+                                            if (sharedWidget != null)
+                                              return sharedWidget;
 
-                                          if (element.classes.contains('gallery')) {
-                                            return _buildNativeGallery(element);
-                                          }
-
-                                          if (element.localName == 'img' ||
-                                              element.classes.contains('thumb') ||
-                                              element.localName == 'figure') {
                                             if (element.classes.contains(
-                                              'hidden-hero-container',
+                                              'gallery',
                                             )) {
-                                              return const SizedBox.shrink();
+                                              return _buildNativeGallery(
+                                                element,
+                                              );
                                             }
 
-                                            final img = element.localName == 'img'
-                                                ? element
-                                                : element.querySelector('img');
+                                            if (element.localName == 'img' ||
+                                                element.classes.contains(
+                                                  'thumb',
+                                                ) ||
+                                                element.localName == 'figure') {
+                                              if (element.classes.contains(
+                                                'hidden-hero-container',
+                                              )) {
+                                                return const SizedBox.shrink();
+                                              }
 
-                                            if (img != null &&
-                                                img.classes.contains('wiki-inline-icon')) {
-                                              return null;
+                                              final img =
+                                                  element.localName == 'img'
+                                                  ? element
+                                                  : element.querySelector(
+                                                      'img',
+                                                    );
+
+                                              if (img != null &&
+                                                  img.classes.contains(
+                                                    'wiki-inline-icon',
+                                                  )) {
+                                                return null;
+                                              }
+
+                                              if (img != null) {
+                                                final caption =
+                                                    element
+                                                        .querySelector(
+                                                          '.caption',
+                                                        )
+                                                        ?.text ??
+                                                    element
+                                                        .querySelector(
+                                                          '.thumbcaption',
+                                                        )
+                                                        ?.text ??
+                                                    element
+                                                        .querySelector(
+                                                          'figcaption',
+                                                        )
+                                                        ?.text;
+
+                                                return _buildFullWidthImage(
+                                                  img,
+                                                  caption,
+                                                );
+                                              }
                                             }
-
-                                            if (img != null) {
-                                              final caption = element
-                                                      .querySelector('.caption')
-                                                      ?.text ??
-                                                  element
-                                                      .querySelector('.thumbcaption')
-                                                      ?.text ??
-                                                  element.querySelector('figcaption')?.text;
-
-                                              return _buildFullWidthImage(img, caption);
-                                            }
-                                          }
-                                          return null;
-                                        },
+                                            return null;
+                                          },
+                                        ),
                                       ),
                                     ),
                                     const WikiFooter(),
@@ -210,12 +253,15 @@ class _ArticleScreenState extends ConsumerState<ArticleScreen> {
                                 ),
                               );
                             },
-                            loading: () =>
-                                const Center(child: CircularProgressIndicator()),
+                            loading: () => const Center(
+                              child: CircularProgressIndicator(),
+                            ),
                             error: (error, stack) => Center(
                               child: Padding(
                                 padding: const EdgeInsets.all(16.0),
-                                child: Text('Error loading article: $error'),
+                                child: Text(
+                                  '${'error_loading_contents'.tr()}: $error',
+                                ),
                               ),
                             ),
                           ),
@@ -241,7 +287,8 @@ class _ArticleScreenState extends ConsumerState<ArticleScreen> {
                         IconButton(
                           icon: const Icon(Icons.menu),
                           color: theme.colorScheme.onPrimary,
-                          onPressed: () => _scaffoldKey.currentState?.openDrawer(),
+                          onPressed: () =>
+                              _scaffoldKey.currentState?.openDrawer(),
                         ),
                         Expanded(
                           child: Align(
@@ -250,18 +297,25 @@ class _ArticleScreenState extends ConsumerState<ArticleScreen> {
                               child: Column(
                                 mainAxisSize: MainAxisSize.min,
                                 mainAxisAlignment: MainAxisAlignment.end,
-                                children: AdaptiveNavActions.buildActions(
-                                  context,
-                                  ref,
-                                  currentProject: currentProject,
-                                  isHomeScreen: false,
-                                  showHome: true,
-                                  pageTitle: widget.title,
-                                  color: theme.colorScheme.onPrimary,
-                                ).map((w) => Padding(
-                                  padding: const EdgeInsets.symmetric(vertical: 4),
-                                  child: w,
-                                )).toList(),
+                                children:
+                                    AdaptiveNavActions.buildActions(
+                                          context,
+                                          ref,
+                                          currentProject: currentProject,
+                                          isHomeScreen: false,
+                                          showHome: true,
+                                          pageTitle: widget.title,
+                                          color: theme.colorScheme.onPrimary,
+                                        )
+                                        .map(
+                                          (w) => Padding(
+                                            padding: const EdgeInsets.symmetric(
+                                              vertical: 4,
+                                            ),
+                                            child: w,
+                                          ),
+                                        )
+                                        .toList(),
                               ),
                             ),
                           ),
@@ -324,9 +378,9 @@ class _ArticleScreenState extends ConsumerState<ArticleScreen> {
                     Hero(
                       tag: fullImageUrl,
                       child: Image.network(
-                        fullImageUrl, 
+                        fullImageUrl,
                         fit: BoxFit.cover,
-                        headers: WikiUtils.uaHeaders,
+                        headers: WikiConfig.uaHeaders,
                       ),
                     ),
                     Positioned(
@@ -372,6 +426,7 @@ class _ArticleScreenState extends ConsumerState<ArticleScreen> {
     final src = img.attributes['src'] ?? '';
     if (src.isEmpty) return const SizedBox.shrink();
     final fullImageUrl = src.startsWith('http') ? src : 'https:$src';
+    final theme = Theme.of(context);
 
     return Container(
       width: double.infinity,
@@ -396,7 +451,25 @@ class _ArticleScreenState extends ConsumerState<ArticleScreen> {
                   fullImageUrl,
                   width: double.infinity,
                   fit: BoxFit.fitWidth,
-                  headers: WikiUtils.uaHeaders,
+                  loadingBuilder: (context, child, loadingProgress) {
+                    if (loadingProgress == null) return child;
+                    return Container(
+                      height: 200,
+                      width: double.infinity,
+                      color: theme.colorScheme.onSurface.withValues(
+                        alpha: 0.05,
+                      ),
+                      child: const Center(child: CircularProgressIndicator()),
+                    );
+                  },
+                  errorBuilder: (context, error, stackTrace) => Container(
+                    height: 100,
+                    width: double.infinity,
+                    color: theme.colorScheme.errorContainer.withValues(
+                      alpha: 0.1,
+                    ),
+                    child: const Icon(Icons.broken_image),
+                  ),
                 ),
               ),
             ),
@@ -462,7 +535,9 @@ class _ArticleScreenState extends ConsumerState<ArticleScreen> {
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(
               content: Text(
-                isBookmarked ? 'bookmarks_removed'.tr() : 'bookmarks_added'.tr(),
+                isBookmarked
+                    ? 'bookmarks_removed'.tr()
+                    : 'bookmarks_added'.tr(),
               ),
               duration: const Duration(seconds: 1),
             ),
@@ -475,9 +550,7 @@ class _ArticleScreenState extends ConsumerState<ArticleScreen> {
         Icons.share_outlined,
         theme.colorScheme.onSurface,
         onPressed: () {
-          SharePlus.instance.share(
-            ShareParams(uri: Uri.parse(pageUrl)),
-          );
+          SharePlus.instance.share(ShareParams(uri: Uri.parse(pageUrl)));
         },
       ),
       _buildDivider(theme),
@@ -490,10 +563,10 @@ class _ArticleScreenState extends ConsumerState<ArticleScreen> {
           try {
             await launchUrl(uri, mode: LaunchMode.inAppBrowserView);
           } catch (e) {
-            if (context.mounted) {
-              ScaffoldMessenger.of(context).showSnackBar(
-                SnackBar(content: Text('editor_cant_open').tr()),
-              );
+            if (mounted) {
+              ScaffoldMessenger.of(
+                context,
+              ).showSnackBar(SnackBar(content: Text('editor_cant_open').tr()));
             }
           }
         },
@@ -508,10 +581,10 @@ class _ArticleScreenState extends ConsumerState<ArticleScreen> {
           try {
             await launchUrl(uri, mode: LaunchMode.inAppBrowserView);
           } catch (e) {
-            if (context.mounted) {
-              ScaffoldMessenger.of(context).showSnackBar(
-                SnackBar(content: Text('page_cant_open').tr()),
-              );
+            if (mounted) {
+              ScaffoldMessenger.of(
+                context,
+              ).showSnackBar(SnackBar(content: Text('page_cant_open').tr()));
             }
           }
         },
@@ -525,7 +598,9 @@ class _ArticleScreenState extends ConsumerState<ArticleScreen> {
             : theme.colorScheme.onSurface.withValues(alpha: 0.5),
         onPressed: history.canGoForward
             ? () {
-                final nextTitle = ref.read(historyProvider.notifier).goForward();
+                final nextTitle = ref
+                    .read(historyProvider.notifier)
+                    .goForward();
                 if (nextTitle != null) {
                   Navigator.push(
                     context,
@@ -557,10 +632,7 @@ class _ArticleScreenState extends ConsumerState<ArticleScreen> {
               ),
             ],
           ),
-          child: Row(
-            mainAxisSize: MainAxisSize.min,
-            children: children,
-          ),
+          child: Row(mainAxisSize: MainAxisSize.min, children: children),
         ),
       ),
     );

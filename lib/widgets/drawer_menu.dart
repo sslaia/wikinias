@@ -9,7 +9,7 @@ import '../screens/create_page_screen.dart';
 import '../data/about_app.dart';
 import '../data/about_community.dart';
 import '../data/whats_new.dart';
-import '../models/project_type.dart';
+import 'package:wikimedia_core/wikimedia_core.dart';
 import '../providers/app_state.dart';
 import '../providers/font_size_provider.dart';
 import '../providers/theme_provider.dart';
@@ -107,7 +107,7 @@ class DrawerContent extends ConsumerWidget {
         _buildExpansionSection(
           theme,
           titleKey: 'drawer_project',
-          initiallyExpanded: false,
+          initiallyExpanded: true,
           children: [
             _buildProjectSelector(
               context,
@@ -121,7 +121,7 @@ class DrawerContent extends ConsumerWidget {
         _buildExpansionSection(
           theme,
           titleKey: 'drawer_modules',
-          initiallyExpanded: false,
+          initiallyExpanded: true,
           children: [
             _buildDrawerItem(
               theme,
@@ -153,14 +153,6 @@ class DrawerContent extends ConsumerWidget {
                 );
               },
             ),
-          ],
-        ),
-        _buildExpansionSection(
-          theme,
-          titleKey: 'drawer_language',
-          initiallyExpanded: false,
-          children: [
-            _buildLanguageSelector(context, ref, theme, currentLanguage),
           ],
         ),
         _buildExpansionSection(
@@ -246,7 +238,7 @@ class DrawerContent extends ConsumerWidget {
         return _buildExpansionSection(
           theme,
           titleKey: 'drawer_project_shortcuts',
-          initiallyExpanded: false,
+          initiallyExpanded: true,
           children: shortcuts.map((s) {
             final title = s['title'] as String;
             final iconName = s['icon'] as String;
@@ -271,7 +263,7 @@ class DrawerContent extends ConsumerWidget {
         );
       },
       loading: () => const SizedBox.shrink(),
-      error: (_, __) => const SizedBox.shrink(),
+      error: (_, _) => const SizedBox.shrink(),
     );
   }
 
@@ -413,93 +405,55 @@ class DrawerContent extends ConsumerWidget {
     ProjectType currentProject,
     String currentLanguage,
   ) {
-    return Column(
-      children: ProjectType.values.map((project) {
-        final isSupported = project.isSupported(currentLanguage);
-        return RadioListTile<ProjectType>(
-          value: project,
-          groupValue: currentProject,
-          onChanged: isSupported
-              ? (ProjectType? newValue) {
-                  if (newValue != null) {
-                    ref
-                        .read(appStateProvider.notifier)
-                        .setProject(newValue, currentLanguage);
-                    Navigator.of(context).popUntil((route) => route.isFirst);
-                  }
-                }
-              : null,
-          title: Row(
-            children: [
-              Icon(
-                Icons.circle,
-                size: 8,
-                color: isSupported
-                    ? project.primaryColor
-                    : Colors.grey.withValues(alpha: 0.3),
-              ),
-              const SizedBox(width: 8),
-              Text(
-                project.name.toLowerCase().tr(),
-                style: TextStyle(
-                  color: !isSupported
-                      ? Colors.grey.withValues(alpha: 0.5)
-                      : (project == currentProject
-                            ? project.primaryColor
-                            : theme.colorScheme.onSurface),
-                  fontWeight: project == currentProject
-                      ? FontWeight.bold
-                      : FontWeight.normal,
-                  decoration: !isSupported ? TextDecoration.lineThrough : null,
+    return RadioGroup<ProjectType>(
+      groupValue: currentProject,
+      onChanged: (ProjectType? newValue) {
+        if (newValue != null) {
+          ref
+              .read(appStateProvider.notifier)
+              .setProject(newValue, currentLanguage);
+          Navigator.of(context).popUntil((route) => route.isFirst);
+        }
+      },
+      child: Column(
+        children: ProjectType.values.map((project) {
+          final isSupported = project.isSupported(currentLanguage);
+          return RadioListTile<ProjectType>(
+            value: project,
+            enabled: isSupported,
+            title: Row(
+              children: [
+                Icon(
+                  Icons.circle,
+                  size: 8,
+                  color: isSupported
+                      ? project.primaryColor
+                      : Colors.grey.withValues(alpha: 0.3),
                 ),
-              ),
-            ],
-          ),
-          activeColor: project.primaryColor,
-          contentPadding: EdgeInsets.zero,
-        );
-      }).toList(),
-    );
-  }
-
-  Widget _buildLanguageSelector(
-    BuildContext context,
-    WidgetRef ref,
-    ThemeData theme,
-    String currentLanguage,
-  ) {
-    final languages = [
-      {'code': 'en', 'name': 'english'},
-      {'code': 'id', 'name': 'indonesian'},
-      {'code': 'nia', 'name': 'nias'},
-    ];
-
-    return Column(
-      children: languages.map((lang) {
-        final code = lang['code']!;
-        return RadioListTile<String>(
-          value: code,
-          groupValue: currentLanguage,
-          onChanged: (String? newValue) {
-            if (newValue != null) {
-              ref.read(languageProvider.notifier).setLanguage(newValue);
-              context.setLocale(Locale(newValue));
-              Navigator.of(context).popUntil((route) => route.isFirst);
-            }
-          },
-          title: Text(
-            lang['name']!.tr(),
-            style: TextStyle(
-              color: theme.colorScheme.onSurface,
-              fontWeight: currentLanguage == code
-                  ? FontWeight.bold
-                  : FontWeight.normal,
+                const SizedBox(width: 8),
+                Text(
+                  project.name.toLowerCase().tr(),
+                  style: TextStyle(
+                    color: !isSupported
+                        ? Colors.grey.withValues(alpha: 0.5)
+                        : (project == currentProject
+                              ? project.primaryColor
+                              : theme.colorScheme.onSurface),
+                    fontWeight: project == currentProject
+                        ? FontWeight.bold
+                        : FontWeight.normal,
+                    decoration: !isSupported
+                        ? TextDecoration.lineThrough
+                        : null,
+                  ),
+                ),
+              ],
             ),
-          ),
-          activeColor: theme.colorScheme.primary,
-          contentPadding: EdgeInsets.zero,
-        );
-      }).toList(),
+            activeColor: project.primaryColor,
+            contentPadding: EdgeInsets.zero,
+          );
+        }).toList(),
+      ),
     );
   }
 

@@ -7,8 +7,7 @@ import 'package:share_plus/share_plus.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:html/parser.dart' as html_parser;
 
-import '../models/project_type.dart';
-import '../services/wiki_api_service.dart';
+import 'package:wikimedia_core/wikimedia_core.dart';
 import '../utils/wiki_utils.dart';
 import '../widgets/wiki_footer.dart';
 import '../utils/responsive_utils.dart';
@@ -53,7 +52,8 @@ class _NiasCourseScreenState extends ConsumerState<NiasCourseScreen> {
       0.5,
     )!;
 
-    final String pageUrl = 'https://nia.wiktionary.org/wiki/${_courseTitle.replaceAll(' ', '_')}';
+    final String pageUrl =
+        'https://nia.wiktionary.org/wiki/${_courseTitle.replaceAll(' ', '_')}';
 
     return LayoutBuilder(
       builder: (context, constraints) {
@@ -64,22 +64,22 @@ class _NiasCourseScreenState extends ConsumerState<NiasCourseScreen> {
         final isCompactLandscape = isCompact && isLandscape;
         final isCompactPortrait = isCompact && !isLandscape;
         final isTabletLandscape = isTablet && isLandscape;
-        final bool showShortcutsSideBar = isTabletLandscape || deviceType == DeviceType.expanded;
+        final bool showShortcutsSideBar =
+            isTabletLandscape || deviceType == DeviceType.expanded;
 
         return Scaffold(
           key: _scaffoldKey,
           drawer: const DrawerMenu(),
           bottomNavigationBar: isCompactPortrait
               ? CustomBottomAppBar(
-            scaffoldKey: _scaffoldKey,
-            currentProject: ProjectType.wiktionary,
-            pageTitle: _courseTitle,
-          )
+                  scaffoldKey: _scaffoldKey,
+                  currentProject: ProjectType.wiktionary,
+                  pageTitle: _courseTitle,
+                )
               : null,
           body: Row(
             children: [
-              if (showShortcutsSideBar)
-                const ShortcutsSidebar(),
+              if (showShortcutsSideBar) const ShortcutsSidebar(),
               Expanded(
                 child: Stack(
                   children: [
@@ -121,17 +121,25 @@ class _NiasCourseScreenState extends ConsumerState<NiasCourseScreen> {
                                     Icon(
                                       Icons.auto_stories_rounded,
                                       size: 60,
-                                      color: Colors.white.withValues(alpha: 0.3),
+                                      color: Colors.white.withValues(
+                                        alpha: 0.3,
+                                      ),
                                     ),
-                                    const SizedBox(height: 40), // Spacer for title
+                                    const SizedBox(
+                                      height: 40,
+                                    ), // Spacer for title
                                     Padding(
-                                      padding: const EdgeInsets.symmetric(horizontal: 20),
+                                      padding: const EdgeInsets.symmetric(
+                                        horizontal: 20,
+                                      ),
                                       child: Text(
                                         "Kese-keseda ba mbaŵa andre",
                                         textAlign: TextAlign.center,
                                         style: GoogleFonts.merriweather(
                                           fontSize: 14,
-                                          color: Colors.white.withValues(alpha: 0.9),
+                                          color: Colors.white.withValues(
+                                            alpha: 0.9,
+                                          ),
                                           fontStyle: FontStyle.italic,
                                         ),
                                       ),
@@ -155,9 +163,13 @@ class _NiasCourseScreenState extends ConsumerState<NiasCourseScreen> {
                             }
 
                             if (htmlContent.isEmpty ||
-                                htmlContent.contains('Error: Could not parse')) {
-                              return const SliverFillRemaining(
-                                child: Center(child: Text('Error: Could not load content')),
+                                htmlContent.contains(
+                                  'Error: Could not parse',
+                                )) {
+                              return SliverFillRemaining(
+                                child: Center(
+                                  child: Text('error_loading_contents'.tr()),
+                                ),
                               );
                             }
 
@@ -170,8 +182,12 @@ class _NiasCourseScreenState extends ConsumerState<NiasCourseScreen> {
                             // Parse and extract specific Sulu lesson components
                             final doc = html_parser.parse(cleanHtml);
 
-                            final titleElement = doc.querySelector('.lesson-title');
-                            final contentElement = doc.querySelector('.lesson-content');
+                            final titleElement = doc.querySelector(
+                              '.lesson-title',
+                            );
+                            final contentElement = doc.querySelector(
+                              '.lesson-content',
+                            );
 
                             final lessonTitle = titleElement?.text.trim() ?? '';
 
@@ -183,11 +199,16 @@ class _NiasCourseScreenState extends ConsumerState<NiasCourseScreen> {
                             if (contentElement != null) {
                               cleanBody = contentElement.innerHtml.trim();
                             } else {
-                              final mainContent = doc.querySelector('.mw-parser-output') ?? doc.body;
-                              cleanBody = mainContent?.innerHtml.trim() ?? cleanHtml.trim();
+                              final mainContent =
+                                  doc.querySelector('.mw-parser-output') ??
+                                  doc.body;
+                              cleanBody =
+                                  mainContent?.innerHtml.trim() ??
+                                  cleanHtml.trim();
                             }
 
                             var currentProject = ProjectType.wiktionary;
+                            final langCode = context.locale.languageCode;
 
                             return SliverPadding(
                               padding: const EdgeInsets.all(16.0),
@@ -210,15 +231,21 @@ class _NiasCourseScreenState extends ConsumerState<NiasCourseScreen> {
                                     textStyle: GoogleFonts.notoSerif(
                                       height: 1.8,
                                       fontSize: 16,
-                                      color: theme.colorScheme.onSurface.withValues(alpha: 0.9),
+                                      color: theme.colorScheme.onSurface
+                                          .withValues(alpha: 0.9),
                                     ),
-                                    onTapUrl: (url) =>
-                                        WikiUtils.handleTapUrl(context, url, htmlContent, currentProject),
+                                    onTapUrl: (url) => WikiUtils.handleTapUrl(
+                                      context,
+                                      url,
+                                      htmlContent,
+                                      currentProject,
+                                      langCode,
+                                    ),
                                     customStylesBuilder: (element) {
                                       if (element.localName == 'blockquote') {
                                         return {
                                           'border-left':
-                                          '4px solid ${mixedColor.toHtmlRgba()}',
+                                              '4px solid ${mixedColor.toHtmlRgba()}',
                                           'background-color': mixedColor
                                               .withValues(alpha: 0.05)
                                               .toHtmlRgba(),
@@ -228,7 +255,10 @@ class _NiasCourseScreenState extends ConsumerState<NiasCourseScreen> {
                                           'border-radius': '0 12px 12px 0',
                                         };
                                       }
-                                      return WikiUtils.customStyles(context, element);
+                                      return WikiUtils.customStyles(
+                                        context,
+                                        element,
+                                      );
                                     },
                                     customWidgetBuilder: (element) {
                                       // Handle images: animate them and make them clickable
@@ -240,9 +270,12 @@ class _NiasCourseScreenState extends ConsumerState<NiasCourseScreen> {
                                             : element.querySelector('img');
 
                                         if (img != null) {
-                                          final src = img.attributes['src'] ?? '';
-                                          if (src.isNotEmpty && !WikiUtils.isIcon(src)) {
-                                            final fullUrl = src.startsWith('http')
+                                          final src =
+                                              img.attributes['src'] ?? '';
+                                          if (src.isNotEmpty &&
+                                              !CoreWikiUtils.isIcon(src)) {
+                                            final fullUrl =
+                                                src.startsWith('http')
                                                 ? src
                                                 : 'https:$src';
                                             return _buildAnimatedHeroImage(
@@ -253,7 +286,10 @@ class _NiasCourseScreenState extends ConsumerState<NiasCourseScreen> {
                                         }
                                       }
 
-                                      return WikiUtils.customWidgetBuilder(context, element);
+                                      return WikiUtils.customWidgetBuilder(
+                                        context,
+                                        element,
+                                      );
                                     },
                                   ),
                                   const SizedBox(height: 32),
@@ -266,16 +302,13 @@ class _NiasCourseScreenState extends ConsumerState<NiasCourseScreen> {
                           loading: () => const SliverFillRemaining(
                             child: Center(child: CircularProgressIndicator()),
                           ),
-                          error: (err, stack) =>
-                              SliverFillRemaining(child: Center(child: Text('Error: $err'))),
+                          error: (err, stack) => SliverFillRemaining(
+                            child: Center(child: Text('${'error'.tr()}: $err')),
+                          ),
                         ),
                       ],
                     ),
-                    _buildFloatingActionBar(
-                      theme,
-                      pageUrl,
-                      _courseTitle,
-                    ),
+                    _buildFloatingActionBar(theme, pageUrl, _courseTitle),
                   ],
                 ),
               ),
@@ -289,7 +322,8 @@ class _NiasCourseScreenState extends ConsumerState<NiasCourseScreen> {
                       IconButton(
                         icon: const Icon(Icons.menu),
                         color: theme.colorScheme.onPrimary,
-                        onPressed: () => _scaffoldKey.currentState?.openDrawer(),
+                        onPressed: () =>
+                            _scaffoldKey.currentState?.openDrawer(),
                       ),
                       Expanded(
                         child: Align(
@@ -298,18 +332,25 @@ class _NiasCourseScreenState extends ConsumerState<NiasCourseScreen> {
                             child: Column(
                               mainAxisSize: MainAxisSize.min,
                               mainAxisAlignment: MainAxisAlignment.end,
-                              children: AdaptiveNavActions.buildActions(
-                                context,
-                                ref,
-                                currentProject: ProjectType.wiktionary,
-                                isHomeScreen: false,
-                                showHome: true,
-                                pageTitle: _courseTitle,
-                                color: theme.colorScheme.onPrimary,
-                              ).map((w) => Padding(
-                                padding: const EdgeInsets.symmetric(vertical: 4),
-                                child: w,
-                              )).toList(),
+                              children:
+                                  AdaptiveNavActions.buildActions(
+                                        context,
+                                        ref,
+                                        currentProject: ProjectType.wiktionary,
+                                        isHomeScreen: false,
+                                        showHome: true,
+                                        pageTitle: _courseTitle,
+                                        color: theme.colorScheme.onPrimary,
+                                      )
+                                      .map(
+                                        (w) => Padding(
+                                          padding: const EdgeInsets.symmetric(
+                                            vertical: 4,
+                                          ),
+                                          child: w,
+                                        ),
+                                      )
+                                      .toList(),
                             ),
                           ),
                         ),
@@ -325,17 +366,17 @@ class _NiasCourseScreenState extends ConsumerState<NiasCourseScreen> {
   }
 
   Widget _buildFloatingActionBar(
-      ThemeData theme,
-      String pageUrl,
-      String currentTitle,
-      ) {
+    ThemeData theme,
+    String pageUrl,
+    String currentTitle,
+  ) {
     final bookmarks = ref.watch(bookmarksProvider);
     const langCode = 'nia';
     final projectName = ProjectType.wiktionary.name;
 
     final isBookmarked = bookmarks.any(
-          (b) =>
-      b.title == currentTitle &&
+      (b) =>
+          b.title == currentTitle &&
           b.langCode == langCode &&
           b.projectName == projectName,
     );
@@ -364,7 +405,9 @@ class _NiasCourseScreenState extends ConsumerState<NiasCourseScreen> {
               _buildActionButton(
                 theme,
                 isBookmarked ? Icons.bookmark : Icons.bookmark_border,
-                isBookmarked ? theme.colorScheme.primary : theme.colorScheme.onSurface,
+                isBookmarked
+                    ? theme.colorScheme.primary
+                    : theme.colorScheme.onSurface,
                 onPressed: () {
                   ref
                       .read(bookmarksProvider.notifier)
@@ -374,7 +417,9 @@ class _NiasCourseScreenState extends ConsumerState<NiasCourseScreen> {
                   ScaffoldMessenger.of(context).showSnackBar(
                     SnackBar(
                       content: Text(
-                        isBookmarked ? 'bookmarks_removed'.tr() : 'bookmarks_added'.tr(),
+                        isBookmarked
+                            ? 'bookmarks_removed'.tr()
+                            : 'bookmarks_added'.tr(),
                       ),
                       duration: const Duration(seconds: 1),
                     ),
@@ -402,7 +447,7 @@ class _NiasCourseScreenState extends ConsumerState<NiasCourseScreen> {
                   try {
                     await launchUrl(uri, mode: LaunchMode.inAppBrowserView);
                   } catch (e) {
-                    if (context.mounted) {
+                    if (mounted) {
                       ScaffoldMessenger.of(context).showSnackBar(
                         SnackBar(content: Text('page_cant_open').tr()),
                       );
@@ -418,11 +463,11 @@ class _NiasCourseScreenState extends ConsumerState<NiasCourseScreen> {
   }
 
   Widget _buildActionButton(
-      ThemeData theme,
-      IconData icon,
-      Color color, {
-        VoidCallback? onPressed,
-      }) {
+    ThemeData theme,
+    IconData icon,
+    Color color, {
+    VoidCallback? onPressed,
+  }) {
     return Material(
       color: Colors.transparent,
       child: InkWell(
@@ -498,9 +543,9 @@ extension ColorToHtml on Color {
 
 // Special provider for course to force Nias Wiktionary
 final courseApiProvider = FutureProvider.autoDispose.family<dynamic, String>((
-    ref,
-    pageTitle,
-    ) async {
+  ref,
+  pageTitle,
+) async {
   return WikiApiService.fetchPageHtml(
     ProjectType.wiktionary,
     'nia',
