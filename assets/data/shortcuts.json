@@ -29,11 +29,6 @@
         "pageTitle": "Special:RecentChanges"
       },
       {
-        "icon": "pages_outlined",
-        "title": "Special pages",
-        "pageTitle": "Special:SpecialPages"
-      },
-      {
         "icon": "people_outlined",
         "title": "Community portal",
         "pageTitle": "Wiktionary:Community_portal"
@@ -42,6 +37,11 @@
         "icon": "help_outline",
         "title": "Help desk",
         "pageTitle": "Help:Contents"
+      },
+      {
+        "icon": "pages_outlined",
+        "title": "Special pages",
+        "pageTitle": "Special:SpecialPages"
       }
     ],
     "wikibooks": [
@@ -49,11 +49,6 @@
         "icon": "history",
         "title": "Recent changes",
         "pageTitle": "Special:RecentChanges"
-      },
-      {
-        "icon": "pages_outlined",
-        "title": "Special pages",
-        "pageTitle": "Special:SpecialPages"
       },
       {
         "icon": "people_outlined",
@@ -64,6 +59,11 @@
         "icon": "chat_bubble_outlined",
         "title": "Wikijunior",
         "pageTitle": "Wikijunior"
+      },
+      {
+        "icon": "pages_outlined",
+        "title": "Special pages",
+        "pageTitle": "Special:SpecialPages"
       }
     ]
   },
@@ -75,26 +75,21 @@
         "pageTitle": "Istimewa:Perubahan_terbaru"
       },
       {
+        "icon": "construction_outlined",
+        "title": "Bak pasir",
+        "pageTitle": "Wikipedia:Bak_pasir"
+      },
+      {
         "icon": "pages_outlined",
         "title": "Halaman istimewa",
         "pageTitle": "Istimewa:Halaman_istimewa"
       },
-      {
-        "icon": "construction_outlined",
-        "title": "Bak pasir",
-        "pageTitle": "Wikipedia:Bak_pasir"
-      }
     ],
     "wiktionary": [
       {
         "icon": "history",
         "title": "Perubahan terbaru",
         "pageTitle": "Istimewa:Perubahan_terbaru"
-      },
-      {
-        "icon": "pages_outlined",
-        "title": "Halaman istimewa",
-        "pageTitle": "Istimewa:Halaman_istimewa"
       },
       {
         "icon": "chat_bubble_outlined",
@@ -110,6 +105,11 @@
         "icon": "help_outline",
         "title": "Bantuan",
         "pageTitle": "Bantuan:Isi"
+      },
+      {
+        "icon": "pages_outlined",
+        "title": "Halaman istimewa",
+        "pageTitle": "Istimewa:Halaman_istimewa"
       }
     ],
     "wikibuku": [
@@ -190,14 +190,9 @@
         "pageTitle": "Spesial:Perubahan_terbaru"
       },
       {
-        "icon": "pages_outlined",
-        "title": "Nga'örö spesial",
-        "pageTitle": "Spesial:Halaman_istimewa"
-      },
-      {
-        "icon": "campaign_outlined",
-        "title": "Angombakhata",
-        "pageTitle": "Wikikamus:Angombakhata"
+        "icon": "construction_outlined",
+        "title": "Nahia wamakori",
+        "pageTitle": "Wikikamus:Nahia_wamakori"
       },
       {
         "icon": "people_outlined",
@@ -205,14 +200,14 @@
         "pageTitle": "Wikikamus:Bawagöli_zato"
       },
       {
+        "icon": "campaign_outlined",
+        "title": "Angombakhata",
+        "pageTitle": "Wikikamus:Angombakhata"
+      },
+      {
         "icon": "chat_bubble_outlined",
         "title": "Monganga afo",
         "pageTitle": "Wikikamus:Monganga_afo"
-      },
-      {
-        "icon": "construction_outlined",
-        "title": "Nahia wamakori",
-        "pageTitle": "Wikikamus:Nahia_wamakori"
       },
       {
         "icon": "help_outline",
@@ -223,6 +218,11 @@
         "icon": "support_agent_outlined",
         "title": "Sangai halöŵö",
         "pageTitle": "Wikikamus:Sangai_halöŵö"
+      },
+      {
+        "icon": "pages_outlined",
+        "title": "Nga'örö spesial",
+        "pageTitle": "Spesial:Halaman_istimewa"
       }
     ],
     "wikibooks": [
@@ -232,14 +232,9 @@
         "pageTitle": "Special:RecentChanges?hidebots=1&translations=filter&hidecategorization=1&hideWikibase=1&hideWikifunctions=1&limit=250&days=30&urlversion=2&rc-testwiki-project=b&rc-testwiki-code=nia"
       },
       {
-        "icon": "pages_outlined",
-        "title": "Nga'örö spesial",
-        "pageTitle": "Special:SpecialPages"
-      },
-      {
-        "icon": "campaign_outlined",
-        "title": "Angombakhata",
-        "pageTitle": "Wikibooks:Angombakhata"
+        "icon": "construction_outlined",
+        "title": "Nahia wamakori",
+        "pageTitle": "Wikibooks:Nahia_wamakori"
       },
       {
         "icon": "people_outlined",
@@ -247,14 +242,14 @@
         "pageTitle": "Wikibooks:Bawagöli_zato"
       },
       {
+        "icon": "campaign_outlined",
+        "title": "Angombakhata",
+        "pageTitle": "Wikibooks:Angombakhata"
+      },
+      {
         "icon": "chat_bubble_outlined",
         "title": "Monganga afo",
         "pageTitle": "Wikibooks:Monganga_afo"
-      },
-      {
-        "icon": "construction_outlined",
-        "title": "Nahia wamakori",
-        "pageTitle": "Wikibooks:Nahia_wamakori"
       },
       {
         "icon": "help_outline",
@@ -265,6 +260,11 @@
         "icon": "support_agent_outlined",
         "title": "Sangai halöŵö",
         "pageTitle": "Wikibooks:Sangai_halöŵö"
+      },
+      {
+        "icon": "pages_outlined",
+        "title": "Nga'örö spesial",
+        "pageTitle": "Special:SpecialPages"
       }
     ]
   }

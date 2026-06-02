@@ -41,6 +41,7 @@ flutter:
     - assets/images/onboarding3.webp
     - assets/images/onboarding4.webp
     - assets/images/onboarding5.webp
+    - assets/images/onboarding6.webp
     - assets/translations/
     - assets/translations/en.json
     - assets/translations/id.json
