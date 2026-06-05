@@ -18,11 +18,20 @@ class HomePageBuilder {
     final bodyStr = utf8.decode(responseBodyBytes);
     final document = html_parser.parse(bodyStr);
 
-    final removeSelectors = WikiConfig.getCombinedRulesList(languageCode, projectStr, 'remove');
-    final hideSelectors = WikiConfig.getCombinedRulesList(languageCode, projectStr, 'hide');
+    final removeSelectors = WikiConfig.getCombinedRulesList(
+      languageCode,
+      projectStr,
+      'remove',
+    );
+    final hideSelectors = WikiConfig.getCombinedRulesList(
+      languageCode,
+      projectStr,
+      'hide',
+    );
 
     final projectRules = WikiConfig.getRules(languageCode, projectStr);
-    final sectionsConfig = projectRules?['homePageSections'] as Map<String, dynamic>?;
+    final sectionsConfig =
+        projectRules?['homePageSections'] as Map<String, dynamic>?;
 
     List<HomePageSection> sections = [];
 

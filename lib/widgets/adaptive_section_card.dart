@@ -20,8 +20,10 @@ class AdaptiveSectionCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    final isCompactPortrait = ResponsiveUtils.isCompact(context) && ResponsiveUtils.isPortrait(context);
-    
+    final isCompactPortrait =
+        ResponsiveUtils.isCompact(context) &&
+        ResponsiveUtils.isPortrait(context);
+
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -46,8 +48,8 @@ class AdaptiveSectionCard extends StatelessWidget {
             borderRadius: BorderRadius.circular(12),
           ),
           margin: const EdgeInsets.only(bottom: 24),
-          child: isCompactPortrait 
-              ? _buildVerticalLayout(context) 
+          child: isCompactPortrait
+              ? _buildVerticalLayout(context)
               : _buildHorizontalLayout(context),
         ),
       ],
@@ -67,16 +69,15 @@ class AdaptiveSectionCard extends StatelessWidget {
                 Navigator.push(
                   context,
                   MaterialPageRoute(
-                    builder: (_) => ImageScreen(
-                      imagePath: section.imageUrl!,
-                    ),
+                    builder: (_) => ImageScreen(imagePath: section.imageUrl!),
                   ),
                 );
               }
             },
             child: HtmlWidget(
               section.imageHtml!,
-              onTapUrl: (url) => WikiUtils.handleTapUrl(context, url, null, project, langCode),
+              onTapUrl: (url) =>
+                  WikiUtils.handleTapUrl(context, url, null, project, langCode),
             ),
           ),
         Padding(
@@ -101,9 +102,7 @@ class AdaptiveSectionCard extends StatelessWidget {
                   Navigator.push(
                     context,
                     MaterialPageRoute(
-                      builder: (_) => ImageScreen(
-                        imagePath: section.imageUrl!,
-                      ),
+                      builder: (_) => ImageScreen(imagePath: section.imageUrl!),
                     ),
                   );
                 }
@@ -111,7 +110,13 @@ class AdaptiveSectionCard extends StatelessWidget {
               child: Center(
                 child: HtmlWidget(
                   section.imageHtml!,
-                  onTapUrl: (url) => WikiUtils.handleTapUrl(context, url, null, project, langCode),
+                  onTapUrl: (url) => WikiUtils.handleTapUrl(
+                    context,
+                    url,
+                    null,
+                    project,
+                    langCode,
+                  ),
                 ),
               ),
             ),
@@ -131,14 +136,16 @@ class AdaptiveSectionCard extends StatelessWidget {
     final langCode = context.locale.languageCode;
     return HtmlWidget(
       section.textHtml,
-      onTapUrl: (url) => WikiUtils.handleTapUrl(context, url, null, project, langCode),
+      onTapUrl: (url) =>
+          WikiUtils.handleTapUrl(context, url, null, project, langCode),
       textStyle: GoogleFonts.notoSerif(
         textStyle: Theme.of(context).textTheme.bodyMedium?.copyWith(
           height: 1.6,
           color: Theme.of(context).colorScheme.onSurface.withValues(alpha: 0.8),
         ),
       ),
-      customStylesBuilder: (element) => WikiUtils.customStyles(context, element),
+      customStylesBuilder: (element) =>
+          WikiUtils.customStyles(context, element),
     );
   }
 }

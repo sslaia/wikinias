@@ -16,12 +16,13 @@ class HomePageSection {
   String? get imageUrl => data['${titleKey}ImageUrl'];
 
   Map<String, dynamic> toJson() => {
-        'titleKey': titleKey,
-        'textHtml': textHtml,
-        'data': data,
-      };
+    'titleKey': titleKey,
+    'textHtml': textHtml,
+    'data': data,
+  };
 
-  factory HomePageSection.fromJson(Map<String, dynamic> json) => HomePageSection(
+  factory HomePageSection.fromJson(Map<String, dynamic> json) =>
+      HomePageSection(
         titleKey: json['titleKey'],
         textHtml: json['textHtml'],
         data: Map<String, String?>.from(json['data'] ?? {}),

@@ -211,5 +211,15 @@
   "wikibooks": "Wikibooks",
   "wikipedia": "Wikipedia",
   "wiktionary": "Wiktionary",
-  "yes": "Yes"
+  "yes": "Yes",
+  "crosswords": "Crosswords",
+  "crossword_daily": "Daily Crossword",
+  "crossword_weekly": "Weekly",
+  "crossword_monthly": "Monthly",
+  "crossword_yearly": "Yearly",
+  "crossword_share": "Share",
+  "crossword_favorites": "Favorites",
+  "crossword_scoreboard": "Scoreboard",
+  "crossword_check_words": "Check Words",
+  "crossword_score": "Score"
 }

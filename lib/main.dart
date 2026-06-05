@@ -85,7 +85,9 @@ class WikiNiasApp extends ConsumerWidget {
           child: child!,
         );
       },
-      home: isFirstStart ? HomeScreen(key: ValueKey(currentProject)) : const OnboardingScreen(),
+      home: isFirstStart
+          ? HomeScreen(key: ValueKey(currentProject))
+          : const OnboardingScreen(),
     );
   }
 }

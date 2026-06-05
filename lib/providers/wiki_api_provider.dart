@@ -1,8 +1,12 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:wikimedia_core/wikimedia_core.dart';
 import 'app_state.dart';
+
 /// Returns a String for articles, and a `List<HomePageSection>` for the home page.
-final wikiApiProvider = FutureProvider.autoDispose.family<dynamic, String?>((ref, pageTitleArg) async {
+final wikiApiProvider = FutureProvider.autoDispose.family<dynamic, String?>((
+  ref,
+  pageTitleArg,
+) async {
   final currentProject = ref.watch(appStateProvider);
   final langCode = ref.watch(languageProvider);
 
@@ -18,5 +22,10 @@ final wikiApiProvider = FutureProvider.autoDispose.family<dynamic, String?>((ref
     isArticle = true;
   }
 
-  return WikiApiService.fetchPageHtml(currentProject, langCode, pageTitle, isArticle);
+  return WikiApiService.fetchPageHtml(
+    currentProject,
+    langCode,
+    pageTitle,
+    isArticle,
+  );
 });

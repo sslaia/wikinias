@@ -9,15 +9,21 @@ import 'app_state.dart';
 class RandomArticleNotifier extends StateNotifier<bool> {
   RandomArticleNotifier() : super(false);
 
-  Future<void> navigateToRandomArticle(BuildContext context, WidgetRef ref) async {
+  Future<void> navigateToRandomArticle(
+    BuildContext context,
+    WidgetRef ref,
+  ) async {
     state = true;
     try {
       final currentProject = ref.read(appStateProvider);
       final langCode = context.locale.languageCode;
       final projectStr = currentProject.name.toLowerCase();
-      
-      final randomTitle = await WikiApiService.fetchRandomArticleTitle(langCode, projectStr);
-      
+
+      final randomTitle = await WikiApiService.fetchRandomArticleTitle(
+        langCode,
+        projectStr,
+      );
+
       if (randomTitle != null && context.mounted) {
         Navigator.push(
           context,
@@ -38,6 +44,7 @@ class RandomArticleNotifier extends StateNotifier<bool> {
   }
 }
 
-final randomArticleProvider = StateNotifierProvider<RandomArticleNotifier, bool>((ref) {
-  return RandomArticleNotifier();
-});
+final randomArticleProvider =
+    StateNotifierProvider<RandomArticleNotifier, bool>((ref) {
+      return RandomArticleNotifier();
+    });

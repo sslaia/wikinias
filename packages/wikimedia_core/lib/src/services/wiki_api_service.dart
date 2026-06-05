@@ -70,44 +70,51 @@ class WikiApiService {
       }
     }
 
-    String domain = WikiConfig.getDomain(languageCode, project.name.toLowerCase());
+    String domain = WikiConfig.getDomain(
+      languageCode,
+      project.name.toLowerCase(),
+    );
     String finalTitle = pageTitle;
     bool useActionApiForHome = false;
-    String apiPrefix = WikiConfig.getApiPrefix(languageCode, project.name.toLowerCase());
+    String apiPrefix = WikiConfig.getApiPrefix(
+      languageCode,
+      project.name.toLowerCase(),
+    );
 
     if (apiPrefix.isNotEmpty) {
       if (!isArticle) {
         useActionApiForHome = true;
-        finalTitle = '${apiPrefix}Olayama'; // 'Olayama' is hardcoded main page title, but let's check original logic
+        finalTitle =
+            '${apiPrefix}Olayama'; // 'Olayama' is hardcoded main page title, but let's check original logic
       }
     }
 
     if (apiPrefix.isNotEmpty && isArticle) {
-        if (pageTitle == 'Main Page') {
-          finalTitle = '${apiPrefix}Olayama';
-        } else if (!pageTitle.contains(apiPrefix)) {
-          final lowerTitle = pageTitle.toLowerCase();
-          if (lowerTitle.startsWith('special:') ||
-              lowerTitle.startsWith('spesial:') ||
-              lowerTitle.startsWith('mirunggan:') ||
-              lowerTitle.startsWith('istimewa:') ||
-              lowerTitle.startsWith('istimiwa:') ||
-              lowerTitle.startsWith('istimèwa:') ||
-              lowerTitle.startsWith('khas:') ||
-              lowerTitle.startsWith('husus:')) {
-            finalTitle = pageTitle;
-          } else if (lowerTitle.startsWith('category:') ||
-                     lowerTitle.startsWith('kategori:') ||
-                     lowerTitle.startsWith('template:') ||
-                     lowerTitle.startsWith('templat:')) {
-            final parts = pageTitle.split(':');
-            final namespace = parts[0];
-            final rest = parts.sublist(1).join(':');
-            finalTitle = '$namespace:$apiPrefix$rest';
-          } else {
-            finalTitle = '$apiPrefix$pageTitle';
-          }
+      if (pageTitle == 'Main Page') {
+        finalTitle = '${apiPrefix}Olayama';
+      } else if (!pageTitle.contains(apiPrefix)) {
+        final lowerTitle = pageTitle.toLowerCase();
+        if (lowerTitle.startsWith('special:') ||
+            lowerTitle.startsWith('spesial:') ||
+            lowerTitle.startsWith('mirunggan:') ||
+            lowerTitle.startsWith('istimewa:') ||
+            lowerTitle.startsWith('istimiwa:') ||
+            lowerTitle.startsWith('istimèwa:') ||
+            lowerTitle.startsWith('khas:') ||
+            lowerTitle.startsWith('husus:')) {
+          finalTitle = pageTitle;
+        } else if (lowerTitle.startsWith('category:') ||
+            lowerTitle.startsWith('kategori:') ||
+            lowerTitle.startsWith('template:') ||
+            lowerTitle.startsWith('templat:')) {
+          final parts = pageTitle.split(':');
+          final namespace = parts[0];
+          final rest = parts.sublist(1).join(':');
+          finalTitle = '$namespace:$apiPrefix$rest';
+        } else {
+          finalTitle = '$apiPrefix$pageTitle';
         }
+      }
     }
 
     String url;
@@ -150,7 +157,7 @@ class WikiApiService {
               );
               processedResult['html'] =
                   (processedResult['html'] ?? '') + categoryHtml;
-                        }
+            }
 
             await prefs.setString(cacheKey, jsonEncode(processedResult));
             await prefs.setString(
@@ -169,6 +176,7 @@ class WikiApiService {
             final bodyStr = utf8.decode(response.bodyBytes);
             final decoded = jsonDecode(bodyStr);
             final htmlContent = decoded['parse']?['text']?['*'] ?? '';
+
             /// Convert the extracted HTML string back to bytes for HomePageBuilder
             htmlBytes = utf8.encode(htmlContent);
           } else {
@@ -227,7 +235,7 @@ class WikiApiService {
 
       final List<Map<String, dynamic>> results =
           List<Map<String, dynamic>>.from(data['query']?['search'] ?? []);
-          
+
       final int? nextOffset = data['continue']?['sroffset'];
 
       if (apiPrefix.isNotEmpty) {
@@ -239,10 +247,7 @@ class WikiApiService {
         }
       }
 
-      return {
-        'results': results,
-        'nextOffset': nextOffset,
-      };
+      return {'results': results, 'nextOffset': nextOffset};
     } catch (e) {
       throw Exception('Search error: $e');
     }

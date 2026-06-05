@@ -76,7 +76,13 @@ class WikiPortalsWidget extends ConsumerWidget {
     final langCode = context.locale.languageCode;
 
     return GestureDetector(
-      onTap: () => WikiUtils.handleTapUrl(context, './$title', null, currentProject, langCode),
+      onTap: () => WikiUtils.handleTapUrl(
+        context,
+        './$title',
+        null,
+        currentProject,
+        langCode,
+      ),
       child: Container(
         width: 140,
         margin: const EdgeInsets.all(4),

@@ -9,7 +9,7 @@ class ThemeModeNotifier extends Notifier<ThemeMode> {
   ThemeMode build() {
     final prefs = ref.watch(sharedPreferencesProvider);
     final savedMode = prefs.getString(_themeKey);
-    
+
     if (savedMode == 'light') return ThemeMode.light;
     if (savedMode == 'dark') return ThemeMode.dark;
     return ThemeMode.system;
@@ -17,7 +17,7 @@ class ThemeModeNotifier extends Notifier<ThemeMode> {
 
   void setThemeMode(ThemeMode mode) {
     state = mode;
-    
+
     final prefs = ref.read(sharedPreferencesProvider);
     String modeString;
     switch (mode) {

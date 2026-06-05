@@ -23,18 +23,22 @@ class HtmlProcessor {
       }
       ns.remove();
     });
-    document.querySelectorAll('.lazy-image-placeholder').forEach((el) => el.remove());
+    document
+        .querySelectorAll('.lazy-image-placeholder')
+        .forEach((el) => el.remove());
 
     /// Handle tables
     document.querySelectorAll('table').forEach((table) {
       // 1. Remove inline width and set to 100%
       table.attributes.remove('width');
       table.attributes.remove('style');
-      table.attributes['style'] = 'width: 100%; border-collapse: collapse; margin: 16px 0;';
+      table.attributes['style'] =
+          'width: 100%; border-collapse: collapse; margin: 16px 0;';
 
       // 2. Create a wrapper div for horizontal scrolling
       final wrapper = dom.Element.tag('div');
-      wrapper.attributes['style'] = 'overflow-x: auto; width: 100%; -webkit-overflow-scrolling: touch;';
+      wrapper.attributes['style'] =
+          'overflow-x: auto; width: 100%; -webkit-overflow-scrolling: touch;';
 
       // 3. Insert wrapper into the DOM and move the table inside it
       table.parentNode?.insertBefore(wrapper, table);
@@ -42,13 +46,26 @@ class HtmlProcessor {
 
       // 4. Basic cell styling for readability
       table.querySelectorAll('th, td').forEach((cell) {
-        cell.attributes['style'] = 'border: 1px solid #ddd; padding: 8px; text-align: left;';
+        cell.attributes['style'] =
+            'border: 1px solid #ddd; padding: 8px; text-align: left;';
       });
     });
 
-    final removeSelectors = WikiConfig.getCombinedRulesList(languageCode, projectStr, 'remove');
-    final hideSelectors = WikiConfig.getCombinedRulesList(languageCode, projectStr, 'hide');
-    final refKeywords = WikiConfig.getCombinedRulesList(languageCode, projectStr, 'referenceKeywords');
+    final removeSelectors = WikiConfig.getCombinedRulesList(
+      languageCode,
+      projectStr,
+      'remove',
+    );
+    final hideSelectors = WikiConfig.getCombinedRulesList(
+      languageCode,
+      projectStr,
+      'hide',
+    );
+    final refKeywords = WikiConfig.getCombinedRulesList(
+      languageCode,
+      projectStr,
+      'referenceKeywords',
+    );
 
     /// Extract Hero Image Candidate
     String? heroImageUrl;
@@ -70,17 +87,22 @@ class HtmlProcessor {
       if (src.isNotEmpty) {
         final widthAttr = int.tryParse(img.attributes['width'] ?? '');
         final heightAttr = int.tryParse(img.attributes['height'] ?? '');
-        final isIcon = (widthAttr != null && widthAttr <= 48) || (heightAttr != null && heightAttr <= 48) || CoreWikiUtils.isIcon(src);
+        final isIcon =
+            (widthAttr != null && widthAttr <= 48) ||
+            (heightAttr != null && heightAttr <= 48) ||
+            CoreWikiUtils.isIcon(src);
 
-        imageTasks.add(CoreWikiUtils.optimizeImageUrl(
-          src,
-          htmlString: img.outerHtml,
-          width: isIcon ? 100 : 500,
-        ).then((optimizedUrl) {
-          img.attributes['src'] = optimizedUrl;
-          if (isIcon) img.classes.add('wiki-inline-icon');
-          if (img == heroElement) heroImageUrl = optimizedUrl;
-        }));
+        imageTasks.add(
+          CoreWikiUtils.optimizeImageUrl(
+            src,
+            htmlString: img.outerHtml,
+            width: isIcon ? 100 : 500,
+          ).then((optimizedUrl) {
+            img.attributes['src'] = optimizedUrl;
+            if (isIcon) img.classes.add('wiki-inline-icon');
+            if (img == heroElement) heroImageUrl = optimizedUrl;
+          }),
+        );
       }
     }
 
@@ -94,10 +116,12 @@ class HtmlProcessor {
     for (var s in removeSelectors) {
       document.querySelectorAll(s).forEach((el) => el.remove());
     }
-    
+
     /// Apply hides
     for (var s in hideSelectors) {
-      document.querySelectorAll(s).forEach((el) => el.classes.add('wikinias-hidden'));
+      document
+          .querySelectorAll(s)
+          .forEach((el) => el.classes.add('wikinias-hidden'));
     }
 
     /// Process reference sections (Headings like Umbu, Rujukan, etc.)
@@ -117,7 +141,8 @@ class HtmlProcessor {
           // Hide everything until the next heading
           var next = targetToHide.nextElementSibling;
           while (next != null) {
-            if (['h2', 'h3', 'h4'].contains(next.localName) || next.classes.contains('mw-heading')) {
+            if (['h2', 'h3', 'h4'].contains(next.localName) ||
+                next.classes.contains('mw-heading')) {
               break;
             }
             next.classes.add('wikinias-hidden');
@@ -130,17 +155,25 @@ class HtmlProcessor {
     String processedHtml = document.body?.innerHtml ?? '';
     final soup = BeautifulSoup(processedHtml);
     bool soupChanged = false;
-    
-    if (WikiConfig.hasProcessingFlag(languageCode, projectStr, 'removeEmptySections')) {
+
+    if (WikiConfig.hasProcessingFlag(
+      languageCode,
+      projectStr,
+      'removeEmptySections',
+    )) {
       _removeEmptySections(soup);
       soupChanged = true;
     }
-    
-    if (WikiConfig.hasProcessingFlag(languageCode, projectStr, 'removeEmptyImageSections')) {
+
+    if (WikiConfig.hasProcessingFlag(
+      languageCode,
+      projectStr,
+      'removeEmptyImageSections',
+    )) {
       _removeEmptyImageSections(soup);
       soupChanged = true;
     }
-    
+
     if (soupChanged) {
       processedHtml = soup.toString();
     }
@@ -152,20 +185,27 @@ class HtmlProcessor {
     dom.Element? containerToHide = img;
     var parent = img.parent;
     while (parent != null && parent.localName != 'body') {
-      if (parent.localName == 'figure' || parent.classes.contains('thumb') || parent.classes.contains('infobox-image')) {
+      if (parent.localName == 'figure' ||
+          parent.classes.contains('thumb') ||
+          parent.classes.contains('infobox-image')) {
         containerToHide = parent;
         break;
       }
       parent = parent.parent;
     }
-    containerToHide?.attributes['class'] = '${containerToHide.attributes['class'] ?? ''} hidden-hero-container';
+    containerToHide?.attributes['class'] =
+        '${containerToHide.attributes['class'] ?? ''} hidden-hero-container';
   }
 
   static void _removeEmptySections(BeautifulSoup root) {
     final potentialMarkers = root.findAll('dd') + root.findAll('li');
-    final emptyMarkers = potentialMarkers.where((element) => element.string.trim() == 'Lö hadöi');
+    final emptyMarkers = potentialMarkers.where(
+      (element) => element.string.trim() == 'Lö hadöi',
+    );
     for (final marker in emptyMarkers) {
-      Bs4Element? listContainer = marker.name == 'dd' ? marker.findParent('dl') : (marker.findParent('ul') ?? marker.findParent('ol'));
+      Bs4Element? listContainer = marker.name == 'dd'
+          ? marker.findParent('dl')
+          : (marker.findParent('ul') ?? marker.findParent('ol'));
       if (listContainer == null) continue;
       final headingDiv = listContainer.findPreviousSibling('div');
       if (headingDiv != null && headingDiv.className.contains('mw-heading')) {
@@ -181,7 +221,8 @@ class HtmlProcessor {
       final headingContainer = h3.findParent('div');
       if (headingContainer == null) continue;
       final Bs4Element? nextElement = headingContainer.nextSibling;
-      if (nextElement == null || nextElement.name != 'figure') headingContainer.extract();
+      if (nextElement == null || nextElement.name != 'figure')
+        headingContainer.extract();
     }
   }
 }

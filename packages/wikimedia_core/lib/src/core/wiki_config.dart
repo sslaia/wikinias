@@ -10,7 +10,8 @@ class WikiConfig {
 
   /// Wikimedia requires a descriptive User-Agent
   static Map<String, String> get uaHeaders => {
-    'User-Agent': 'WikiNias/1.1.0 (https://sslaia.github.io/$_appName; slaia@yahoo.com) Generic/1.0',
+    'User-Agent':
+        'WikiNias/1.1.0 (https://sslaia.github.io/$_appName; slaia@yahoo.com) Generic/1.0',
   };
 
   /// Initialize the WikiConfig. This fetches rules from the remote GitHub repository,
@@ -23,8 +24,11 @@ class WikiConfig {
     final cacheKey = 'wiki_config_rules_$_appName';
 
     try {
-      final url = 'https://raw.githubusercontent.com/sslaia/$_appName/refs/heads/main/assets/data/html_rules.json';
-      final response = await http.get(Uri.parse(url)).timeout(const Duration(seconds: 5));
+      final url =
+          'https://raw.githubusercontent.com/sslaia/$_appName/refs/heads/main/assets/data/html_rules.json';
+      final response = await http
+          .get(Uri.parse(url))
+          .timeout(const Duration(seconds: 5));
       if (response.statusCode == 200) {
         _rules = jsonDecode(response.body);
         await prefs.setString(cacheKey, response.body);
@@ -47,7 +51,9 @@ class WikiConfig {
 
     // Try local asset as final fallback
     try {
-      final jsonString = await rootBundle.loadString('assets/data/html_rules.json');
+      final jsonString = await rootBundle.loadString(
+        'assets/data/html_rules.json',
+      );
       _rules = jsonDecode(jsonString);
     } catch (e) {
       _rules = {};
@@ -56,7 +62,10 @@ class WikiConfig {
   }
 
   /// Get the full rules map for a language code and project
-  static Map<String, dynamic>? getRules(String languageCode, String projectStr) {
+  static Map<String, dynamic>? getRules(
+    String languageCode,
+    String projectStr,
+  ) {
     return _rules[languageCode]?[projectStr] as Map<String, dynamic>?;
   }
 
@@ -86,28 +95,47 @@ class WikiConfig {
   }
 
   /// Get the processing flags for a given language code and project.
-  static List<String> getProcessingFlags(String languageCode, String projectStr) {
+  static List<String> getProcessingFlags(
+    String languageCode,
+    String projectStr,
+  ) {
     final rules = getRules(languageCode, projectStr);
-    if (rules != null && rules['processingFlags'] != null && rules['processingFlags'] is List) {
-      return (rules['processingFlags'] as List).map((e) => e.toString()).toList();
+    if (rules != null &&
+        rules['processingFlags'] != null &&
+        rules['processingFlags'] is List) {
+      return (rules['processingFlags'] as List)
+          .map((e) => e.toString())
+          .toList();
     }
     return [];
   }
 
   /// Check if a specific processing flag exists
-  static bool hasProcessingFlag(String languageCode, String projectStr, String flag) {
+  static bool hasProcessingFlag(
+    String languageCode,
+    String projectStr,
+    String flag,
+  ) {
     return getProcessingFlags(languageCode, projectStr).contains(flag);
   }
 
   /// Get combined rule list (e.g., 'remove' or 'hide') from both global and project specific rules
-  static List<String> getCombinedRulesList(String languageCode, String projectStr, String key) {
+  static List<String> getCombinedRulesList(
+    String languageCode,
+    String projectStr,
+    String key,
+  ) {
     final list = <String>[];
     final globalRules = getGlobalRules(projectStr);
-    if (globalRules != null && globalRules[key] != null && globalRules[key] is List) {
+    if (globalRules != null &&
+        globalRules[key] != null &&
+        globalRules[key] is List) {
       list.addAll((globalRules[key] as List).map((e) => e.toString()));
     }
     final projectRules = getRules(languageCode, projectStr);
-    if (projectRules != null && projectRules[key] != null && projectRules[key] is List) {
+    if (projectRules != null &&
+        projectRules[key] != null &&
+        projectRules[key] is List) {
       list.addAll((projectRules[key] as List).map((e) => e.toString()));
     }
     return list;

@@ -241,7 +241,9 @@ class _GalleryCarouselScreenState extends ConsumerState<GalleryCarouselScreen> {
                                     selected: isSelected,
                                     selectedColor:
                                         GalleryCarouselScreen.niasYellow,
-                                    backgroundColor: Colors.black.withValues(alpha: 0.6),
+                                    backgroundColor: Colors.black.withValues(
+                                      alpha: 0.6,
+                                    ),
                                     padding: const EdgeInsets.symmetric(
                                       horizontal: 4,
                                       vertical: 0,
@@ -305,7 +307,8 @@ class _GalleryCarouselScreenState extends ConsumerState<GalleryCarouselScreen> {
                       const SizedBox(height: 8),
                       IconButton(
                         icon: const Icon(Icons.menu, color: Colors.white),
-                        onPressed: () => _scaffoldKey.currentState?.openDrawer(),
+                        onPressed: () =>
+                            _scaffoldKey.currentState?.openDrawer(),
                       ),
                       Expanded(
                         child: Align(
@@ -314,17 +317,24 @@ class _GalleryCarouselScreenState extends ConsumerState<GalleryCarouselScreen> {
                             child: Column(
                               mainAxisSize: MainAxisSize.min,
                               mainAxisAlignment: MainAxisAlignment.end,
-                              children: AdaptiveNavActions.buildActions(
-                                context,
-                                ref,
-                                currentProject: currentProject,
-                                isHomeScreen: false,
-                                showHome: true,
-                                color: Colors.white,
-                              ).map((w) => Padding(
-                                padding: const EdgeInsets.symmetric(vertical: 4),
-                                child: w,
-                              )).toList(),
+                              children:
+                                  AdaptiveNavActions.buildActions(
+                                        context,
+                                        ref,
+                                        currentProject: currentProject,
+                                        isHomeScreen: false,
+                                        showHome: true,
+                                        color: Colors.white,
+                                      )
+                                      .map(
+                                        (w) => Padding(
+                                          padding: const EdgeInsets.symmetric(
+                                            vertical: 4,
+                                          ),
+                                          child: w,
+                                        ),
+                                      )
+                                      .toList(),
                             ),
                           ),
                         ),

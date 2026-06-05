@@ -1,10 +1,6 @@
 import 'package:flutter/material.dart';
 
-enum ProjectType {
-  wikipedia,
-  wiktionary,
-  wikibooks,
-}
+enum ProjectType { wikipedia, wiktionary, wikibooks }
 
 extension ProjectTypeExtension on ProjectType {
   String get name {
@@ -52,10 +48,12 @@ extension ProjectTypeExtension on ProjectType {
   }
 
   bool isSupported(String langCode) {
-    if (this == ProjectType.wikibooks && (langCode == 'en' || langCode == 'id')) {
+    if (this == ProjectType.wikibooks &&
+        (langCode == 'en' || langCode == 'id')) {
       return false;
     }
-    if (this == ProjectType.wiktionary && (langCode == 'en' || langCode == 'id')) {
+    if (this == ProjectType.wiktionary &&
+        (langCode == 'en' || langCode == 'id')) {
       return false;
     }
     return true;

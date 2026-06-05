@@ -31,7 +31,7 @@ class ResponsiveUtils {
 
   static bool isPortrait(BuildContext context) =>
       MediaQuery.of(context).orientation == Orientation.portrait;
-  
+
   /// Tablet is considered Medium or Expanded
   static bool isTablet(BuildContext context) =>
       getDeviceType(context) != DeviceType.compact;

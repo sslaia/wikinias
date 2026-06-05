@@ -43,7 +43,8 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
         final isCompactLandscape = isCompact && isLandscape;
         final isCompactPortrait = isCompact && !isLandscape;
         final isTabletLandscape = isTablet && isLandscape;
-        final bool showShortcutsSideBar = isTabletLandscape || deviceType == DeviceType.expanded;
+        final bool showShortcutsSideBar =
+            isTabletLandscape || deviceType == DeviceType.expanded;
         final double bottomAppBarHeight = isCompactPortrait ? 80.0 : 0.0;
 
         return Scaffold(
@@ -58,8 +59,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
               : null,
           body: Row(
             children: [
-              if (showShortcutsSideBar)
-                const ShortcutsSidebar(),
+              if (showShortcutsSideBar) const ShortcutsSidebar(),
               Expanded(
                 child: CustomScrollView(
                   slivers: [
@@ -67,7 +67,9 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                       child: Builder(
                         builder: (context) {
                           String? featuredImageUrl;
-                          final content = wikiContent.whenOrNull(data: (d) => d);
+                          final content = wikiContent.whenOrNull(
+                            data: (d) => d,
+                          );
                           if (content is List<HomePageSection>) {
                             for (var section in content) {
                               if (section.titleKey == 'featuredImage') {
@@ -139,7 +141,9 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                       child: ContributeWidget(project: currentProject),
                     ),
                     const SliverToBoxAdapter(child: WikiFooter()),
-                    SliverToBoxAdapter(child: SizedBox(height: bottomAppBarHeight)),
+                    SliverToBoxAdapter(
+                      child: SizedBox(height: bottomAppBarHeight),
+                    ),
                   ],
                 ),
               ),
@@ -152,7 +156,8 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                       const SizedBox(height: 8),
                       IconButton(
                         icon: const Icon(Icons.menu, color: Colors.white),
-                        onPressed: () => _scaffoldKey.currentState?.openDrawer(),
+                        onPressed: () =>
+                            _scaffoldKey.currentState?.openDrawer(),
                       ),
                       Expanded(
                         child: Align(
@@ -161,17 +166,24 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                             child: Column(
                               mainAxisSize: MainAxisSize.min,
                               mainAxisAlignment: MainAxisAlignment.end,
-                              children: AdaptiveNavActions.buildActions(
-                                context,
-                                ref,
-                                currentProject: currentProject,
-                                isHomeScreen: true,
-                                showHome: false,
-                                color: Colors.white,
-                              ).map((w) => Padding(
-                                padding: const EdgeInsets.symmetric(vertical: 4),
-                                child: w,
-                              )).toList(),
+                              children:
+                                  AdaptiveNavActions.buildActions(
+                                        context,
+                                        ref,
+                                        currentProject: currentProject,
+                                        isHomeScreen: true,
+                                        showHome: false,
+                                        color: Colors.white,
+                                      )
+                                      .map(
+                                        (w) => Padding(
+                                          padding: const EdgeInsets.symmetric(
+                                            vertical: 4,
+                                          ),
+                                          child: w,
+                                        ),
+                                      )
+                                      .toList(),
                             ),
                           ),
                         ),
@@ -315,6 +327,4 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
       ],
     );
   }
-
-
 }

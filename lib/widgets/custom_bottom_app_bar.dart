@@ -49,8 +49,8 @@ class CustomBottomAppBar extends ConsumerWidget {
             ),
             const Spacer(),
             ...AdaptiveNavActions.buildActions(
-              context, 
-              ref, 
+              context,
+              ref,
               currentProject: currentProject,
               isHomeScreen: isHomeScreen,
               pageTitle: pageTitle,

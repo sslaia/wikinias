@@ -210,5 +210,15 @@
   "wikibooks": "Wikibuku",
   "wikipedia": "Wikipedia",
   "wiktionary": "Wikikamus",
-  "yes": "Ya'ia"
+  "yes": "Ya'ia",
+  "crosswords": "Dahö-dahö",
+  "crossword_daily": "Dahö-dahö Ma'ökhö",
+  "crossword_weekly": "Si'ero Migu",
+  "crossword_monthly": "Si'ero Waŵa",
+  "crossword_yearly": "Si'ero Röfi",
+  "crossword_share": "Fazaewe",
+  "crossword_favorites": "Dahö-dahö somasido",
+  "crossword_scoreboard": "Fangerai Bua",
+  "crossword_check_words": "Fareso Ngawua Wehede",
+  "crossword_score": "Bua"
 }

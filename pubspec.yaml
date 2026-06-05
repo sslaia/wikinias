@@ -1,7 +1,7 @@
 name: wikinias
 description: "An Android app for Nias Wikipedia, Wiktionary and Wikibooks"
 publish_to: 'none'
-version: 2.5.0+15
+version: 2.5.1+16
 
 environment:
   sdk: ^3.11.4
@@ -25,6 +25,7 @@ dependencies:
     path: packages/wikimedia_core
   flutter_localizations:
     sdk: flutter
+  path_provider: ^2.1.5
 
 dev_dependencies:
   flutter_test:

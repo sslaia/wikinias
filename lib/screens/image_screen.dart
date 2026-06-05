@@ -42,7 +42,8 @@ class _ImageScreenState extends State<ImageScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final String? license = _metadata?['extmetadata']?['LicenseShortName']?['value'];
+    final String? license =
+        _metadata?['extmetadata']?['LicenseShortName']?['value'];
     final String? artist = _metadata?['extmetadata']?['Artist']?['value'];
 
     return Scaffold(
@@ -51,9 +52,12 @@ class _ImageScreenState extends State<ImageScreen> {
         backgroundColor: Colors.transparent,
         elevation: 0,
         iconTheme: const IconThemeData(color: Colors.white),
-        title: widget.title != null 
-          ? Text(widget.title!, style: const TextStyle(color: Colors.white, fontSize: 16))
-          : null,
+        title: widget.title != null
+            ? Text(
+                widget.title!,
+                style: const TextStyle(color: Colors.white, fontSize: 16),
+              )
+            : null,
       ),
       extendBodyBehindAppBar: true,
       body: Stack(
@@ -76,7 +80,7 @@ class _ImageScreenState extends State<ImageScreen> {
                             child: CircularProgressIndicator(
                               value: loadingProgress.expectedTotalBytes != null
                                   ? loadingProgress.cumulativeBytesLoaded /
-                                      loadingProgress.expectedTotalBytes!
+                                        loadingProgress.expectedTotalBytes!
                                   : null,
                               color: Colors.white,
                             ),
@@ -87,7 +91,7 @@ class _ImageScreenState extends State<ImageScreen> {
               ),
             ),
           ),
-          
+
           // Metadata Panel (Bottom)
           Positioned(
             bottom: 0,
@@ -110,7 +114,9 @@ class _ImageScreenState extends State<ImageScreen> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   if (_isLoadingMetadata)
-                    const Center(child: LinearProgressIndicator(color: Colors.white))
+                    const Center(
+                      child: LinearProgressIndicator(color: Colors.white),
+                    )
                   else if (_metadata != null) ...[
                     if (license != null)
                       _buildInfoRow(Icons.copyright, license),

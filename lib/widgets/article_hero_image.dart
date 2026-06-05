@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:wikimedia_core/wikimedia_core.dart';
+
 class ArticleHeroImage extends StatelessWidget {
   const ArticleHeroImage({
     super.key,
@@ -31,7 +32,9 @@ class ArticleHeroImage extends StatelessWidget {
                     if (loadingProgress == null) return child;
                     return Container(
                       height: 350,
-                      color: theme.colorScheme.onSurface.withValues(alpha: 0.05),
+                      color: theme.colorScheme.onSurface.withValues(
+                        alpha: 0.05,
+                      ),
                       child: const Center(child: CircularProgressIndicator()),
                     );
                   },
@@ -40,10 +43,7 @@ class ArticleHeroImage extends StatelessWidget {
                     fit: BoxFit.cover,
                   ),
                 )
-              : Image.asset(
-                  project.articleHeroImagePath,
-                  fit: BoxFit.cover,
-                ),
+              : Image.asset(project.articleHeroImagePath, fit: BoxFit.cover),
         ),
         Positioned.fill(
           child: Container(

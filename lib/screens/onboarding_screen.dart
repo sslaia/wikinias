@@ -107,10 +107,7 @@ class _OnboardingScreenState extends ConsumerState<OnboardingScreen> {
           child: Row(
             children: [
               // Left Button (Back or Skip)
-              SizedBox(
-                width: 100,
-                child: _buildLeftButton(theme),
-              ),
+              SizedBox(width: 100, child: _buildLeftButton(theme)),
 
               // Page Indicators
               Expanded(
@@ -144,15 +141,21 @@ class _OnboardingScreenState extends ConsumerState<OnboardingScreen> {
             curve: Curves.easeInOut,
           );
         },
-        icon: Icon(Icons.arrow_back_ios_rounded,
-            color: theme.colorScheme.onSurface.withValues(alpha: 0.5)),
+        icon: Icon(
+          Icons.arrow_back_ios_rounded,
+          color: theme.colorScheme.onSurface.withValues(alpha: 0.5),
+        ),
       );
     } else {
       return TextButton(
         onPressed: () => _complete(ref, context),
-        child: Text('skip'.tr(),
-            textAlign: TextAlign.left,
-            style: TextStyle(color: theme.colorScheme.onSurface.withValues(alpha: 0.5))),
+        child: Text(
+          'skip'.tr(),
+          textAlign: TextAlign.left,
+          style: TextStyle(
+            color: theme.colorScheme.onSurface.withValues(alpha: 0.5),
+          ),
+        ),
       );
     }
   }
@@ -165,7 +168,9 @@ class _OnboardingScreenState extends ConsumerState<OnboardingScreen> {
           backgroundColor: theme.colorScheme.primary,
           foregroundColor: Colors.white,
           padding: const EdgeInsets.symmetric(horizontal: 12),
-          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(12),
+          ),
         ),
         child: Text('get_started'.tr(), style: const TextStyle(fontSize: 12)),
       );
@@ -177,8 +182,10 @@ class _OnboardingScreenState extends ConsumerState<OnboardingScreen> {
             curve: Curves.easeInOut,
           );
         },
-        icon: Icon(Icons.arrow_forward_ios_rounded,
-            color: _pages[_currentPage].color),
+        icon: Icon(
+          Icons.arrow_forward_ios_rounded,
+          color: _pages[_currentPage].color,
+        ),
       );
     }
   }
@@ -195,17 +202,16 @@ class _OnboardingScreenState extends ConsumerState<OnboardingScreen> {
             flex: 1,
             child: Padding(
               padding: EdgeInsets.all(isTablet ? 40.0 : 20.0),
-              child: Image.asset(
-                page.imagePath,
-                fit: BoxFit.contain,
-              ),
+              child: Image.asset(page.imagePath, fit: BoxFit.contain),
             ),
           ),
           Expanded(
             flex: 1,
             child: SingleChildScrollView(
               child: Padding(
-                padding: EdgeInsets.symmetric(horizontal: isTablet ? 60.0 : 20.0),
+                padding: EdgeInsets.symmetric(
+                  horizontal: isTablet ? 60.0 : 20.0,
+                ),
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -224,7 +230,9 @@ class _OnboardingScreenState extends ConsumerState<OnboardingScreen> {
                       style: GoogleFonts.notoSerif(
                         fontSize: isTablet ? 18 : 14,
                         height: 1.5,
-                        color: theme.colorScheme.onSurface.withValues(alpha: 0.7),
+                        color: theme.colorScheme.onSurface.withValues(
+                          alpha: 0.7,
+                        ),
                       ),
                     ),
                   ],
@@ -288,15 +296,15 @@ class _OnboardingScreenState extends ConsumerState<OnboardingScreen> {
     );
   }
 
-
-
   Widget _buildIndicator(int index, ThemeData theme) {
     final isCompact = ResponsiveUtils.isCompact(context);
     return AnimatedContainer(
       duration: const Duration(milliseconds: 300),
       margin: EdgeInsets.only(right: isCompact ? 6 : 8),
       height: isCompact ? 6 : 8,
-      width: _currentPage == index ? (isCompact ? 18 : 24) : (isCompact ? 6 : 8),
+      width: _currentPage == index
+          ? (isCompact ? 18 : 24)
+          : (isCompact ? 6 : 8),
       decoration: BoxDecoration(
         color: _currentPage == index
             ? _pages[_currentPage].color
@@ -311,15 +319,17 @@ class _OnboardingScreenState extends ConsumerState<OnboardingScreen> {
     ref.read(languageProvider.notifier).setLanguage(currentLang);
 
     // Ensure project is always set to Wikipedia on completion
-    ref.read(appStateProvider.notifier).setProject(ProjectType.wikipedia, currentLang);
+    ref
+        .read(appStateProvider.notifier)
+        .setProject(ProjectType.wikipedia, currentLang);
 
     await ref.read(onboardingProvider.notifier).completeOnboarding();
     if (context.mounted) {
-      Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (_) => const HomeScreen()));
+      Navigator.of(
+        context,
+      ).pushReplacement(MaterialPageRoute(builder: (_) => const HomeScreen()));
     }
   }
-
-
 }
 
 class OnboardingData {

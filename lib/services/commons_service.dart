@@ -8,10 +8,14 @@ class CommonsService {
   static const String _baseUrl = 'https://commons.wikimedia.org/w/api.php';
 
   static Future<Map<String, dynamic>?> fetchImageInfo(String fileName) async {
-    final url = Uri.parse('$_baseUrl?action=query&titles=$fileName&prop=imageinfo&iiprop=url|extmetadata&format=json&origin=*');
+    final url = Uri.parse(
+      '$_baseUrl?action=query&titles=$fileName&prop=imageinfo&iiprop=url|extmetadata&format=json&origin=*',
+    );
 
     try {
-      final response = await http.get(url, headers: WikiConfig.uaHeaders).timeout(const Duration(seconds: 10));
+      final response = await http
+          .get(url, headers: WikiConfig.uaHeaders)
+          .timeout(const Duration(seconds: 10));
       if (response.statusCode == 200) {
         final data = jsonDecode(response.body);
         final pages = data['query']?['pages'] as Map<String, dynamic>?;
@@ -32,7 +36,7 @@ class CommonsService {
   }
 
   static String getThumbnailUrl(String fileName, {int width = 900}) {
-    // MediaWiki thumbnail URL convention is complex. 
+    // MediaWiki thumbnail URL convention is complex.
     // It's often better to fetch it via API or use a stable thumb generator.
     // For simplicity, we can use the 'iiurl' from fetchImageInfo with 'iiurlwidth'.
     return 'https://commons.wikimedia.org/wiki/Special:FilePath/$fileName?width=$width';

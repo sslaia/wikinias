@@ -9,10 +9,11 @@ class SpacerImage extends StatelessWidget {
       height: 30,
       width: double.infinity,
       decoration: BoxDecoration(
-          image: DecorationImage(
-            image: AssetImage("assets/images/ni'owewemagai.webp"),
-            fit: BoxFit.fitHeight,
-          )),
+        image: DecorationImage(
+          image: AssetImage("assets/images/ni'owewemagai.webp"),
+          fit: BoxFit.fitHeight,
+        ),
+      ),
     );
   }
 }

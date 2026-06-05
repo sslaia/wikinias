@@ -8,9 +8,11 @@ class SkeletonSectionCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    final isCompactPortrait = ResponsiveUtils.isCompact(context) && ResponsiveUtils.isPortrait(context);
+    final isCompactPortrait =
+        ResponsiveUtils.isCompact(context) &&
+        ResponsiveUtils.isPortrait(context);
     final isDark = theme.brightness == Brightness.dark;
-    
+
     final baseColor = isDark ? Colors.grey[800]! : Colors.grey[300]!;
     final highlightColor = isDark ? Colors.grey[700]! : Colors.grey[100]!;
 
@@ -57,11 +59,7 @@ class SkeletonSectionCard extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         // Image skeleton
-        Container(
-          height: 200,
-          width: double.infinity,
-          color: Colors.white,
-        ),
+        Container(height: 200, width: double.infinity, color: Colors.white),
         Padding(
           padding: const EdgeInsets.all(16.0),
           child: _buildBodyTextSkeleton(),
@@ -75,13 +73,7 @@ class SkeletonSectionCard extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
         // Image skeleton
-        Expanded(
-          flex: 2,
-          child: Container(
-            height: 150,
-            color: Colors.white,
-          ),
-        ),
+        Expanded(flex: 2, child: Container(height: 150, color: Colors.white)),
         Expanded(
           flex: 3,
           child: Padding(

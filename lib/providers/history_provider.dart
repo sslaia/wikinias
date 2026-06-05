@@ -22,8 +22,11 @@ class HistoryNotifier extends StateNotifier<HistoryState> {
   HistoryNotifier() : super(HistoryState(stack: [], currentIndex: -1));
 
   void push(String title) {
-    final List<String> currentStack = state.stack.sublist(0, state.currentIndex + 1);
-    
+    final List<String> currentStack = state.stack.sublist(
+      0,
+      state.currentIndex + 1,
+    );
+
     if (currentStack.isNotEmpty && currentStack.last == title) return;
 
     state = HistoryState(
@@ -47,6 +50,8 @@ class HistoryNotifier extends StateNotifier<HistoryState> {
   }
 }
 
-final historyProvider = StateNotifierProvider<HistoryNotifier, HistoryState>((ref) {
+final historyProvider = StateNotifierProvider<HistoryNotifier, HistoryState>((
+  ref,
+) {
   return HistoryNotifier();
 });

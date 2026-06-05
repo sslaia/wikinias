@@ -9,10 +9,7 @@ import '../screens/create_page_screen.dart';
 class ContributeWidget extends StatelessWidget {
   final ProjectType project;
 
-  const ContributeWidget({
-    super.key,
-    required this.project,
-  });
+  const ContributeWidget({super.key, required this.project});
 
   @override
   Widget build(BuildContext context) {
@@ -24,9 +21,7 @@ class ContributeWidget extends StatelessWidget {
       decoration: BoxDecoration(
         color: project.primaryColor.withValues(alpha: 0.05),
         borderRadius: BorderRadius.circular(24),
-        border: Border.all(
-          color: project.primaryColor.withValues(alpha: 0.1),
-        ),
+        border: Border.all(color: project.primaryColor.withValues(alpha: 0.1)),
       ),
       child: Column(
         children: [
@@ -93,10 +88,7 @@ class ContributeWidget extends StatelessWidget {
             ),
             child: Text(
               'get_started'.tr(),
-              style: const TextStyle(
-                fontWeight: FontWeight.bold,
-                fontSize: 16,
-              ),
+              style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
             ),
           ),
         ],

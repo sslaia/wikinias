@@ -43,14 +43,18 @@ class CoreWikiUtils {
 
     String? fileName;
     if (htmlString != null && htmlString.contains('resource=')) {
-      final resourceMatch = RegExp(r'resource="([^"]+)"').firstMatch(htmlString);
+      final resourceMatch = RegExp(
+        r'resource="([^"]+)"',
+      ).firstMatch(htmlString);
       if (resourceMatch != null) {
         String resource = resourceMatch.group(1)!;
-        fileName = resource.replaceFirst('./Berkas:', '').replaceFirst('./File:', '');
+        fileName = resource
+            .replaceFirst('./Berkas:', '')
+            .replaceFirst('./File:', '');
         if (!fileName.startsWith('File:')) fileName = "File:$fileName";
       }
     }
-    
+
     if (fileName == null && normalized.contains('/thumb/')) {
       try {
         final uri = Uri.parse(normalized);
@@ -66,11 +70,16 @@ class CoreWikiUtils {
 
     if (fileName != null) {
       final cacheKey = '${fileName}_$width';
-      if (_imageOptimizerCache.containsKey(cacheKey)) return _imageOptimizerCache[cacheKey]!;
+      if (_imageOptimizerCache.containsKey(cacheKey))
+        return _imageOptimizerCache[cacheKey]!;
 
       try {
-        final apiUrl = 'https://www.mediawiki.org/w/api.php?action=query&titles=${Uri.encodeComponent(fileName)}&prop=imageinfo&iiprop=url&iiurlwidth=$width&format=json';
-        final response = await http.get(Uri.parse(apiUrl), headers: WikiConfig.uaHeaders);
+        final apiUrl =
+            'https://www.mediawiki.org/w/api.php?action=query&titles=${Uri.encodeComponent(fileName)}&prop=imageinfo&iiprop=url&iiurlwidth=$width&format=json';
+        final response = await http.get(
+          Uri.parse(apiUrl),
+          headers: WikiConfig.uaHeaders,
+        );
 
         if (response.statusCode == 200) {
           final data = json.decode(response.body);
@@ -78,7 +87,9 @@ class CoreWikiUtils {
           if (pages != null && pages.isNotEmpty) {
             final page = pages['-1'] ?? pages.values.first;
             final imageInfo = page['imageinfo'];
-            if (imageInfo != null && imageInfo is List && imageInfo.isNotEmpty) {
+            if (imageInfo != null &&
+                imageInfo is List &&
+                imageInfo.isNotEmpty) {
               String? thumbUrl = imageInfo[0]['thumburl'];
               if (thumbUrl != null) {
                 final result = thumbUrl.split('?').first;
@@ -95,25 +106,47 @@ class CoreWikiUtils {
     return normalized;
   }
 
-  static Future<String> resolveMediaUrl(String url, String languageCode, ProjectType project) async {
+  static Future<String> resolveMediaUrl(
+    String url,
+    String languageCode,
+    ProjectType project,
+  ) async {
     String audioUrl = url;
     if (audioUrl.startsWith('//')) audioUrl = 'https:$audioUrl';
 
-    bool isWikiFilePage = audioUrl.contains('/wiki/File:') || audioUrl.contains('/wiki/Berkas:') || audioUrl.startsWith('/wiki/') || audioUrl.startsWith('./');
+    bool isWikiFilePage =
+        audioUrl.contains('/wiki/File:') ||
+        audioUrl.contains('/wiki/Berkas:') ||
+        audioUrl.startsWith('/wiki/') ||
+        audioUrl.startsWith('./');
     if (isWikiFilePage && !audioUrl.contains('upload.wikimedia.org')) {
       try {
-        String fileName = audioUrl.split(':').last.split('?').first.split('#').first;
+        String fileName = audioUrl
+            .split(':')
+            .last
+            .split('?')
+            .first
+            .split('#')
+            .first;
         if (!fileName.startsWith('File:')) fileName = 'File:$fileName';
-        final domain = WikiConfig.getDomain(languageCode, project.name.toLowerCase());
-        final apiUrl = 'https://$domain/w/api.php?action=query&titles=${Uri.encodeComponent(fileName)}&prop=imageinfo&iiprop=url&format=json';
-        final response = await http.get(Uri.parse(apiUrl), headers: WikiConfig.uaHeaders);
+        final domain = WikiConfig.getDomain(
+          languageCode,
+          project.name.toLowerCase(),
+        );
+        final apiUrl =
+            'https://$domain/w/api.php?action=query&titles=${Uri.encodeComponent(fileName)}&prop=imageinfo&iiprop=url&format=json';
+        final response = await http.get(
+          Uri.parse(apiUrl),
+          headers: WikiConfig.uaHeaders,
+        );
         if (response.statusCode == 200) {
           final data = json.decode(response.body);
           final pages = data['query']?['pages'];
           if (pages != null && pages.isNotEmpty) {
             final page = pages.values.first;
             final imageInfo = page['imageinfo'];
-            if (imageInfo != null && imageInfo is List && imageInfo.isNotEmpty) audioUrl = imageInfo[0]['url'] ?? audioUrl;
+            if (imageInfo != null && imageInfo is List && imageInfo.isNotEmpty)
+              audioUrl = imageInfo[0]['url'] ?? audioUrl;
           }
         }
       } catch (e) {
@@ -122,32 +155,63 @@ class CoreWikiUtils {
     }
 
     if (!audioUrl.startsWith('http')) {
-      final domain = WikiConfig.getDomain(languageCode, project.name.toLowerCase());
-      audioUrl = audioUrl.startsWith('/') ? 'https://$domain$audioUrl' : 'https://$domain/wiki/$audioUrl';
+      final domain = WikiConfig.getDomain(
+        languageCode,
+        project.name.toLowerCase(),
+      );
+      audioUrl = audioUrl.startsWith('/')
+          ? 'https://$domain$audioUrl'
+          : 'https://$domain/wiki/$audioUrl';
     }
-    if (audioUrl.startsWith('http://')) audioUrl = audioUrl.replaceFirst('http://', 'https://');
-    
+    if (audioUrl.startsWith('http://'))
+      audioUrl = audioUrl.replaceFirst('http://', 'https://');
+
     return audioUrl;
   }
 
-  static Future<WikiLinkIntent> handleTapUrl(String url, String languageCode, ProjectType currentProject) async {
+  static Future<WikiLinkIntent> handleTapUrl(
+    String url,
+    String languageCode,
+    ProjectType currentProject,
+  ) async {
     if (url.startsWith('#') || url.contains('cite_note')) {
       final refId = url.split('#').last;
       return ShowReferenceIntent(refId);
     }
 
     final lowerUrl = url.toLowerCase();
-    final mediaExtensions = ['.mp3', '.ogg', '.wav', '.m4a', '.mp4', '.webm', '.ogv'];
-    bool isMediaLink = mediaExtensions.any((ext) => lowerUrl.endsWith(ext) || lowerUrl.contains('$ext?') || lowerUrl.contains('$ext#')) ||
-        (lowerUrl.contains('upload.wikimedia.org') && mediaExtensions.any((ext) => lowerUrl.contains(ext))) ||
+    final mediaExtensions = [
+      '.mp3',
+      '.ogg',
+      '.wav',
+      '.m4a',
+      '.mp4',
+      '.webm',
+      '.ogv',
+    ];
+    bool isMediaLink =
+        mediaExtensions.any(
+          (ext) =>
+              lowerUrl.endsWith(ext) ||
+              lowerUrl.contains('$ext?') ||
+              lowerUrl.contains('$ext#'),
+        ) ||
+        (lowerUrl.contains('upload.wikimedia.org') &&
+            mediaExtensions.any((ext) => lowerUrl.contains(ext))) ||
         lowerUrl.contains('/wiki/file:') ||
         lowerUrl.contains('/wiki/berkas:');
 
     if (isMediaLink) {
-      if (lowerUrl.endsWith('.mp4') || lowerUrl.endsWith('.webm') || lowerUrl.endsWith('.ogv')) {
+      if (lowerUrl.endsWith('.mp4') ||
+          lowerUrl.endsWith('.webm') ||
+          lowerUrl.endsWith('.ogv')) {
         return OpenExternalUrlIntent(url);
       } else {
-        final audioUrl = await resolveMediaUrl(url, languageCode, currentProject);
+        final audioUrl = await resolveMediaUrl(
+          url,
+          languageCode,
+          currentProject,
+        );
         return PlayAudioIntent(audioUrl);
       }
     }
@@ -155,7 +219,9 @@ class CoreWikiUtils {
     String? title;
     bool isRedLink = url.contains('action=edit') || url.contains('redlink=1');
 
-    if (url.startsWith('http://') || url.startsWith('https://') || url.startsWith('//')) {
+    if (url.startsWith('http://') ||
+        url.startsWith('https://') ||
+        url.startsWith('//')) {
       return OpenExternalUrlIntent(url);
     }
 
@@ -171,7 +237,10 @@ class CoreWikiUtils {
         final match = RegExp(r'title=([^&]+)').firstMatch(url);
         title = match?.group(1);
       }
-    } else if (!url.contains(':') && !url.contains('/') && url.isNotEmpty && !url.startsWith('http')) {
+    } else if (!url.contains(':') &&
+        !url.contains('/') &&
+        url.isNotEmpty &&
+        !url.startsWith('http')) {
       title = url.split('?').first.split('#').first;
     }
 
@@ -183,9 +252,12 @@ class CoreWikiUtils {
         decodedTitle = title.replaceAll('_', ' ');
       }
 
-      final apiPrefix = WikiConfig.getApiPrefix(languageCode, currentProject.name.toLowerCase());
+      final apiPrefix = WikiConfig.getApiPrefix(
+        languageCode,
+        currentProject.name.toLowerCase(),
+      );
       if (apiPrefix.isNotEmpty && decodedTitle.contains(apiPrefix)) {
-          decodedTitle = decodedTitle.replaceFirst(apiPrefix, '');
+        decodedTitle = decodedTitle.replaceFirst(apiPrefix, '');
       }
 
       if (decodedTitle.isNotEmpty) {

@@ -210,5 +210,15 @@
   "wikibooks": "Wikibuku",
   "wikipedia": "Wikipedia",
   "wiktionary": "Wikikamus",
-  "yes": "Ya"
+  "yes": "Ya",
+  "crosswords": "Teka-teki silang",
+  "crossword_daily": "Teka-teki Silang Harian",
+  "crossword_weekly": "Mingguan",
+  "crossword_monthly": "Bulanan",
+  "crossword_yearly": "Tahunan",
+  "crossword_share": "Bagikan",
+  "crossword_favorites": "Favorit",
+  "crossword_scoreboard": "Papan Skor",
+  "crossword_check_words": "Cek Jawaban",
+  "crossword_score": "Skor"
 }

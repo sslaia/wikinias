@@ -20,11 +20,13 @@ final shortcutsProvider = FutureProvider<Map<String, dynamic>>((ref) async {
       final remoteJson = response.body;
       final localJson = prefs.getString('cached_shortcuts');
 
+      final decodedJson = json.decode(remoteJson) as Map<String, dynamic>;
+
       // If different from what we have cached, update cache
       if (remoteJson != localJson) {
         await prefs.setString('cached_shortcuts', remoteJson);
       }
-      return json.decode(remoteJson) as Map<String, dynamic>;
+      return decodedJson;
     }
   } catch (e) {
     debugPrint('ShortcutsProvider: Failed to fetch remote shortcuts: $e');
@@ -56,9 +58,14 @@ final shortcutsProvider = FutureProvider<Map<String, dynamic>>((ref) async {
             "pageTitle": "Spesial:Perubahan_terbaru",
           },
           {
-            "icon": "pages_outlined",
-            "title": "Nga'örö spesial",
-            "pageTitle": "Spesial:Halaman_istimewa",
+            "icon": "chat_bubble_outlined",
+            "title": "Monganga afo",
+            "pageTitle": "Wikipedia:Monganga_afo",
+          },
+          {
+            "icon": "construction_outlined",
+            "title": "Nahia wamakori",
+            "pageTitle": "Wikipedia:Nahia_wamakori",
           },
           {
             "icon": "campaign_outlined",
@@ -71,16 +78,6 @@ final shortcutsProvider = FutureProvider<Map<String, dynamic>>((ref) async {
             "pageTitle": "Wikipedia:Bawagöli_zato",
           },
           {
-            "icon": "chat_bubble_outlined",
-            "title": "Monganga afo",
-            "pageTitle": "Wikipedia:Monganga_afo",
-          },
-          {
-            "icon": "construction_outlined",
-            "title": "Nahia wamakori",
-            "pageTitle": "Wikipedia:Nahia_wamakori",
-          },
-          {
             "icon": "help_outline",
             "title": "Fanolo",
             "pageTitle": "Fanolo:Fanolo",
@@ -90,27 +87,17 @@ final shortcutsProvider = FutureProvider<Map<String, dynamic>>((ref) async {
             "title": "Sangai halöŵö",
             "pageTitle": "Wikipedia:Sangai_halöŵö",
           },
+          {
+            "icon": "pages_outlined",
+            "title": "Nga'örö spesial",
+            "pageTitle": "Spesial:Halaman_istimewa",
+          },
         ],
         "wiktionary": [
           {
             "icon": "history",
             "title": "Safuria tebulö",
             "pageTitle": "Spesial:Perubahan_terbaru",
-          },
-          {
-            "icon": "pages_outlined",
-            "title": "Nga'örö spesial",
-            "pageTitle": "Spesial:Halaman_istimewa",
-          },
-          {
-            "icon": "campaign_outlined",
-            "title": "Angombakhata",
-            "pageTitle": "Wikikamus:Angombakhata",
-          },
-          {
-            "icon": "people_outlined",
-            "title": "Bawagöli zato",
-            "pageTitle": "Wikikamus:Bawagöli_zato",
           },
           {
             "icon": "chat_bubble_outlined",
@@ -123,6 +110,16 @@ final shortcutsProvider = FutureProvider<Map<String, dynamic>>((ref) async {
             "pageTitle": "Wikikamus:Nahia_wamakori",
           },
           {
+            "icon": "campaign_outlined",
+            "title": "Angombakhata",
+            "pageTitle": "Wikikamus:Angombakhata",
+          },
+          {
+            "icon": "people_outlined",
+            "title": "Bawagöli zato",
+            "pageTitle": "Wikikamus:Bawagöli_zato",
+          },
+          {
             "icon": "help_outline",
             "title": "Fanolo",
             "pageTitle": "Fanolo:Fanolo",
@@ -132,6 +129,11 @@ final shortcutsProvider = FutureProvider<Map<String, dynamic>>((ref) async {
             "title": "Sangai halöŵö",
             "pageTitle": "Wikikamus:Sangai_halöŵö",
           },
+          {
+            "icon": "pages_outlined",
+            "title": "Nga'örö spesial",
+            "pageTitle": "Spesial:Halaman_istimewa",
+          },
         ],
         "wikibooks": [
           {
@@ -139,21 +141,6 @@ final shortcutsProvider = FutureProvider<Map<String, dynamic>>((ref) async {
             "title": "Safuria tebulö",
             "pageTitle":
                 "Special:RecentChanges?hidebots=1&translations=filter&hidecategorization=1&hideWikibase=1&hideWikifunctions=1&limit=250&days=30&urlversion=2&rc-testwiki-project=b&rc-testwiki-code=nia",
-          },
-          {
-            "icon": "pages_outlined",
-            "title": "Nga'örö spesial",
-            "pageTitle": "Special:SpecialPages",
-          },
-          {
-            "icon": "campaign_outlined",
-            "title": "Angombakhata",
-            "pageTitle": "Wikibooks:Angombakhata",
-          },
-          {
-            "icon": "people_outlined",
-            "title": "Bawagöli zato",
-            "pageTitle": "Wikibooks:Bawagöli_zato",
           },
           {
             "icon": "chat_bubble_outlined",
@@ -166,6 +153,16 @@ final shortcutsProvider = FutureProvider<Map<String, dynamic>>((ref) async {
             "pageTitle": "Wikibooks:Nahia_wamakori",
           },
           {
+            "icon": "campaign_outlined",
+            "title": "Angombakhata",
+            "pageTitle": "Wikibooks:Angombakhata",
+          },
+          {
+            "icon": "people_outlined",
+            "title": "Bawagöli zato",
+            "pageTitle": "Wikibooks:Bawagöli_zato",
+          },
+          {
             "icon": "help_outline",
             "title": "Fanolo",
             "pageTitle": "Help:Fanolo",
@@ -174,6 +171,11 @@ final shortcutsProvider = FutureProvider<Map<String, dynamic>>((ref) async {
             "icon": "support_agent_outlined",
             "title": "Sangai halöŵö",
             "pageTitle": "Wikibooks:Sangai_halöŵö",
+          },
+          {
+            "icon": "pages_outlined",
+            "title": "Nga'örö spesial",
+            "pageTitle": "Special:SpecialPages",
           },
         ],
       },

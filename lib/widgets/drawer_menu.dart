@@ -19,6 +19,7 @@ import '../screens/bookmarks_screen.dart';
 import '../screens/gallery_carousel_screen.dart';
 import '../screens/nias_course_screen.dart';
 import '../utils/shortcut_utils.dart';
+import '../modules/crosswords/screens/crosswords_screen.dart';
 
 class DrawerMenu extends ConsumerWidget {
   const DrawerMenu({super.key});
@@ -107,7 +108,7 @@ class DrawerContent extends ConsumerWidget {
         _buildExpansionSection(
           theme,
           titleKey: 'drawer_project',
-          initiallyExpanded: true,
+          initiallyExpanded: false,
           children: [
             _buildProjectSelector(
               context,
@@ -123,6 +124,20 @@ class DrawerContent extends ConsumerWidget {
           titleKey: 'drawer_modules',
           initiallyExpanded: true,
           children: [
+            _buildDrawerItem(
+              theme,
+              icon: Icons.grid_on_rounded,
+              title: 'crosswords'.tr(),
+              onTap: () {
+                if (Scaffold.maybeOf(context)?.hasDrawer ?? false) {
+                  Navigator.pop(context);
+                }
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (_) => const CrosswordsScreen()),
+                );
+              },
+            ),
             _buildDrawerItem(
               theme,
               icon: Icons.school_rounded,

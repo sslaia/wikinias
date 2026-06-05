@@ -22,7 +22,9 @@ class NavAction {
 }
 
 class AdaptiveNavActions {
-  static List<NavAction> getActions(BuildContext context, WidgetRef ref, {
+  static List<NavAction> getActions(
+    BuildContext context,
+    WidgetRef ref, {
     required ProjectType currentProject,
     required bool isHomeScreen,
     bool showHome = true,
@@ -46,14 +48,14 @@ class AdaptiveNavActions {
         onPressed: () async {
           final langCode = ref.read(languageProvider);
           await WikiApiService.clearCache(
-            currentProject, 
-            langCode, 
-            isHomeScreen ? null : pageTitle
+            currentProject,
+            langCode,
+            isHomeScreen ? null : pageTitle,
           );
-          
+
           final targetTitle = isHomeScreen ? null : pageTitle;
           ref.invalidate(wikiApiProvider(targetTitle));
-          
+
           if (context.mounted) {
             ScaffoldMessenger.of(context).showSnackBar(
               SnackBar(
@@ -76,12 +78,16 @@ class AdaptiveNavActions {
         icon: Icons.shuffle,
         label: 'random'.tr(),
         isLoading: isFetchingRandom,
-        onPressed: () => ref.read(randomArticleProvider.notifier).navigateToRandomArticle(context, ref),
+        onPressed: () => ref
+            .read(randomArticleProvider.notifier)
+            .navigateToRandomArticle(context, ref),
       ),
     ];
   }
 
-  static List<Widget> buildActions(BuildContext context, WidgetRef ref, {
+  static List<Widget> buildActions(
+    BuildContext context,
+    WidgetRef ref, {
     required ProjectType currentProject,
     required bool isHomeScreen,
     bool showHome = true,
@@ -90,13 +96,13 @@ class AdaptiveNavActions {
     Color? color,
   }) {
     final actions = getActions(
-      context, 
-      ref, 
-      currentProject: currentProject, 
+      context,
+      ref,
+      currentProject: currentProject,
       isHomeScreen: isHomeScreen,
       showHome: showHome,
       showShortcuts: showShortcuts,
-      pageTitle: pageTitle
+      pageTitle: pageTitle,
     );
 
     return actions.map((action) {

@@ -19,7 +19,8 @@ class BookmarkedArticle {
     'projectName': projectName,
   };
 
-  factory BookmarkedArticle.fromMap(Map<String, dynamic> map) => BookmarkedArticle(
+  factory BookmarkedArticle.fromMap(Map<String, dynamic> map) =>
+      BookmarkedArticle(
         title: map['title'] ?? '',
         langCode: map['langCode'] ?? '',
         projectName: map['projectName'] ?? 'Wikipedia',
@@ -43,19 +44,35 @@ class BookmarksNotifier extends StateNotifier<List<BookmarkedArticle>> {
     }
   }
 
-  Future<void> toggleBookmark(String title, String langCode, String projectName) async {
+  Future<void> toggleBookmark(
+    String title,
+    String langCode,
+    String projectName,
+  ) async {
     final isBookmarked = state.any(
-      (b) => b.title == title && b.langCode == langCode && b.projectName == projectName,
+      (b) =>
+          b.title == title &&
+          b.langCode == langCode &&
+          b.projectName == projectName,
     );
 
     if (isBookmarked) {
       state = state
-          .where((b) => !(b.title == title && b.langCode == langCode && b.projectName == projectName))
+          .where(
+            (b) =>
+                !(b.title == title &&
+                    b.langCode == langCode &&
+                    b.projectName == projectName),
+          )
           .toList();
     } else {
       state = [
         ...state,
-        BookmarkedArticle(title: title, langCode: langCode, projectName: projectName)
+        BookmarkedArticle(
+          title: title,
+          langCode: langCode,
+          projectName: projectName,
+        ),
       ];
     }
 
@@ -66,11 +83,15 @@ class BookmarksNotifier extends StateNotifier<List<BookmarkedArticle>> {
 
   bool isBookmarked(String title, String langCode, String projectName) {
     return state.any(
-      (b) => b.title == title && b.langCode == langCode && b.projectName == projectName,
+      (b) =>
+          b.title == title &&
+          b.langCode == langCode &&
+          b.projectName == projectName,
     );
   }
 }
 
-final bookmarksProvider = StateNotifierProvider<BookmarksNotifier, List<BookmarkedArticle>>((ref) {
-  return BookmarksNotifier();
-});
+final bookmarksProvider =
+    StateNotifierProvider<BookmarksNotifier, List<BookmarkedArticle>>((ref) {
+      return BookmarksNotifier();
+    });

@@ -7,7 +7,8 @@ class NiaMaterialLocalizations extends DefaultMaterialLocalizations {
   String get okButtonLabel => 'Lau';
 }
 
-class NiaMaterialLocalizationsDelegate extends LocalizationsDelegate<MaterialLocalizations> {
+class NiaMaterialLocalizationsDelegate
+    extends LocalizationsDelegate<MaterialLocalizations> {
   const NiaMaterialLocalizationsDelegate();
 
   @override
@@ -19,5 +20,7 @@ class NiaMaterialLocalizationsDelegate extends LocalizationsDelegate<MaterialLoc
   }
 
   @override
-  bool shouldReload(covariant LocalizationsDelegate<MaterialLocalizations> old) => false;
+  bool shouldReload(
+    covariant LocalizationsDelegate<MaterialLocalizations> old,
+  ) => false;
 }

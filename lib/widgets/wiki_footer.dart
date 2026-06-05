@@ -13,9 +13,10 @@ class WikiFooter extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    final String disclaimerUrl = 'https://sslaia.github.io/wikinias/disclaimer.html';
-    final String privacyPolicyUrl = 'https://sslaia.github.io/wikinias/privacy-policy.html';
-
+    final String disclaimerUrl =
+        'https://sslaia.github.io/wikinias/disclaimer.html';
+    final String privacyPolicyUrl =
+        'https://sslaia.github.io/wikinias/privacy-policy.html';
 
     return Container(
       padding: const EdgeInsets.symmetric(vertical: 32, horizontal: 24),
@@ -56,15 +57,9 @@ class WikiFooter extends StatelessWidget {
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              _FooterLink(
-                label: 'Disclaimer',
-                url: disclaimerUrl,
-              ),
+              _FooterLink(label: 'Disclaimer', url: disclaimerUrl),
               const SizedBox(width: 16),
-              _FooterLink(
-                label: 'Privacy Policy',
-                url: privacyPolicyUrl,
-              ),
+              _FooterLink(label: 'Privacy Policy', url: privacyPolicyUrl),
             ],
           ),
         ],
@@ -83,10 +78,8 @@ class _FooterLink extends StatelessWidget {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     return TextButton(
-      onPressed: () => launchUrl(
-        Uri.parse(url),
-        mode: LaunchMode.inAppBrowserView,
-      ),
+      onPressed: () =>
+          launchUrl(Uri.parse(url), mode: LaunchMode.inAppBrowserView),
       child: Text(
         label,
         style: theme.textTheme.bodySmall?.copyWith(

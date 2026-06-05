@@ -33,7 +33,10 @@ class BookmarksScreen extends ConsumerWidget {
                     padding: EdgeInsets.zero,
                     constraints: const BoxConstraints(),
                     alignment: Alignment.centerLeft,
-                    icon: Icon(Icons.arrow_back, color: theme.colorScheme.onSurface),
+                    icon: Icon(
+                      Icons.arrow_back,
+                      color: theme.colorScheme.onSurface,
+                    ),
                     onPressed: () => Navigator.of(context).pop(),
                   ),
                   const SizedBox(height: 16),
@@ -49,13 +52,16 @@ class BookmarksScreen extends ConsumerWidget {
               )
             else
               SliverList(
-                delegate: SliverChildBuilderDelegate(
-                      (context, index) {
-                    final bookmark = bookmarks[index];
-                    return _buildBookmarkItem(context, ref, theme, bookmark, currentProject);
-                  },
-                  childCount: bookmarks.length,
-                ),
+                delegate: SliverChildBuilderDelegate((context, index) {
+                  final bookmark = bookmarks[index];
+                  return _buildBookmarkItem(
+                    context,
+                    ref,
+                    theme,
+                    bookmark,
+                    currentProject,
+                  );
+                }, childCount: bookmarks.length),
               ),
             const SliverToBoxAdapter(child: SizedBox(height: 32)),
           ],
@@ -122,12 +128,12 @@ class BookmarksScreen extends ConsumerWidget {
   }
 
   Widget _buildBookmarkItem(
-      BuildContext context,
-      WidgetRef ref,
-      ThemeData theme,
-      BookmarkedArticle bookmark,
-      ProjectType currentProject,
-      ) {
+    BuildContext context,
+    WidgetRef ref,
+    ThemeData theme,
+    BookmarkedArticle bookmark,
+    ProjectType currentProject,
+  ) {
     final isExternal = bookmark.projectName != currentProject.name;
     final projectColor = _getProjectColor(bookmark.projectName);
 
@@ -162,14 +168,19 @@ class BookmarksScreen extends ConsumerWidget {
                       _buildLanguageBadge(theme, bookmark.langCode),
                       const Spacer(),
                       IconButton(
-                        icon: const Icon(Icons.delete_outline_rounded, size: 20),
+                        icon: const Icon(
+                          Icons.delete_outline_rounded,
+                          size: 20,
+                        ),
                         color: theme.colorScheme.error.withValues(alpha: 0.7),
                         onPressed: () {
-                          ref.read(bookmarksProvider.notifier).toggleBookmark(
-                            bookmark.title,
-                            bookmark.langCode,
-                            bookmark.projectName,
-                          );
+                          ref
+                              .read(bookmarksProvider.notifier)
+                              .toggleBookmark(
+                                bookmark.title,
+                                bookmark.langCode,
+                                bookmark.projectName,
+                              );
                         },
                         visualDensity: VisualDensity.compact,
                       ),
@@ -189,7 +200,9 @@ class BookmarksScreen extends ConsumerWidget {
                   Row(
                     children: [
                       Text(
-                        isExternal ? 'open_in_browser'.tr() : 'read_article'.tr(),
+                        isExternal
+                            ? 'open_in_browser'.tr()
+                            : 'read_article'.tr(),
                         style: theme.textTheme.labelLarge?.copyWith(
                           color: projectColor,
                           fontWeight: FontWeight.bold,
@@ -198,7 +211,9 @@ class BookmarksScreen extends ConsumerWidget {
                       ),
                       const SizedBox(width: 4),
                       Icon(
-                        isExternal ? Icons.open_in_new_rounded : Icons.arrow_forward_rounded,
+                        isExternal
+                            ? Icons.open_in_new_rounded
+                            : Icons.arrow_forward_rounded,
                         size: 14,
                         color: projectColor,
                       ),
@@ -383,18 +398,22 @@ class BookmarksScreen extends ConsumerWidget {
     }
   }
 
-  void _handleBookmarkTap(BuildContext context, BookmarkedArticle bookmark, ProjectType currentProject) async {
+  void _handleBookmarkTap(
+    BuildContext context,
+    BookmarkedArticle bookmark,
+    ProjectType currentProject,
+  ) async {
     final currentLangCode = context.locale.languageCode;
-    
-    if (currentLangCode == bookmark.langCode && bookmark.projectName == currentProject.name) {
+
+    if (currentLangCode == bookmark.langCode &&
+        bookmark.projectName == currentProject.name) {
       Navigator.push(
         context,
-        MaterialPageRoute(
-          builder: (_) => ArticleScreen(title: bookmark.title),
-        ),
+        MaterialPageRoute(builder: (_) => ArticleScreen(title: bookmark.title)),
       );
     } else {
-      final url = 'https://${bookmark.langCode}.${bookmark.projectName.toLowerCase()}.org/wiki/${bookmark.title.replaceAll(' ', '_')}';
+      final url =
+          'https://${bookmark.langCode}.${bookmark.projectName.toLowerCase()}.org/wiki/${bookmark.title.replaceAll(' ', '_')}';
       await launchUrl(Uri.parse(url), mode: LaunchMode.inAppBrowserView);
     }
   }
