@@ -1,5 +1,4 @@
 import 'dart:convert';
-import 'dart:io';
 import 'package:flutter/services.dart' show rootBundle;
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_riverpod/legacy.dart';
@@ -209,7 +208,7 @@ class CrosswordsNotifier extends StateNotifier<CrosswordsState> {
   Future<void> setAnswer(int x, int y, String letter) async {
     if (state.currentPuzzle == null) return;
     final newAnswers = Map<String, String>.from(state.userAnswers);
-    final key = '${x},${y}';
+    final key = '$x,$y';
 
     if (letter.isEmpty) {
       newAnswers.remove(key);
@@ -240,7 +239,7 @@ class CrosswordsNotifier extends StateNotifier<CrosswordsState> {
       for (int i = 0; i < word.word.length; i++) {
         int cx = word.direction == 'across' ? word.x + i : word.x;
         int cy = word.direction == 'down' ? word.y + i : word.y;
-        correctMap['${cx},${cy}'] = word.word[i].toUpperCase();
+        correctMap['$cx,$cy'] = word.word[i].toUpperCase();
       }
     }
 
@@ -272,7 +271,7 @@ class CrosswordsNotifier extends StateNotifier<CrosswordsState> {
       for (int i = 0; i < word.word.length; i++) {
         int cx = word.direction == 'across' ? word.x + i : word.x;
         int cy = word.direction == 'down' ? word.y + i : word.y;
-        newAnswers['${cx},${cy}'] = word.word[i].toUpperCase();
+        newAnswers['$cx,$cy'] = word.word[i].toUpperCase();
       }
     }
 

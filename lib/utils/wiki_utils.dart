@@ -98,8 +98,9 @@ class WikiUtils {
     final url = Uri.parse(
       urlString.startsWith('//') ? 'https:$urlString' : urlString,
     );
-    if (await canLaunchUrl(url))
+    if (await canLaunchUrl(url)) {
       await launchUrl(url, mode: LaunchMode.inAppBrowserView);
+    }
   }
 
   static Future<void> _playAudio(BuildContext context, String audioUrl) async {
@@ -133,10 +134,11 @@ class WikiUtils {
       }
       await _audioPlayer.play();
     } catch (e) {
-      if (context.mounted)
+      if (context.mounted) {
         ScaffoldMessenger.of(
           context,
         ).showSnackBar(SnackBar(content: Text('play_audio_error'.tr())));
+      }
     }
   }
 
@@ -155,13 +157,14 @@ class WikiUtils {
   ) {
     if (_isHidden(element)) return {'display': 'none'};
     final styles = <String, String>{};
-    if (element.localName == 'sup' || element.classes.contains('reference'))
+    if (element.localName == 'sup' || element.classes.contains('reference')) {
       return {
         'display': 'inline-block',
         'padding': '0 2px',
         'font-size': '0.75em',
         'vertical-align': 'super',
       };
+    }
     if (element.localName == 'a') {
       final href = element.attributes['href'] ?? '';
       final color = AppTheme.getLinkColor(

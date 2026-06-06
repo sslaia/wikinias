@@ -5,8 +5,13 @@ import '../providers/crosswords_provider.dart';
 
 class CrosswordGrid extends ConsumerStatefulWidget {
   final CrosswordPuzzle puzzle;
+  final bool isFillable;
 
-  const CrosswordGrid({Key? key, required this.puzzle}) : super(key: key);
+  const CrosswordGrid({
+    super.key,
+    required this.puzzle,
+    this.isFillable = true,
+  });
 
   @override
   ConsumerState<CrosswordGrid> createState() => _CrosswordGridState();
@@ -29,6 +34,7 @@ class _CrosswordGridState extends ConsumerState<CrosswordGrid> {
       (_) => List.generate(size, (_) => null),
     );
     Map<String, int> wordNumbers = {};
+    Map<String, String> correctMap = {};
 
     for (var i = 0; i < widget.puzzle.words.length; i++) {
       var word = widget.puzzle.words[i];
@@ -39,184 +45,218 @@ class _CrosswordGridState extends ConsumerState<CrosswordGrid> {
         int cy = word.direction == 'down' ? word.y + j : word.y;
 
         if (cx < size && cy < size) {
-          grid[cy][cx] = state.userAnswers['${cx},${cy}'] ?? '';
+          grid[cy][cx] = state.userAnswers['$cx,$cy'] ?? '';
+          correctMap['$cx,$cy'] = word.word[j].toUpperCase();
         }
       }
     }
 
-    return Column(
-      children: [
-        if (selectedWord != null)
-          Container(
-            width: double.infinity,
-            padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
-            margin: const EdgeInsets.only(bottom: 16),
-            decoration: BoxDecoration(
-              color: Theme.of(context).colorScheme.primaryContainer,
-              borderRadius: BorderRadius.circular(12),
-              boxShadow: [
-                BoxShadow(
-                  color: Theme.of(context).colorScheme.shadow.withOpacity(0.05),
-                  blurRadius: 8,
-                  offset: const Offset(0, 4),
+    return TapRegion(
+      onTapOutside: (event) {
+        FocusScope.of(context).unfocus();
+        setState(() {
+          selectedX = null;
+          selectedY = null;
+          selectedWord = null;
+        });
+      },
+      child: Column(
+        children: [
+          if (selectedWord != null)
+            Container(
+              width: double.infinity,
+              padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+              margin: const EdgeInsets.only(bottom: 16),
+              decoration: BoxDecoration(
+                color: Theme.of(context).colorScheme.primaryContainer,
+                borderRadius: BorderRadius.circular(12),
+                boxShadow: [
+                  BoxShadow(
+                    color: Theme.of(
+                      context,
+                    ).colorScheme.shadow.withValues(alpha: 0.5),
+                    blurRadius: 8,
+                    offset: const Offset(0, 4),
+                  ),
+                ],
+              ),
+              child: Text(
+                '${wordNumbers['${selectedWord!.x},${selectedWord!.y}']}. ${selectedWord!.clue}',
+                style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                  color: Theme.of(context).colorScheme.onPrimaryContainer,
+                  fontWeight: FontWeight.bold,
                 ),
-              ],
-            ),
-            child: Text(
-              '${wordNumbers['${selectedWord!.x},${selectedWord!.y}']}. ${selectedWord!.clue}',
-              style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                color: Theme.of(context).colorScheme.onPrimaryContainer,
-                fontWeight: FontWeight.bold,
+                textAlign: TextAlign.center,
               ),
-              textAlign: TextAlign.center,
             ),
-          ),
-        AspectRatio(
-          aspectRatio: 1,
-          child: Container(
-            decoration: BoxDecoration(
-              border: Border.all(
-                color: Theme.of(context).colorScheme.outline,
-                width: 2,
-              ),
-              color: Theme.of(context).colorScheme.surface,
-              boxShadow: [
-                BoxShadow(
-                  color: Theme.of(context).colorScheme.shadow.withOpacity(0.1),
-                  blurRadius: 10,
-                  offset: const Offset(0, 5),
+          AspectRatio(
+            aspectRatio: 1,
+            child: Container(
+              decoration: BoxDecoration(
+                border: Border.all(
+                  color: Theme.of(context).colorScheme.outline,
+                  width: 2,
                 ),
-              ],
-            ),
-            child: GridView.builder(
-              physics: const NeverScrollableScrollPhysics(),
-              gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                crossAxisCount: size,
-                childAspectRatio: 1,
+                color: Theme.of(context).colorScheme.surface,
+                boxShadow: [
+                  BoxShadow(
+                    color: Theme.of(
+                      context,
+                    ).colorScheme.shadow.withValues(alpha: 0.1),
+                    blurRadius: 10,
+                    offset: const Offset(0, 5),
+                  ),
+                ],
               ),
-              itemCount: size * size,
-              itemBuilder: (context, index) {
-                int x = index % size;
-                int y = index ~/ size;
-                String? cellValue = grid[y][x];
+              child: GridView.builder(
+                physics: const NeverScrollableScrollPhysics(),
+                gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                  crossAxisCount: size,
+                  childAspectRatio: 1,
+                ),
+                itemCount: size * size,
+                itemBuilder: (context, index) {
+                  int x = index % size;
+                  int y = index ~/ size;
+                  String? cellValue = grid[y][x];
 
-                bool isBlack = cellValue == null;
-                bool isSelected = selectedX == x && selectedY == y;
-                bool isPartOfSelectedWord = false;
+                  bool isBlack = cellValue == null;
+                  bool isSelected = selectedX == x && selectedY == y;
+                  bool isPartOfSelectedWord = false;
 
-                if (selectedWord != null) {
-                  if (selectedWord!.direction == 'across') {
-                    if (y == selectedWord!.y &&
-                        x >= selectedWord!.x &&
-                        x < selectedWord!.x + selectedWord!.word.length) {
-                      isPartOfSelectedWord = true;
-                    }
-                  } else {
-                    if (x == selectedWord!.x &&
-                        y >= selectedWord!.y &&
-                        y < selectedWord!.y + selectedWord!.word.length) {
-                      isPartOfSelectedWord = true;
+                  if (selectedWord != null) {
+                    if (selectedWord!.direction == 'across') {
+                      if (y == selectedWord!.y &&
+                          x >= selectedWord!.x &&
+                          x < selectedWord!.x + selectedWord!.word.length) {
+                        isPartOfSelectedWord = true;
+                      }
+                    } else {
+                      if (x == selectedWord!.x &&
+                          y >= selectedWord!.y &&
+                          y < selectedWord!.y + selectedWord!.word.length) {
+                        isPartOfSelectedWord = true;
+                      }
                     }
                   }
-                }
 
-                if (isBlack) {
-                  return Container(
-                    decoration: BoxDecoration(
-                      color: Theme.of(
-                        context,
-                      ).colorScheme.onSurface.withOpacity(0.8),
-                      border: Border.all(
-                        color: Theme.of(context).colorScheme.outlineVariant,
-                        width: 0.5,
+                  if (isBlack) {
+                    return GestureDetector(
+                      onTap: () {
+                        FocusScope.of(context).unfocus();
+                        setState(() {
+                          selectedX = null;
+                          selectedY = null;
+                          selectedWord = null;
+                        });
+                      },
+                      child: Container(
+                        decoration: BoxDecoration(
+                          color: Theme.of(
+                            context,
+                          ).colorScheme.onSurface.withValues(alpha: 0.8),
+                          border: Border.all(
+                            color: Theme.of(context).colorScheme.outlineVariant,
+                            width: 0.5,
+                          ),
+                        ),
+                      ),
+                    );
+                  }
+
+                  bool isWrong = false;
+                  if (cellValue != null && cellValue.isNotEmpty && ref.read(crosswordsProvider.notifier).canRevealWords()) {
+                    isWrong = cellValue.toUpperCase() != correctMap['$x,$y'];
+                  }
+
+                  final cellColor = isSelected
+                      ? Theme.of(context).colorScheme.primaryContainer
+                      : (isPartOfSelectedWord
+                            ? Theme.of(context).colorScheme.secondaryContainer
+                            : Theme.of(context).colorScheme.surface);
+
+                  final cellTextColor = isWrong 
+                      ? Theme.of(context).colorScheme.error 
+                      : (isSelected || isPartOfSelectedWord
+                          ? Theme.of(context).colorScheme.onSecondaryContainer
+                          : Theme.of(context).colorScheme.onSurface);
+
+                  return GestureDetector(
+                    onTap: () {
+                      if (widget.isFillable) {
+                        _handleCellTap(x, y);
+                      }
+                    },
+                    child: AnimatedContainer(
+                      duration: const Duration(milliseconds: 200),
+                      decoration: BoxDecoration(
+                        color: cellColor,
+                        border: Border.all(
+                          color: Theme.of(context).colorScheme.outline,
+                          width: 0.5,
+                        ),
+                      ),
+                      child: Stack(
+                        children: [
+                          if (wordNumbers.containsKey('$x,$y'))
+                            Positioned(
+                              top: 2,
+                              left: 2,
+                              child: Text(
+                                wordNumbers['$x,$y'].toString(),
+                                style: TextStyle(
+                                  fontSize: 10,
+                                  fontWeight: FontWeight.bold,
+                                  color: Theme.of(
+                                    context,
+                                  ).colorScheme.onSurfaceVariant,
+                                ),
+                              ),
+                            ),
+                          Center(
+                            child: isSelected
+                                ? TextField(
+                                    autofocus: true,
+                                    textAlign: TextAlign.center,
+                                    maxLength: 1,
+                                    textCapitalization:
+                                        TextCapitalization.characters,
+                                    style: TextStyle(
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: 18,
+                                      color: cellTextColor,
+                                    ),
+                                    decoration: const InputDecoration(
+                                      border: InputBorder.none,
+                                      counterText: '',
+                                      contentPadding: EdgeInsets.zero,
+                                    ),
+                                    onChanged: (val) {
+                                      ref
+                                          .read(crosswordsProvider.notifier)
+                                          .setAnswer(x, y, val);
+                                      _moveToNextCell();
+                                    },
+                                  )
+                                : Text(
+                                    cellValue ?? '',
+                                    style: TextStyle(
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: 18,
+                                      color: cellTextColor,
+                                    ),
+                                  ),
+                          ),
+                        ],
                       ),
                     ),
                   );
-                }
-
-                final cellColor = isSelected
-                    ? Theme.of(context).colorScheme.primaryContainer
-                    : (isPartOfSelectedWord
-                          ? Theme.of(context).colorScheme.secondaryContainer
-                          : Theme.of(context).colorScheme.surface);
-
-                final cellTextColor = isSelected || isPartOfSelectedWord
-                    ? Theme.of(context).colorScheme.onSecondaryContainer
-                    : Theme.of(context).colorScheme.onSurface;
-
-                return GestureDetector(
-                  onTap: () {
-                    _handleCellTap(x, y);
-                  },
-                  child: AnimatedContainer(
-                    duration: const Duration(milliseconds: 200),
-                    decoration: BoxDecoration(
-                      color: cellColor,
-                      border: Border.all(
-                        color: Theme.of(context).colorScheme.outline,
-                        width: 0.5,
-                      ),
-                    ),
-                    child: Stack(
-                      children: [
-                        if (wordNumbers.containsKey('${x},${y}'))
-                          Positioned(
-                            top: 2,
-                            left: 2,
-                            child: Text(
-                              wordNumbers['${x},${y}'].toString(),
-                              style: TextStyle(
-                                fontSize: 10,
-                                fontWeight: FontWeight.bold,
-                                color: Theme.of(
-                                  context,
-                                ).colorScheme.onSurfaceVariant,
-                              ),
-                            ),
-                          ),
-                        Center(
-                          child: isSelected
-                              ? TextField(
-                                  autofocus: true,
-                                  textAlign: TextAlign.center,
-                                  maxLength: 1,
-                                  textCapitalization:
-                                      TextCapitalization.characters,
-                                  style: TextStyle(
-                                    fontWeight: FontWeight.bold,
-                                    fontSize: 18,
-                                    color: cellTextColor,
-                                  ),
-                                  decoration: const InputDecoration(
-                                    border: InputBorder.none,
-                                    counterText: '',
-                                    contentPadding: EdgeInsets.zero,
-                                  ),
-                                  onChanged: (val) {
-                                    ref
-                                        .read(crosswordsProvider.notifier)
-                                        .setAnswer(x, y, val);
-                                    _moveToNextCell();
-                                  },
-                                )
-                              : Text(
-                                  cellValue ?? '',
-                                  style: TextStyle(
-                                    fontWeight: FontWeight.bold,
-                                    fontSize: 18,
-                                    color: cellTextColor,
-                                  ),
-                                ),
-                        ),
-                      ],
-                    ),
-                  ),
-                );
-              },
+                },
+              ),
             ),
           ),
-        ),
-      ],
+        ],
+      ),
     );
   }
 

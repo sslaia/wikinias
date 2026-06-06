@@ -70,8 +70,9 @@ class CoreWikiUtils {
 
     if (fileName != null) {
       final cacheKey = '${fileName}_$width';
-      if (_imageOptimizerCache.containsKey(cacheKey))
+      if (_imageOptimizerCache.containsKey(cacheKey)) {
         return _imageOptimizerCache[cacheKey]!;
+      }
 
       try {
         final apiUrl =
@@ -145,8 +146,11 @@ class CoreWikiUtils {
           if (pages != null && pages.isNotEmpty) {
             final page = pages.values.first;
             final imageInfo = page['imageinfo'];
-            if (imageInfo != null && imageInfo is List && imageInfo.isNotEmpty)
+            if (imageInfo != null &&
+                imageInfo is List &&
+                imageInfo.isNotEmpty) {
               audioUrl = imageInfo[0]['url'] ?? audioUrl;
+            }
           }
         }
       } catch (e) {
@@ -163,8 +167,9 @@ class CoreWikiUtils {
           ? 'https://$domain$audioUrl'
           : 'https://$domain/wiki/$audioUrl';
     }
-    if (audioUrl.startsWith('http://'))
+    if (audioUrl.startsWith('http://')) {
       audioUrl = audioUrl.replaceFirst('http://', 'https://');
+    }
 
     return audioUrl;
   }

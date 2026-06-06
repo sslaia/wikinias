@@ -182,8 +182,9 @@ class _ArticleScreenState extends ConsumerState<ArticleScreen> {
                                                   context,
                                                   element,
                                                 );
-                                            if (sharedWidget != null)
+                                            if (sharedWidget != null) {
                                               return sharedWidget;
+                                            }
 
                                             if (element.classes.contains(
                                               'gallery',

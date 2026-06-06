@@ -108,7 +108,7 @@ class DrawerContent extends ConsumerWidget {
         _buildExpansionSection(
           theme,
           titleKey: 'drawer_project',
-          initiallyExpanded: false,
+          initiallyExpanded: true,
           children: [
             _buildProjectSelector(
               context,
@@ -253,7 +253,7 @@ class DrawerContent extends ConsumerWidget {
         return _buildExpansionSection(
           theme,
           titleKey: 'drawer_project_shortcuts',
-          initiallyExpanded: true,
+          initiallyExpanded: false,
           children: shortcuts.map((s) {
             final title = s['title'] as String;
             final iconName = s['icon'] as String;

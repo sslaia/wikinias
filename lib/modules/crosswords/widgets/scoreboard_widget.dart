@@ -4,7 +4,7 @@ import 'package:easy_localization/easy_localization.dart';
 import '../providers/crosswords_provider.dart';
 
 class ScoreboardWidget extends ConsumerWidget {
-  const ScoreboardWidget({Key? key}) : super(key: key);
+  const ScoreboardWidget({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -23,7 +23,7 @@ class ScoreboardWidget extends ConsumerWidget {
               width: double.infinity,
               color: Theme.of(
                 context,
-              ).colorScheme.primaryContainer.withOpacity(0.5),
+              ).colorScheme.primaryContainer.withValues(alpha: 0.5),
               padding: const EdgeInsets.all(20.0),
               child: Column(
                 children: [
@@ -114,7 +114,7 @@ class _ScoreItem extends StatelessWidget {
           size: 20,
           color: Theme.of(
             context,
-          ).colorScheme.onSurfaceVariant.withOpacity(0.7),
+          ).colorScheme.onSurfaceVariant.withValues(alpha: 0.7),
         ),
         const SizedBox(height: 8),
         Text(

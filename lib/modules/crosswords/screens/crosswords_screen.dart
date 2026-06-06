@@ -9,9 +9,10 @@ import 'package:share_plus/share_plus.dart';
 import '../providers/crosswords_provider.dart';
 import '../widgets/crossword_grid.dart';
 import '../widgets/scoreboard_widget.dart';
+import '../models/crossword_model.dart';
 
 class CrosswordsScreen extends ConsumerStatefulWidget {
-  const CrosswordsScreen({Key? key}) : super(key: key);
+  const CrosswordsScreen({super.key});
 
   @override
   ConsumerState<CrosswordsScreen> createState() => _CrosswordsScreenState();
@@ -47,9 +48,10 @@ class _CrosswordsScreenState extends ConsumerState<CrosswordsScreen> {
         await imageFile.writeAsBytes(pngBytes);
 
         final text =
-            "No ufo'ösi dahö-dahö nifasulö ma'ökhö! Bua nisöndragu ba migu andre: ${score.toStringAsFixed(1)}/10. Ae ba aplikasi WikiNias ba wamo'ösi dahö-dahö! https://play.google.com/store/apps/details?id=com.sslaia.wikinias";
-
-        await Share.shareXFiles([XFile(imagePath)], text: text);
+            "No ufo'ösi dahö-dahö ma'ökhö! Bua nisöndragu ba migu andre: ${score.toStringAsFixed(1)}/10. Ae ba aplikasi WikiNias ba wamo'ösi dahö-dahö! https://play.google.com/store/apps/details?id=com.sslaia.wikinias";
+        SharePlus.instance.share(
+          ShareParams(files: [XFile(imagePath)], text: text),
+        );
       }
     } catch (e) {
       debugPrint('Error capturing screenshot: $e');
@@ -69,7 +71,9 @@ class _CrosswordsScreenState extends ConsumerState<CrosswordsScreen> {
     return Scaffold(
       appBar: AppBar(
         elevation: 2,
-        shadowColor: Theme.of(context).colorScheme.shadow.withOpacity(0.2),
+        shadowColor: Theme.of(
+          context,
+        ).colorScheme.shadow.withValues(alpha: 0.2),
         title: Row(
           mainAxisSize: MainAxisSize.min,
           children: [
@@ -141,18 +145,27 @@ class _CrosswordsScreenState extends ConsumerState<CrosswordsScreen> {
                     segments: [
                       ButtonSegment<int>(
                         value: 0,
-                        label: Text('crossword_daily'.tr()),
+                        label: Text(
+                          'crossword_daily'.tr(),
+                          style: TextStyle(fontSize: 12),
+                        ),
                         icon: const Icon(Icons.grid_on),
                       ),
                       ButtonSegment<int>(
-                        value: 1,
-                        label: Text('crossword_scoreboard'.tr()),
-                        icon: const Icon(Icons.leaderboard),
+                        value: 2,
+                        label: Text(
+                          'crossword_favorites'.tr(),
+                          style: TextStyle(fontSize: 12),
+                        ),
+                        icon: const Icon(Icons.favorite),
                       ),
                       ButtonSegment<int>(
-                        value: 2,
-                        label: Text('crossword_favorites'.tr()),
-                        icon: const Icon(Icons.favorite),
+                        value: 1,
+                        label: Text(
+                          'crossword_scoreboard'.tr(),
+                          style: TextStyle(fontSize: 12),
+                        ),
+                        icon: const Icon(Icons.leaderboard),
                       ),
                     ],
                     selected: <int>{_currentIndex},
@@ -167,8 +180,8 @@ class _CrosswordsScreenState extends ConsumerState<CrosswordsScreen> {
                   child: _currentIndex == 0
                       ? _buildDailyCrossword(context, state, ref)
                       : _currentIndex == 1
-                          ? const ScoreboardWidget()
-                          : _buildFavoritesList(context, state, ref),
+                      ? const ScoreboardWidget()
+                      : _buildFavoritesList(context, state, ref),
                 ),
               ],
             ),
@@ -181,11 +194,9 @@ class _CrosswordsScreenState extends ConsumerState<CrosswordsScreen> {
     WidgetRef ref,
   ) {
     final favList = state.favoritePuzzles.toList()..sort();
-    
+
     if (favList.isEmpty) {
-      return const Center(
-        child: Text('No favorited crosswords yet.'),
-      );
+      return Center(child: Text('crossword_no_favorite').tr());
     }
 
     return ListView.builder(
@@ -223,6 +234,35 @@ class _CrosswordsScreenState extends ConsumerState<CrosswordsScreen> {
     }
 
     final canReveal = ref.read(crosswordsProvider.notifier).canRevealWords();
+
+    bool isFullySolved = false;
+    CrosswordWord? bonusWord;
+
+    if (state.currentPuzzle != null) {
+      int correctLetters = 0;
+      final correctMap = <String, String>{};
+      for (var word in state.currentPuzzle!.words) {
+        for (int i = 0; i < word.word.length; i++) {
+          int cx = word.direction == 'across' ? word.x + i : word.x;
+          int cy = word.direction == 'down' ? word.y + i : word.y;
+          correctMap['$cx,$cy'] = word.word[i].toUpperCase();
+        }
+      }
+
+      int totalLetters = correctMap.length;
+      correctMap.forEach((key, val) {
+        if (state.userAnswers[key] == val) {
+          correctLetters++;
+        }
+      });
+
+      isFullySolved = (totalLetters > 0 && correctLetters == totalLetters);
+      if (isFullySolved && state.currentPuzzle!.words.isNotEmpty) {
+        bonusWord = state.currentPuzzle!.words.reduce(
+          (a, b) => a.word.length > b.word.length ? a : b,
+        );
+      }
+    }
 
     return SingleChildScrollView(
       child: RepaintBoundary(
@@ -264,19 +304,74 @@ class _CrosswordsScreenState extends ConsumerState<CrosswordsScreen> {
                     CrosswordGrid(puzzle: state.currentPuzzle!),
                     const SizedBox(height: 24),
                     if (canReveal)
-                      FilledButton.icon(
-                        icon: const Icon(Icons.visibility),
-                        label: Text('crossword_check_words'.tr()),
-                        style: FilledButton.styleFrom(
-                          padding: const EdgeInsets.symmetric(vertical: 16),
-                          shape: RoundedRectangleBorder(
+                      if (isFullySolved && bonusWord != null)
+                        Container(
+                          padding: const EdgeInsets.all(16.0),
+                          decoration: BoxDecoration(
+                            color: Theme.of(
+                              context,
+                            ).colorScheme.primaryContainer,
                             borderRadius: BorderRadius.circular(12),
+                            border: Border.all(
+                              color: Theme.of(context).colorScheme.primary,
+                              width: 1,
+                            ),
                           ),
-                        ),
-                        onPressed: () {
-                          ref.read(crosswordsProvider.notifier).revealWords();
-                        },
-                      )
+                          child: Column(
+                            children: [
+                              Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  Icon(
+                                    Icons.star,
+                                    color: Theme.of(
+                                      context,
+                                    ).colorScheme.primary,
+                                  ),
+                                  const SizedBox(width: 8),
+                                  Text(
+                                    'Bonus!',
+                                    style: Theme.of(context)
+                                        .textTheme
+                                        .titleMedium
+                                        ?.copyWith(
+                                          fontWeight: FontWeight.bold,
+                                          color: Theme.of(
+                                            context,
+                                          ).colorScheme.primary,
+                                        ),
+                                  ),
+                                ],
+                              ),
+                              const SizedBox(height: 8),
+                              Text(
+                                '${bonusWord.word.toUpperCase()} - ${bonusWord.clue}',
+                                textAlign: TextAlign.center,
+                                style: Theme.of(context).textTheme.bodyLarge
+                                    ?.copyWith(
+                                      fontWeight: FontWeight.w600,
+                                      color: Theme.of(
+                                        context,
+                                      ).colorScheme.onPrimaryContainer,
+                                    ),
+                              ),
+                            ],
+                          ),
+                        )
+                      else
+                        FilledButton.icon(
+                          icon: const Icon(Icons.visibility),
+                          label: Text('crossword_check_words'.tr()),
+                          style: FilledButton.styleFrom(
+                            padding: const EdgeInsets.symmetric(vertical: 16),
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(12),
+                            ),
+                          ),
+                          onPressed: () {
+                            ref.read(crosswordsProvider.notifier).revealWords();
+                          },
+                        )
                     else
                       Container(
                         padding: const EdgeInsets.all(16.0),
@@ -284,7 +379,7 @@ class _CrosswordsScreenState extends ConsumerState<CrosswordsScreen> {
                           color: Theme.of(context)
                               .colorScheme
                               .surfaceContainerHighest
-                              .withOpacity(0.5),
+                              .withValues(alpha: 0.5),
                           borderRadius: BorderRadius.circular(12),
                           border: Border.all(
                             color: Theme.of(context).colorScheme.outlineVariant,
@@ -303,7 +398,7 @@ class _CrosswordsScreenState extends ConsumerState<CrosswordsScreen> {
                                 ),
                                 const SizedBox(width: 8),
                                 Text(
-                                  'Nitöngöni:',
+                                  'crossword_notes'.tr(),
                                   style: Theme.of(context).textTheme.titleMedium
                                       ?.copyWith(
                                         fontWeight: FontWeight.bold,
@@ -316,13 +411,13 @@ class _CrosswordsScreenState extends ConsumerState<CrosswordsScreen> {
                             ),
                             const SizedBox(height: 12),
                             Text(
-                              "1. Ha hurufo fo'ösi. Talu'i dandra wamabali (-) ba tandra wamadö'ö ('). Duma-dumania: riŵi-riŵi tobali riwiriwi ba abo'a tobali aboa.",
+                              "crossword_notes_1".tr(),
                               textAlign: TextAlign.center,
                               style: Theme.of(context).textTheme.bodyMedium,
                             ),
                             const SizedBox(height: 8),
                             Text(
-                              "2. Fuli'ö ba da'a dania ba zibongi. Tefa'ele'ö nösi sindruhu dahö-dahö aefa bözi 8!",
+                              "crossword_notes_2".tr(),
                               textAlign: TextAlign.center,
                               style: Theme.of(context).textTheme.bodyMedium
                                   ?.copyWith(

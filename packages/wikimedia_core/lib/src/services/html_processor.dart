@@ -3,7 +3,7 @@ import 'package:html/parser.dart' as html_parser;
 import 'package:html/dom.dart' as dom;
 import '../models/project_type.dart';
 import '../core/wiki_config.dart';
-import '../utils/wiki_utils.dart'; // TODO: Update this when CoreWikiUtils is migrated
+import '../utils/wiki_utils.dart';
 
 class HtmlProcessor {
   static Future<Map<String, dynamic>> processArticleHtml(
@@ -221,8 +221,9 @@ class HtmlProcessor {
       final headingContainer = h3.findParent('div');
       if (headingContainer == null) continue;
       final Bs4Element? nextElement = headingContainer.nextSibling;
-      if (nextElement == null || nextElement.name != 'figure')
+      if (nextElement == null || nextElement.name != 'figure') {
         headingContainer.extract();
+      }
     }
   }
 }
