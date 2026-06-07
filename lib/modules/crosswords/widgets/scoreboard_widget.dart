@@ -99,11 +99,10 @@ class _ScoreItem extends StatelessWidget {
   final IconData icon;
 
   const _ScoreItem({
-    Key? key,
     required this.label,
     required this.score,
     required this.icon,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {

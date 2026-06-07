@@ -165,7 +165,8 @@ class _CrosswordGridState extends ConsumerState<CrosswordGrid> {
                   }
 
                   bool isWrong = false;
-                  if (cellValue != null && cellValue.isNotEmpty && ref.read(crosswordsProvider.notifier).canRevealWords()) {
+                  if (cellValue.isNotEmpty &&
+                      ref.read(crosswordsProvider.notifier).canRevealWords()) {
                     isWrong = cellValue.toUpperCase() != correctMap['$x,$y'];
                   }
 
@@ -175,11 +176,11 @@ class _CrosswordGridState extends ConsumerState<CrosswordGrid> {
                             ? Theme.of(context).colorScheme.secondaryContainer
                             : Theme.of(context).colorScheme.surface);
 
-                  final cellTextColor = isWrong 
-                      ? Theme.of(context).colorScheme.error 
+                  final cellTextColor = isWrong
+                      ? Theme.of(context).colorScheme.error
                       : (isSelected || isPartOfSelectedWord
-                          ? Theme.of(context).colorScheme.onSecondaryContainer
-                          : Theme.of(context).colorScheme.onSurface);
+                            ? Theme.of(context).colorScheme.onSecondaryContainer
+                            : Theme.of(context).colorScheme.onSurface);
 
                   return GestureDetector(
                     onTap: () {
@@ -239,7 +240,7 @@ class _CrosswordGridState extends ConsumerState<CrosswordGrid> {
                                     },
                                   )
                                 : Text(
-                                    cellValue ?? '',
+                                    cellValue,
                                     style: TextStyle(
                                       fontWeight: FontWeight.bold,
                                       fontSize: 18,

@@ -10,6 +10,7 @@ import '../providers/crosswords_provider.dart';
 import '../widgets/crossword_grid.dart';
 import '../widgets/scoreboard_widget.dart';
 import '../models/crossword_model.dart';
+import '../../../screens/article_screen.dart';
 
 class CrosswordsScreen extends ConsumerStatefulWidget {
   const CrosswordsScreen({super.key});
@@ -95,7 +96,7 @@ class _CrosswordsScreenState extends ConsumerState<CrosswordsScreen> {
               _currentIndex == 0)
             IconButton(
               icon: const Icon(Icons.today),
-              tooltip: 'Play Today\'s Puzzle',
+              tooltip: 'crossword_play'.tr(),
               onPressed: () {
                 ref.read(crosswordsProvider.notifier).playDailyPuzzle();
               },
@@ -142,6 +143,7 @@ class _CrosswordsScreenState extends ConsumerState<CrosswordsScreen> {
                 Padding(
                   padding: const EdgeInsets.all(8.0),
                   child: SegmentedButton<int>(
+                    emptySelectionAllowed: true,
                     segments: [
                       ButtonSegment<int>(
                         value: 0,
@@ -168,10 +170,19 @@ class _CrosswordsScreenState extends ConsumerState<CrosswordsScreen> {
                         icon: const Icon(Icons.leaderboard),
                       ),
                     ],
-                    selected: <int>{_currentIndex},
+                    selected: <int>{
+                      if (_currentIndex == 1) 1
+                      else if (_currentIndex == 2) 2
+                      else if (_currentIndex == 0 && (state.currentPuzzle == null || state.currentPuzzle!.puzzleId == ref.read(crosswordsProvider.notifier).dailyPuzzleId)) 0
+                    },
                     onSelectionChanged: (Set<int> newSelection) {
+                      if (newSelection.isEmpty) return;
+                      final int selectedIndex = newSelection.first;
+                      if (selectedIndex == 0) {
+                        ref.read(crosswordsProvider.notifier).playDailyPuzzle();
+                      }
                       setState(() {
-                        _currentIndex = newSelection.first;
+                        _currentIndex = selectedIndex;
                       });
                     },
                   ),
@@ -207,10 +218,10 @@ class _CrosswordsScreenState extends ConsumerState<CrosswordsScreen> {
           margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
           child: ListTile(
             leading: const Icon(Icons.favorite, color: Colors.red),
-            title: Text('Crossword #$puzzleId'),
+            title: Text('${'crosswords'.tr()} #$puzzleId'),
             trailing: ElevatedButton.icon(
               icon: const Icon(Icons.play_arrow),
-              label: const Text('Play'),
+              label: Text('crossword_open').tr(),
               onPressed: () {
                 ref.read(crosswordsProvider.notifier).playPuzzle(puzzleId);
                 setState(() {
@@ -230,7 +241,7 @@ class _CrosswordsScreenState extends ConsumerState<CrosswordsScreen> {
     WidgetRef ref,
   ) {
     if (state.currentPuzzle == null) {
-      return const Center(child: Text('No crossword for today.'));
+      return Center(child: Text('crossword_no').tr());
     }
 
     final canReveal = ref.read(crosswordsProvider.notifier).canRevealWords();
@@ -301,7 +312,12 @@ class _CrosswordsScreenState extends ConsumerState<CrosswordsScreen> {
                       ],
                     ),
                     const SizedBox(height: 24),
-                    CrosswordGrid(puzzle: state.currentPuzzle!),
+                    CrosswordGrid(
+                      puzzle: state.currentPuzzle!,
+                      isFillable: !canReveal &&
+                          state.currentPuzzle!.puzzleId ==
+                              ref.read(crosswordsProvider.notifier).dailyPuzzleId,
+                    ),
                     const SizedBox(height: 24),
                     if (canReveal)
                       if (isFullySolved && bonusWord != null)
@@ -344,16 +360,54 @@ class _CrosswordsScreenState extends ConsumerState<CrosswordsScreen> {
                                 ],
                               ),
                               const SizedBox(height: 8),
-                              Text(
-                                '${bonusWord.word.toUpperCase()} - ${bonusWord.clue}',
-                                textAlign: TextAlign.center,
-                                style: Theme.of(context).textTheme.bodyLarge
-                                    ?.copyWith(
-                                      fontWeight: FontWeight.w600,
-                                      color: Theme.of(
-                                        context,
-                                      ).colorScheme.onPrimaryContainer,
+                              InkWell(
+                                onTap: () {
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (_) => ArticleScreen(
+                                        title: bonusWord!.pageTitle,
+                                      ),
                                     ),
+                                  );
+                                },
+                                borderRadius: BorderRadius.circular(8),
+                                child: Padding(
+                                  padding: const EdgeInsets.symmetric(
+                                    vertical: 4.0,
+                                    horizontal: 8.0,
+                                  ),
+                                  child: Row(
+                                    mainAxisSize: MainAxisSize.min,
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                      Flexible(
+                                        child: Text(
+                                          '${bonusWord.word.toUpperCase()} - ${bonusWord.clue}',
+                                          textAlign: TextAlign.center,
+                                          style: Theme.of(context)
+                                              .textTheme
+                                              .bodyLarge
+                                              ?.copyWith(
+                                                fontWeight: FontWeight.w600,
+                                                color: Theme.of(
+                                                  context,
+                                                ).colorScheme.onPrimaryContainer,
+                                                decoration: TextDecoration.underline,
+                                              ),
+                                        ),
+                                      ),
+                                      const SizedBox(width: 8),
+                                      Icon(
+                                        Icons.open_in_new,
+                                        size: 16,
+                                        color: Theme.of(
+                                          context,
+                                        ).colorScheme.onPrimaryContainer,
+                                      ),
+                                    ],
+                                  ),
+                                ),
                               ),
                             ],
                           ),

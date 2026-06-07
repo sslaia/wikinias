@@ -132,6 +132,9 @@ class DrawerContent extends ConsumerWidget {
                 if (Scaffold.maybeOf(context)?.hasDrawer ?? false) {
                   Navigator.pop(context);
                 }
+                ref
+                    .read(appStateProvider.notifier)
+                    .setProject(ProjectType.wiktionary, currentLanguage);
                 Navigator.push(
                   context,
                   MaterialPageRoute(builder: (_) => const CrosswordsScreen()),
