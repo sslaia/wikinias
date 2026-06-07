@@ -74,7 +74,7 @@ class CrosswordsNotifier extends StateNotifier<CrosswordsState> {
       try {
         final response = await http.get(
           Uri.parse(
-            'https://raw.githubusercontent.com/sslaia/wikinias/refs/heads/main/assets/data/nias_crosswords.json',
+            'https://raw.githubusercontent.com/sslaia/wikinias/refs/heads/main/assets/data/nia_crosswords.json',
           ),
         );
         if (response.statusCode == 200) {
@@ -118,7 +118,7 @@ class CrosswordsNotifier extends StateNotifier<CrosswordsState> {
       );
     } else {
       final jsonString = await rootBundle.loadString(
-        'assets/data/nias_crosswords.json',
+        'assets/data/nia_crosswords.json',
       );
       final List<dynamic> data = jsonDecode(jsonString);
       outList.addAll(
