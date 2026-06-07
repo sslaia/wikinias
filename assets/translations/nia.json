@@ -224,7 +224,9 @@
   "crossword_play": "Fo'ösi Dahö-Dahö Ma'ökhö",
   "crossword_scoreboard": "Fangerai Bua",
   "crossword_score": "Bua",
-  "crossword_share": "Fa'ohe'ö'",
+  "crossword_share": "Fa'ohe'ö",
+  "crossword_share_1": "No ufo'ösi dahö-dahö ma'ökhö! Bua nisöndragu ba migu andre:",
+  "crossword_share_2": "Ae ba aplikasi WikiNias ba wamo'ösi dahö-dahö: https://play.google.com/store/apps/details?id=com.blogspot.wikinias",
   "crossword_weekly": "Si'ero Migu",
   "crossword_yearly": "Si'ero Röfi"
 }

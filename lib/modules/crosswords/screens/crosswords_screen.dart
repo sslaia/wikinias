@@ -49,7 +49,7 @@ class _CrosswordsScreenState extends ConsumerState<CrosswordsScreen> {
         await imageFile.writeAsBytes(pngBytes);
 
         final text =
-            "No ufo'ösi dahö-dahö ma'ökhö! Bua nisöndragu ba migu andre: ${score.toStringAsFixed(1)}/10. Ae ba aplikasi WikiNias ba wamo'ösi dahö-dahö! https://play.google.com/store/apps/details?id=com.sslaia.wikinias";
+            "${'crossword_share_1'.tr()} ${score.toStringAsFixed(1)}/10. ${'crossword_share_2'.tr()}";
         SharePlus.instance.share(
           ShareParams(files: [XFile(imagePath)], text: text),
         );
@@ -171,9 +171,17 @@ class _CrosswordsScreenState extends ConsumerState<CrosswordsScreen> {
                       ),
                     ],
                     selected: <int>{
-                      if (_currentIndex == 1) 1
-                      else if (_currentIndex == 2) 2
-                      else if (_currentIndex == 0 && (state.currentPuzzle == null || state.currentPuzzle!.puzzleId == ref.read(crosswordsProvider.notifier).dailyPuzzleId)) 0
+                      if (_currentIndex == 1)
+                        1
+                      else if (_currentIndex == 2)
+                        2
+                      else if (_currentIndex == 0 &&
+                          (state.currentPuzzle == null ||
+                              state.currentPuzzle!.puzzleId ==
+                                  ref
+                                      .read(crosswordsProvider.notifier)
+                                      .dailyPuzzleId))
+                        0,
                     },
                     onSelectionChanged: (Set<int> newSelection) {
                       if (newSelection.isEmpty) return;
@@ -314,9 +322,12 @@ class _CrosswordsScreenState extends ConsumerState<CrosswordsScreen> {
                     const SizedBox(height: 24),
                     CrosswordGrid(
                       puzzle: state.currentPuzzle!,
-                      isFillable: !canReveal &&
+                      isFillable:
+                          !canReveal &&
                           state.currentPuzzle!.puzzleId ==
-                              ref.read(crosswordsProvider.notifier).dailyPuzzleId,
+                              ref
+                                  .read(crosswordsProvider.notifier)
+                                  .dailyPuzzleId,
                     ),
                     const SizedBox(height: 24),
                     if (canReveal)
@@ -390,10 +401,11 @@ class _CrosswordsScreenState extends ConsumerState<CrosswordsScreen> {
                                               .bodyLarge
                                               ?.copyWith(
                                                 fontWeight: FontWeight.w600,
-                                                color: Theme.of(
-                                                  context,
-                                                ).colorScheme.onPrimaryContainer,
-                                                decoration: TextDecoration.underline,
+                                                color: Theme.of(context)
+                                                    .colorScheme
+                                                    .onPrimaryContainer,
+                                                decoration:
+                                                    TextDecoration.underline,
                                               ),
                                         ),
                                       ),
